@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>录播与媒体库 - 数学竞赛平台</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Noto+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#138aec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101a22",
+                        "slate-850": "#151f28", // Custom dark slate for variation
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "Noto Sans", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#0d151b] font-display h-screen flex overflow-hidden">
+<aside class="w-64 bg-slate-50 h-full border-r border-[#e7eef3] flex flex-col shrink-0 hidden md:flex">
+<div class="p-6 pb-2">
+<div class="flex gap-3 items-center">
+<div class="bg-center bg-no-repeat bg-cover rounded-xl size-10 shadow-sm" data-alt="Abstract math geometric logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDuig75ak94ORcH3dmx7fG3Fdggp7hGdVBWwb20dFy6poOVvESPJcN3FprP1ED7MKjPs2itMfnITDIdkEhWzc2lBD5EbCpjVKHlc10mUnNuJEpoebR7Le6Nd_AEPyjIJSHBFESw_LKdwXsXTsH_glB9I6OYiG_2AoGSxpXlSbK4k4Tr1WYNkXG1hlhav0rFBWmYZqcu6aRLN-M20xV--fLi88LlKMsNadsSevKgoEu2sr26zeXxobqUD-FDmGa4r8L7VeUqd2B7GTQ");'></div>
+<div class="flex flex-col">
+<h1 class="text-[#0d151b] text-base font-bold leading-tight">数学竞赛平台</h1>
+<p class="text-[#4c779a] text-xs font-normal">教师管理端</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto px-4 py-4 flex flex-col gap-6 custom-scrollbar">
+<div>
+<div class="px-3 mb-2 text-[11px] font-bold text-[#94a3b8] uppercase tracking-wider">教学总览</div>
+<div class="flex flex-col gap-0.5">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c779a] hover:bg-[#e7eef3] hover:text-[#0d151b] transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">grid_view</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+</div>
+</div>
+<div>
+<div class="px-3 mb-2 text-[11px] font-bold text-[#94a3b8] uppercase tracking-wider">课程与教学</div>
+<div class="flex flex-col gap-0.5">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c779a] hover:bg-[#e7eef3] hover:text-[#0d151b] transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">calendar_month</span>
+<span class="text-sm font-medium">课程日程</span>
+</a>
+<a class="flex items-center justify-between gap-3 px-3 py-2 rounded-lg text-[#4c779a] hover:bg-[#e7eef3] hover:text-[#0d151b] transition-colors" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px]">live_tv</span>
+<span class="text-sm font-medium">直播课堂</span>
+</div>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px] fill-1">video_library</span>
+<span class="text-sm font-medium">录播与媒体</span>
+</a>
+</div>
+</div>
+<div>
+<div class="px-3 mb-2 text-[11px] font-bold text-[#94a3b8] uppercase tracking-wider">作业与测评</div>
+<div class="flex flex-col gap-0.5">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c779a] hover:bg-[#e7eef3] hover:text-[#0d151b] transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">assignment</span>
+<span class="text-sm font-medium">作业管理</span>
+</a>
+<a class="flex items-center justify-between gap-3 px-3 py-2 rounded-lg text-[#4c779a] hover:bg-[#e7eef3] hover:text-[#0d151b] transition-colors" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px]">fact_check</span>
+<span class="text-sm font-medium">批改工作台</span>
+</div>
+<span class="bg-primary text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[1.25rem] text-center">12</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c779a] hover:bg-[#e7eef3] hover:text-[#0d151b] transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">quiz</span>
+<span class="text-sm font-medium">考试管理</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c779a] hover:bg-[#e7eef3] hover:text-[#0d151b] transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">score</span>
+<span class="text-sm font-medium">成绩册</span>
+</a>
+</div>
+</div>
+<div>
+<div class="px-3 mb-2 text-[11px] font-bold text-[#94a3b8] uppercase tracking-wider">内容资产</div>
+<div class="flex flex-col gap-0.5">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c779a] hover:bg-[#e7eef3] hover:text-[#0d151b] transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">inventory_2</span>
+<span class="text-sm font-medium">题库</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c779a] hover:bg-[#e7eef3] hover:text-[#0d151b] transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">folder_shared</span>
+<span class="text-sm font-medium">教学资源</span>
+</a>
+</div>
+</div>
+<div>
+<div class="px-3 mb-2 text-[11px] font-bold text-[#94a3b8] uppercase tracking-wider">学生与数据</div>
+<div class="flex flex-col gap-0.5">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c779a] hover:bg-[#e7eef3] hover:text-[#0d151b] transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">school</span>
+<span class="text-sm font-medium">学生管理</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c779a] hover:bg-[#e7eef3] hover:text-[#0d151b] transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">bar_chart</span>
+<span class="text-sm font-medium">数据分析 / 报表</span>
+</a>
+</div>
+</div>
+<div>
+<div class="px-3 mb-2 text-[11px] font-bold text-[#94a3b8] uppercase tracking-wider">协作与系统</div>
+<div class="flex flex-col gap-0.5">
+<a class="flex items-center justify-between gap-3 px-3 py-2 rounded-lg text-[#4c779a] hover:bg-[#e7eef3] hover:text-[#0d151b] transition-colors" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="text-sm font-medium">消息中心</span>
+</div>
+<span class="bg-rose-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[1.25rem] text-center">3</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c779a] hover:bg-[#e7eef3] hover:text-[#0d151b] transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">rate_review</span>
+<span class="text-sm font-medium">协作审核</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c779a] hover:bg-[#e7eef3] hover:text-[#0d151b] transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="text-sm font-medium">设置与权限</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c779a] hover:bg-[#e7eef3] hover:text-[#0d151b] transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">help</span>
+<span class="text-sm font-medium">帮助与支持</span>
+</a>
+</div>
+</div>
+</nav>
+<div class="p-4 border-t border-[#e7eef3]">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c779a] hover:text-[#0d151b] transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span class="text-sm font-medium">退出登录</span>
+</a>
+</div>
+</aside>
+<main class="flex-1 flex flex-col min-w-0 bg-background-light relative">
+<header class="h-16 bg-white border-b border-[#e7eef3] px-6 flex items-center justify-between shrink-0 z-10">
+<div class="flex items-center gap-4 text-[#4c779a] text-sm">
+<span>教学中心</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-[#0d151b] font-medium">媒体库</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="relative p-2 rounded-lg text-[#4c779a] hover:bg-[#e7eef3] transition-colors">
+<span class="material-symbols-outlined text-[24px]">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border border-white"></span>
+</button>
+<div class="h-8 w-[1px] bg-[#e7eef3]"></div>
+<button class="flex items-center gap-2 pl-1 pr-2 py-1 rounded-full hover:bg-[#e7eef3] transition-colors">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-8 border border-[#e7eef3]" data-alt="User avatar placeholder" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAEEozlQyjG9bNygpbQCakHFTfhZtGbe2mBPS6xygeDXCPqDlbwlLfUSM6ZbHFvx30cnG1v17RtS1auZ2fu8Ar3xJK0Jh_wZQfcow1A-njEiUxShlcvHtjGZDIu4pQl4mmRo9h1DDYhzL-4HOtrJqfzg25R57fzQ3RejHjZHKf-f4f65RQWldpetIuMVRMxXaERFHS1Qu7Bs3NwCxgoClmbYCA5HjCD_nuONISvu59q5AbtsZxHs4BJ94oW_Kz-_t92Ny_56cpzG4c");'></div>
+<span class="text-sm font-medium text-[#0d151b] hidden sm:block">张老师</span>
+<span class="material-symbols-outlined text-[#4c779a] text-[20px]">expand_more</span>
+</button>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto custom-scrollbar p-6 lg:px-10 pb-20">
+<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+<div>
+<h2 class="text-3xl font-bold text-[#0d151b] tracking-tight">录播与媒体库</h2>
+<p class="text-[#4c779a] mt-1">管理您的课程录像、剪辑视频及分享权限</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center justify-center gap-2 h-10 px-4 rounded-lg border border-[#cfdde7] bg-white text-[#0d151b] text-sm font-bold hover:bg-slate-50 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[20px]">cloud_upload</span>
+<span>上传视频</span>
+</button>
+<button class="flex items-center justify-center gap-2 h-10 px-4 rounded-lg bg-primary text-white text-sm font-bold hover:bg-blue-600 transition-colors shadow-sm shadow-blue-200">
+<span class="material-symbols-outlined text-[20px]">videocam</span>
+<span>开始新录制</span>
+</button>
+</div>
+</div>
+<div class="bg-white p-4 rounded-xl border border-[#e7eef3] shadow-sm mb-6 flex flex-col lg:flex-row gap-4 lg:items-center justify-between">
+<div class="flex flex-col sm:flex-row gap-3 flex-1">
+<div class="relative flex-1 max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#4c779a]">search</span>
+<input class="w-full h-10 pl-10 pr-4 rounded-lg border border-[#cfdde7] bg-slate-50 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-[#94a3b8]" placeholder="搜索课程、录播标题..." type="text"/>
+</div>
+<div class="flex gap-2 overflow-x-auto pb-1 sm:pb-0 no-scrollbar">
+<div class="relative group">
+<button class="flex items-center gap-2 h-10 px-3 rounded-lg border border-[#cfdde7] bg-white text-sm font-medium text-[#4c779a] hover:text-[#0d151b] hover:border-[#b0c4d6] transition-colors whitespace-nowrap">
+<span>所有课程</span>
+<span class="material-symbols-outlined text-[18px]">expand_more</span>
+</button>
+</div>
+<button class="flex items-center gap-2 h-10 px-3 rounded-lg border border-[#cfdde7] bg-white text-sm font-medium text-[#4c779a] hover:text-[#0d151b] hover:border-[#b0c4d6] transition-colors whitespace-nowrap">
+<span>本月</span>
+<span class="material-symbols-outlined text-[18px]">calendar_month</span>
+</button>
+<button class="flex items-center gap-2 h-10 px-3 rounded-lg border border-[#cfdde7] bg-white text-sm font-medium text-[#4c779a] hover:text-[#0d151b] hover:border-[#b0c4d6] transition-colors whitespace-nowrap">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+<span>筛选</span>
+</button>
+</div>
+</div>
+<div class="flex items-center gap-2 text-sm text-[#4c779a] border-t lg:border-t-0 pt-3 lg:pt-0 border-dashed border-[#e7eef3]">
+<span class="hidden lg:inline">已选择 0 项</span>
+<button class="text-[#4c779a] hover:text-primary font-medium flex items-center gap-1 disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+                        批量删除
+                    </button>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+<div class="group bg-white rounded-xl border border-[#e7eef3] shadow-sm hover:shadow-md hover:border-[#cfdde7] transition-all cursor-pointer flex flex-col overflow-hidden">
+<div class="relative aspect-video bg-slate-100 w-full overflow-hidden">
+<div class="absolute inset-0 bg-center bg-cover opacity-60 blur-sm" data-alt="Blurred background of math classroom" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAMQz_Wero8MutBSycn0RB8xgL8LHN5iZH8p3uwl7tIBJ2so9xUx-Wkidvjk2OGGd6plgpcCgjRkQSaFQp2XM9bZlWF5wI9pYMrA1lJtl7vVdOs7Yrp0S1q8qK7uDPb3mNbhsUgVq_ievwqRalcqtMhwxl2DAUgncdw88XxbxImWroLbaSye7mP0BKA-UbHcy_E124sUYvelgUDAHp21yZgPExSB6cAscfyzx44Knx9KwVSeV6lz7Xwr2ESJSuKdnLJV3t7K2bYdbE");'></div>
+<div class="absolute inset-0 flex flex-col items-center justify-center bg-black/10">
+<div class="size-8 border-4 border-white/30 border-t-white rounded-full animate-spin mb-2"></div>
+<span class="text-white text-xs font-medium shadow-black drop-shadow-md">转码中 45%</span>
+</div>
+</div>
+<div class="p-4 flex flex-col gap-2 flex-1">
+<div class="flex items-start justify-between gap-2">
+<h3 class="text-[#0d151b] font-bold text-sm leading-snug line-clamp-2 group-hover:text-primary transition-colors">2023 高联一试模拟考讲解（代数部分）</h3>
+<button class="text-[#94a3b8] hover:text-[#0d151b] -mr-2 -mt-2 p-2 rounded-full"><span class="material-symbols-outlined text-[20px]">more_vert</span></button>
+</div>
+<div class="mt-auto pt-2 flex items-center justify-between text-xs text-[#64748b]">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] animate-pulse text-amber-500">pending</span>
+<span class="text-amber-600 font-medium">处理中</span>
+</div>
+<span>10分钟前</span>
+</div>
+<div class="w-full bg-slate-100 h-1 rounded-full mt-2 overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 45%"></div>
+</div>
+</div>
+</div>
+<div class="group bg-white rounded-xl border border-[#e7eef3] shadow-sm hover:shadow-md hover:border-[#cfdde7] transition-all cursor-pointer flex flex-col overflow-hidden ring-2 ring-primary ring-offset-2">
+<div class="relative aspect-video bg-slate-200 w-full overflow-hidden">
+<div class="absolute inset-0 bg-center bg-cover transition-transform duration-700 group-hover:scale-105" data-alt="Math equations on blackboard" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBXV0vy3D87cWPBOArsbLCuLhyALEtQ4ll2of-Z5aLSqbeLUzWPfTcO6YjOYoUuVtoaOIEYtz8yudDgelo_jU1Phl4Gk3X96uFWgfWuc-i0DYYSTjK3JTRu9TWbfruVhV17bnNXpz3Qu3R_JAUzC5kIIgjGWbhIKz3CpYNZIJdp1Pc0eP2UPDuhN2Fu8O_47wv7fk9cv_SiDpAGdBje3z8xMazY2yGzquPLv5JDWJZwxcpakuvYVQlwLR4LHoQ7Hq7shP7ntuh3v8I");'></div>
+<div class="absolute bottom-2 right-2 bg-black/70 backdrop-blur-sm text-white text-[10px] font-bold px-1.5 py-0.5 rounded">48:12</div>
+<div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+<div class="bg-white/90 rounded-full p-2 shadow-lg backdrop-blur-sm transform scale-90 group-hover:scale-100 transition-transform">
+<span class="material-symbols-outlined text-primary text-[28px] pl-1">play_arrow</span>
+</div>
+</div>
+</div>
+<div class="p-4 flex flex-col gap-2 flex-1">
+<div class="flex items-start justify-between gap-2">
+<h3 class="text-[#0d151b] font-bold text-sm leading-snug line-clamp-2 group-hover:text-primary transition-colors">平面几何辅助线技巧进阶 - 第三讲</h3>
+<button class="text-[#94a3b8] hover:text-[#0d151b] -mr-2 -mt-2 p-2 rounded-full"><span class="material-symbols-outlined text-[20px]">more_vert</span></button>
+</div>
+<div class="mt-auto flex items-center justify-between text-xs text-[#64748b]">
+<div class="flex items-center gap-1.5">
+<span class="size-2 rounded-full bg-emerald-500"></span>
+<span>已就绪</span>
+</div>
+<div class="flex items-center gap-1" title="仅教师可见">
+<span class="material-symbols-outlined text-[16px]">lock</span>
+<span>私有</span>
+</div>
+</div>
+<div class="mt-2 text-xs text-[#94a3b8] flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">calendar_today</span>
+<span>2023-10-24</span>
+</div>
+</div>
+</div>
+<div class="group bg-white rounded-xl border border-[#e7eef3] shadow-sm hover:shadow-md hover:border-[#cfdde7] transition-all cursor-pointer flex flex-col overflow-hidden">
+<div class="relative aspect-video bg-slate-200 w-full overflow-hidden">
+<div class="absolute inset-0 bg-center bg-cover transition-transform duration-700 group-hover:scale-105" data-alt="Student writing math solution" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCv2KH1ezZ0NUwEPsOA3ufRTUTDAnYhUvT8KAhS1FfuGE6tVGLaerb2oi7A5rUn_yMEUTAumd2-LwJorAduJStcGF_3AdFanmxCt914MHo_4c4ANzVgZmcYCX8UXMWiyXtqluqHsDNjilsFAlwECkzN7wRaw_lN7gifUqJHRiqx9cpmvwLNt_f8lcaAH2m5xK5nBSpMZX9ZwjSoMtweP3oMcuw7eNpXKdzMBUyswgL0nsWdK7TyUbHtiwNrIJ6ENqMSfwxgJfpfARA");'></div>
+<div class="absolute bottom-2 right-2 bg-black/70 backdrop-blur-sm text-white text-[10px] font-bold px-1.5 py-0.5 rounded">1:12:30</div>
+<div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+<div class="bg-white/90 rounded-full p-2 shadow-lg backdrop-blur-sm transform scale-90 group-hover:scale-100 transition-transform">
+<span class="material-symbols-outlined text-primary text-[28px] pl-1">play_arrow</span>
+</div>
+</div>
+</div>
+<div class="p-4 flex flex-col gap-2 flex-1">
+<div class="flex items-start justify-between gap-2">
+<h3 class="text-[#0d151b] font-bold text-sm leading-snug line-clamp-2 group-hover:text-primary transition-colors">2023 冬令营选拔考试分析</h3>
+<button class="text-[#94a3b8] hover:text-[#0d151b] -mr-2 -mt-2 p-2 rounded-full"><span class="material-symbols-outlined text-[20px]">more_vert</span></button>
+</div>
+<div class="mt-auto flex items-center justify-between text-xs text-[#64748b]">
+<div class="flex items-center gap-1.5">
+<span class="size-2 rounded-full bg-emerald-500"></span>
+<span>已就绪</span>
+</div>
+<div class="flex items-center gap-1 text-primary" title="公开">
+<span class="material-symbols-outlined text-[16px]">public</span>
+<span>公开</span>
+</div>
+</div>
+<div class="mt-2 text-xs text-[#94a3b8] flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">calendar_today</span>
+<span>2023-10-22</span>
+</div>
+</div>
+</div>
+<div class="group bg-white rounded-xl border border-[#e7eef3] shadow-sm hover:shadow-md hover:border-[#cfdde7] transition-all cursor-pointer flex flex-col overflow-hidden">
+<div class="relative aspect-video bg-slate-200 w-full overflow-hidden">
+<div class="absolute inset-0 bg-center bg-cover transition-transform duration-700 group-hover:scale-105" data-alt="Geometry diagrams" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCpTpyjgORTSHScHcOxfa81336u0k28kgG619WaQBf1NpbaGh7T5w7z2BMCpyrUc3eypaGafPDUO01-N3lSZYBggmy1YO_UCMHEaChjkdp81ZN_TqHz3UoEiNNLYsEeMxFjHoHBB3vN3TstLOScGs1CkT6xYx_EzCuzRO5jLmZkPapNiPloMIONL3qprK1KLcCt-o7zNKa9ILJs8DRvqcmS_2dSKiikvzt32mmdzpb5Aj2pJDXEmajXVrq33SalhKycgjN6drGy-g8");'></div>
+<div class="absolute bottom-2 right-2 bg-black/70 backdrop-blur-sm text-white text-[10px] font-bold px-1.5 py-0.5 rounded">25:10</div>
+<div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+<div class="bg-white/90 rounded-full p-2 shadow-lg backdrop-blur-sm transform scale-90 group-hover:scale-100 transition-transform">
+<span class="material-symbols-outlined text-primary text-[28px] pl-1">play_arrow</span>
+</div>
+</div>
+</div>
+<div class="p-4 flex flex-col gap-2 flex-1">
+<div class="flex items-start justify-between gap-2">
+<h3 class="text-[#0d151b] font-bold text-sm leading-snug line-clamp-2 group-hover:text-primary transition-colors">初等数论 - 同余方程组</h3>
+<button class="text-[#94a3b8] hover:text-[#0d151b] -mr-2 -mt-2 p-2 rounded-full"><span class="material-symbols-outlined text-[20px]">more_vert</span></button>
+</div>
+<div class="mt-auto flex items-center justify-between text-xs text-[#64748b]">
+<div class="flex items-center gap-1.5">
+<span class="size-2 rounded-full bg-emerald-500"></span>
+<span>已就绪</span>
+</div>
+<div class="flex items-center gap-1" title="班级可见">
+<span class="material-symbols-outlined text-[16px]">group</span>
+<span>班级</span>
+</div>
+</div>
+<div class="mt-2 text-xs text-[#94a3b8] flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">calendar_today</span>
+<span>2023-10-20</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div aria-modal="true" class="absolute inset-0 z-50 flex justify-end" role="dialog">
+<div class="absolute inset-0 bg-slate-900/20 backdrop-blur-[1px] transition-opacity"></div>
+<div class="relative w-full max-w-[480px] bg-white h-full shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
+<div class="flex items-center justify-between px-6 py-4 border-b border-[#e7eef3]">
+<h3 class="font-bold text-lg text-[#0d151b]">录播详情</h3>
+<div class="flex items-center gap-2">
+<button class="p-2 text-[#4c779a] hover:bg-slate-100 rounded-lg transition-colors" title="在新窗口打开">
+<span class="material-symbols-outlined text-[20px]">open_in_new</span>
+</button>
+<button class="p-2 text-[#4c779a] hover:bg-slate-100 rounded-lg transition-colors" title="关闭">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar">
+<div class="bg-black aspect-video relative group">
+<div class="absolute inset-0 bg-center bg-cover opacity-80" data-alt="Video player frame" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCW6TBOOYYUD1Qdul3QUeF10EcWAl5Vs14CX8wm8X00Jpmp9_lUxhVS1THHgdw4PcLslBMDZt_juwP7Mx6_vkvRG1jnPEeKpC-33pjNBeTVEgjcXydTT9PuyGYhDZYodHv28QKp9GUiE7wBNFXd3sn9uk87i2DLLF4jHp5cA9AvO4YgoAFcZxihvXE9ZGFEx75fancoP77oZD0WTa6F3bJ5Plh3ozkbwP_pZ1LLVhNk4Lp7VnwcKjDnNtyjtZVjSvM2dsn8H921SdY");'></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<button class="bg-white/20 backdrop-blur-md rounded-full p-4 hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-white text-[40px] fill-1">play_arrow</span>
+</button>
+</div>
+<div class="absolute bottom-0 left-0 right-0 h-1 bg-white/20">
+<div class="h-full bg-primary w-1/3 relative">
+<div class="absolute right-0 top-1/2 -translate-y-1/2 size-3 bg-white rounded-full shadow cursor-pointer opacity-0 group-hover:opacity-100"></div>
+</div>
+</div>
+</div>
+<div class="p-6 space-y-8">
+<div class="space-y-4">
+<div class="space-y-1">
+<label class="text-xs font-bold text-[#4c779a] uppercase tracking-wider">标题</label>
+<input class="w-full text-base font-bold text-[#0d151b] border-b border-[#cfdde7] border-t-0 border-x-0 px-0 py-2 focus:ring-0 focus:border-primary bg-transparent" type="text" value="平面几何辅助线技巧进阶 - 第三讲"/>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-1">
+<label class="text-xs font-bold text-[#4c779a] uppercase tracking-wider">所属课程</label>
+<div class="relative">
+<select class="w-full text-sm text-[#0d151b] border rounded-lg border-[#cfdde7] px-3 py-2 focus:ring-1 focus:ring-primary focus:border-primary bg-slate-50 appearance-none">
+<option>2023 高中数学联赛冲刺班</option>
+<option>CMO 冬令营选拔</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-[#4c779a] pointer-events-none text-sm">expand_more</span>
+</div>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-bold text-[#4c779a] uppercase tracking-wider">主讲教师</label>
+<input class="w-full text-sm text-[#64748b] border rounded-lg border-[#cfdde7] bg-slate-100 px-3 py-2 cursor-not-allowed" readonly="" type="text" value="张伟"/>
+</div>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-bold text-[#4c779a] uppercase tracking-wider">描述 / 备注</label>
+<textarea class="w-full text-sm text-[#0d151b] border rounded-lg border-[#cfdde7] px-3 py-2 focus:ring-1 focus:ring-primary focus:border-primary bg-slate-50 h-20 resize-none" placeholder="输入视频描述...">本节课重点讲解梅涅劳斯定理在复杂图形中的应用...</textarea>
+</div>
+</div>
+<div class="space-y-3 pt-4 border-t border-[#e7eef3]">
+<div class="flex items-center justify-between">
+<h4 class="font-bold text-[#0d151b] flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">content_cut</span>
+                                    剪辑工具
+                                </h4>
+<button class="text-xs text-primary font-bold hover:underline">进入高级剪辑模式</button>
+</div>
+<div class="h-12 bg-slate-100 rounded-lg border border-[#e7eef3] relative overflow-hidden flex items-center px-2">
+<div class="flex items-center gap-[2px] h-1/2 w-full opacity-30">
+<div class="w-1 bg-slate-800 h-[40%] rounded-full"></div>
+<div class="w-1 bg-slate-800 h-[70%] rounded-full"></div>
+<div class="w-1 bg-slate-800 h-[100%] rounded-full"></div>
+<div class="w-1 bg-slate-800 h-[50%] rounded-full"></div>
+<div class="w-1 bg-slate-800 h-[30%] rounded-full"></div>
+<div class="w-1 bg-slate-800 h-[80%] rounded-full"></div>
+<div class="w-1 bg-slate-800 h-[60%] rounded-full"></div>
+<div class="absolute left-1/4 right-1/4 top-0 bottom-0 bg-primary/10 border-x-2 border-primary cursor-col-resize">
+<div class="absolute -top-1 -left-1.5 size-3 bg-primary rounded-full"></div>
+<div class="absolute -bottom-1 -right-1.5 size-3 bg-primary rounded-full"></div>
+</div>
+</div>
+</div>
+<div class="flex justify-end">
+<button class="text-xs bg-white border border-[#cfdde7] px-3 py-1.5 rounded-lg font-medium hover:bg-slate-50 text-[#0d151b]">导出选中片段</button>
+</div>
+</div>
+<div class="space-y-3 pt-4 border-t border-[#e7eef3]">
+<h4 class="font-bold text-[#0d151b] flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">share</span>
+                                分享设置
+                            </h4>
+<div class="bg-slate-50 rounded-lg p-3 border border-[#e7eef3] space-y-3">
+<div class="flex items-center justify-between">
+<span class="text-sm font-medium text-[#0d151b]">访问权限</span>
+<div class="flex bg-white rounded-md p-0.5 border border-[#cfdde7]">
+<button class="px-3 py-1 text-xs font-bold bg-[#e7eef3] text-primary rounded shadow-sm">私有</button>
+<button class="px-3 py-1 text-xs font-medium text-[#4c779a] hover:bg-slate-50 rounded">班级</button>
+<button class="px-3 py-1 text-xs font-medium text-[#4c779a] hover:bg-slate-50 rounded">公开</button>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-sm font-medium text-[#0d151b]">链接有效期</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex gap-2 pt-1">
+<input class="flex-1 text-xs text-[#64748b] bg-white border border-[#cfdde7] rounded px-2 py-1.5" readonly="" type="text" value="https://math-contest.edu/v/xk92-m1"/>
+<button class="text-xs bg-white border border-[#cfdde7] px-3 py-1.5 rounded font-bold text-primary hover:bg-slate-50">复制</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-6 border-t border-[#e7eef3] bg-slate-50 mt-auto">
+<button class="w-full bg-primary text-white font-bold h-12 rounded-lg shadow-sm hover:bg-blue-600 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">save</span>
+                        保存更改
+                    </button>
+</div>
+</div>
+</div>
+</main>
+
+</body></html>

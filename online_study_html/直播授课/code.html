@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>数学竞赛在线 - 教师直播端</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;family=Noto+Sans+SC:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "primary-hover": "#0f6bd0",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1e293b",
+                        "border-light": "#e2e8f0",
+                        "border-dark": "#334155",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "Noto Sans SC", "sans-serif"],
+                        "body": ["Noto Sans SC", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .icon-filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Dot Grid Background for Whiteboard */
+        .bg-grid-pattern {
+            background-image: radial-gradient(#cbd5e1 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
+        }
+        .dark .bg-grid-pattern {
+            background-image: radial-gradient(#334155 1.5px, transparent 1.5px);
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-100 font-display h-screen flex flex-col overflow-hidden">
+<!-- Top Navigation Bar -->
+<header class="h-14 bg-surface-light dark:bg-surface-dark border-b border-border-light dark:border-border-dark flex items-center justify-between px-4 z-20 shadow-sm shrink-0">
+<div class="flex items-center gap-4">
+<button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<h1 class="text-base font-bold text-slate-900 dark:text-white leading-tight">线性代数进阶 - 第3讲：向量空间与子空间</h1>
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-primary/10 text-primary uppercase tracking-wide border border-primary/20">Live</span>
+</div>
+<div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+<span class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        直播中
+                    </span>
+<span class="w-px h-3 bg-slate-300 dark:bg-slate-600"></span>
+<span>班级人数: 42/45</span>
+</div>
+</div>
+</div>
+<!-- Timer & Network -->
+<div class="flex items-center absolute left-1/2 -translate-x-1/2 bg-slate-100 dark:bg-slate-800 px-4 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 shadow-sm gap-3">
+<span class="material-symbols-outlined text-red-500 icon-filled text-lg">radio_button_checked</span>
+<span class="font-mono font-medium text-slate-700 dark:text-slate-200 text-sm tracking-wide">00:45:12</span>
+<span class="w-px h-3 bg-slate-300 dark:bg-slate-600"></span>
+<div class="flex items-center gap-1 text-emerald-600 dark:text-emerald-500" title="网络状态极佳">
+<span class="material-symbols-outlined text-lg">signal_cellular_alt</span>
+<span class="text-xs font-medium">12ms</span>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 transition-colors" title="设备设置">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-px h-5 bg-border-light dark:bg-border-dark"></div>
+<div class="flex items-center gap-2 pl-1">
+<div class="text-right hidden sm:block">
+<p class="text-sm font-bold text-slate-900 dark:text-white leading-none">王老师</p>
+<p class="text-xs text-slate-500 leading-none mt-1">主讲教师</p>
+</div>
+<div class="size-8 rounded-full bg-indigo-100 border border-indigo-200 bg-cover bg-center" data-alt="Profile picture of the teacher" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDoZsF5gLgERnDKQnctGuZoI7SbBhYp-2pr_PiF1ZYLxe2mCdGW7WqqoAz7xJGueUgUWhDVsM0-Pda0w5B5RVTxLP50c8v0LX1HMndIq6cn3Olqsfv06gAF3B8DvVuEpkPGCMRvADak7Y_TMW8BRC4kjF7ecZoJAcA038eUzERHkU7aFdZ9La-s0HufP4rpYwFLoyNww6kBoS8ie_ow1Hbg3YSj-z8WLs-14XpZHBs0YrlOUpw1yQ-TwV1s6qyu3HuqsQi7DQgsW-k');"></div>
+</div>
+</div>
+</header>
+<!-- Main Layout -->
+<div class="flex flex-1 overflow-hidden">
+<!-- Left: Whiteboard / Content Stage -->
+<main class="flex-1 relative bg-slate-50 dark:bg-slate-900 overflow-hidden flex flex-col">
+<!-- Whiteboard Toolbar (Floating) -->
+<div class="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex flex-col gap-2 p-1.5 bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-xl shadow-lg shadow-slate-200/50 dark:shadow-black/20">
+<button class="size-10 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors" title="选择">
+<span class="material-symbols-outlined">arrow_selector_tool</span>
+</button>
+<button class="size-10 flex items-center justify-center rounded-lg bg-primary text-white shadow-md shadow-primary/30" title="画笔">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="size-10 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors" title="橡皮擦">
+<span class="material-symbols-outlined">ink_eraser</span>
+</button>
+<button class="size-10 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors" title="文本">
+<span class="material-symbols-outlined">title</span>
+</button>
+<button class="size-10 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors" title="插入 LaTeX 公式">
+<span class="material-symbols-outlined">function</span>
+</button>
+<div class="h-px w-6 mx-auto bg-slate-200 dark:bg-slate-700 my-1"></div>
+<button class="size-10 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors" title="导入 PDF">
+<span class="material-symbols-outlined">upload_file</span>
+</button>
+<button class="size-10 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors" title="清空画板">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+<!-- Page Controls (Top Center Overlay) -->
+<div class="absolute top-4 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2 p-1 bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-lg shadow-sm">
+<button class="size-7 flex items-center justify-center rounded hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500">
+<span class="material-symbols-outlined text-lg">chevron_left</span>
+</button>
+<span class="text-sm font-medium px-2 text-slate-700 dark:text-slate-200">Page 3 / 12</span>
+<button class="size-7 flex items-center justify-center rounded hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</button>
+<div class="w-px h-4 bg-slate-200 dark:bg-slate-700 mx-1"></div>
+<button class="size-7 flex items-center justify-center rounded hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500" title="Add Page">
+<span class="material-symbols-outlined text-lg">add</span>
+</button>
+</div>
+<!-- Canvas Area -->
+<div class="flex-1 w-full h-full bg-grid-pattern relative overflow-hidden cursor-crosshair">
+<!-- Example Content on Whiteboard -->
+<div class="absolute top-20 left-32 text-slate-800 dark:text-slate-200">
+<h2 class="text-2xl font-bold mb-4">Theorem 1.1: Linear Independence</h2>
+<div class="font-serif text-lg leading-relaxed space-y-2">
+<p>If <span class="italic">S = {v₁, v₂, ..., vₙ}</span> is a set of vectors in V, then the vector equation:</p>
+<p class="py-2 pl-4 text-primary font-medium text-xl">c₁v₁ + c₂v₂ + ... + cₙvₙ = 0</p>
+<p>has only the trivial solution <span class="italic">c₁ = c₂ = ... = cₙ = 0</span>.</p>
+</div>
+<!-- Hand drawn style elements using CSS/SVG placeholder -->
+<div class="absolute top-[-10px] left-[-20px] w-full h-full border-2 border-primary/30 rounded-lg pointer-events-none" style="transform: rotate(-1deg) scale(1.05);"></div>
+</div>
+<!-- Simulated Handwriting -->
+<div class="absolute top-64 left-40">
+<svg fill="none" height="100" viewbox="0 0 300 100" width="300" xmlns="http://www.w3.org/2000/svg">
+<path d="M10 50 Q 50 10, 90 50 T 170 50" fill="none" stroke="#ef4444" stroke-linecap="round" stroke-width="3"></path>
+<path d="M160 40 L 170 50 L 160 60" stroke="#ef4444" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path>
+<text fill="#ef4444" font-family="cursive" font-size="20" x="180" y="55">注意这里的系数!</text>
+</svg>
+</div>
+</div>
+<!-- Mode Switcher (Bottom Right of Stage) -->
+<div class="absolute bottom-4 right-4 z-10 flex gap-1 p-1 bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-lg shadow-sm">
+<button class="px-3 py-1.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium shadow-sm border border-slate-200 dark:border-slate-600 flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">draw</span>
+                    白板
+                </button>
+<button class="px-3 py-1.5 rounded hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 text-sm font-medium flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-lg">present_to_all</span>
+                    屏幕共享
+                </button>
+</div>
+</main>
+<!-- Right Sidebar -->
+<aside class="w-80 bg-surface-light dark:bg-surface-dark border-l border-border-light dark:border-border-dark flex flex-col shrink-0 z-10">
+<!-- Video Grid (Top Half) -->
+<div class="h-2/5 flex flex-col border-b border-border-light dark:border-border-dark">
+<div class="flex items-center justify-between px-3 py-2 border-b border-border-light/50 dark:border-border-dark/50">
+<span class="text-xs font-bold text-slate-500 uppercase tracking-wider">学生连麦 (3)</span>
+<button class="text-primary hover:text-primary-hover text-xs font-medium">全员静音</button>
+</div>
+<div class="flex-1 overflow-y-auto p-2 grid grid-cols-2 gap-2 content-start bg-slate-50 dark:bg-slate-900">
+<!-- Student 1 -->
+<div class="relative aspect-video bg-slate-200 dark:bg-slate-800 rounded-lg overflow-hidden group border border-slate-300 dark:border-slate-700">
+<div class="w-full h-full bg-cover bg-center" data-alt="Student 1 focusing on class" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBx82OAPe_KDoabQlwGmWEVPjDDyidiCGp8LaE5s5egaOT5s-T_8VWZibvGcEyugABTqjdnqstWRSmoE9ghRtMPrUTMdE0ls8laVN-lWZx8JMrrHQxf-oODFxZOc-zvuhIeVaMd_9Q2VmJmw2bgzKsyJxiS4-Wz2aQ6GJS8n0_fr6EC76BskShisaVP9aiRFZE1yk2mm0qw2X7Ggq7DbradGPpWAg7TapqmWIjaQcMI6tgNGQ16xskmjoZMTn2GSUX9ns1Wjv26pgc');"></div>
+<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-1.5 flex justify-between items-end">
+<span class="text-white text-[10px] font-medium truncate">李明</span>
+<span class="material-symbols-outlined text-white text-[14px]">mic_off</span>
+</div>
+</div>
+<!-- Student 2 -->
+<div class="relative aspect-video bg-slate-200 dark:bg-slate-800 rounded-lg overflow-hidden group border-2 border-primary">
+<div class="w-full h-full bg-cover bg-center" data-alt="Student 2 raising hand" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCj8xYlSiwKsUsKqrWGQgaCHWdMT_hjdVPaoOZxzFw-frC7UYOvUYn2Eo9ukmzm4DJnnqe9blv_Uq9mqwamKfD5Of7l_9t6pEZOCvNd9qv8o_MaWKuWLmLopxmEz6ygshK5sLo8XGJsGKJ-Vk1qCXa553F0XjiykMnk2hFjh-G-kA8UrVgKVu1PF9eKf3ECr0uxzA5kbqarrqyuqog_D2mmPl0qwqf6POzin1CsZuikvRmdMkMotgGgn9Z_nV7KOb3_Yg2zGxRmtys');"></div>
+<div class="absolute top-1 left-1 bg-primary text-white text-[10px] px-1.5 py-0.5 rounded shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">pan_tool</span>
+                            举手
+                        </div>
+<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-1.5 flex justify-between items-end">
+<span class="text-white text-[10px] font-medium truncate">张小华</span>
+<div class="w-2 h-2 rounded-full bg-green-500"></div>
+</div>
+</div>
+<!-- Student 3 -->
+<div class="relative aspect-video bg-slate-200 dark:bg-slate-800 rounded-lg overflow-hidden group border border-slate-300 dark:border-slate-700">
+<div class="flex items-center justify-center w-full h-full text-slate-400">
+<span class="material-symbols-outlined text-3xl">account_circle</span>
+</div>
+<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-1.5 flex justify-between items-end">
+<span class="text-white text-[10px] font-medium truncate">陈晨</span>
+<span class="material-symbols-outlined text-white text-[14px]">videocam_off</span>
+</div>
+</div>
+<!-- Empty Slot -->
+<div class="relative aspect-video bg-slate-100 dark:bg-slate-800/50 rounded-lg border border-dashed border-slate-300 dark:border-slate-700 flex flex-col items-center justify-center text-slate-400">
+<span class="text-[10px]">等待接入...</span>
+</div>
+</div>
+</div>
+<!-- Interaction Panel (Bottom Half) -->
+<div class="flex-1 flex flex-col overflow-hidden">
+<!-- Tabs -->
+<div class="flex border-b border-border-light dark:border-border-dark bg-white dark:bg-slate-800">
+<button class="flex-1 py-3 text-sm font-medium text-primary border-b-2 border-primary bg-primary/5">
+                        讨论 (8)
+                    </button>
+<button class="flex-1 py-3 text-sm font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors">
+                        提问 (2)
+                    </button>
+<button class="flex-1 py-3 text-sm font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors">
+                        成员 (42)
+                    </button>
+</div>
+<!-- Chat List -->
+<div class="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50 dark:bg-slate-900">
+<div class="flex gap-2 items-start">
+<div class="size-6 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-[10px] font-bold shrink-0">S</div>
+<div class="flex flex-col gap-1 max-w-[85%]">
+<div class="flex items-baseline gap-2">
+<span class="text-xs font-bold text-slate-700 dark:text-slate-300">Student A</span>
+<span class="text-[10px] text-slate-400">10:42</span>
+</div>
+<div class="bg-white dark:bg-slate-800 p-2 rounded-r-lg rounded-bl-lg shadow-sm border border-slate-100 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-200">
+                                老师，刚才那个矩阵变换能再讲一遍吗？
+                            </div>
+</div>
+</div>
+<div class="flex gap-2 items-start flex-row-reverse">
+<div class="size-6 rounded-full bg-primary text-white flex items-center justify-center text-[10px] font-bold shrink-0">T</div>
+<div class="flex flex-col gap-1 items-end max-w-[85%]">
+<div class="flex items-baseline gap-2 flex-row-reverse">
+<span class="text-xs font-bold text-slate-700 dark:text-slate-300">我</span>
+<span class="text-[10px] text-slate-400">10:43</span>
+</div>
+<div class="bg-primary/10 p-2 rounded-l-lg rounded-br-lg text-sm text-slate-900 dark:text-slate-100 border border-primary/20">
+                                好的，稍后我会回到第2页重点讲解。
+                            </div>
+</div>
+</div>
+<div class="flex justify-center my-2">
+<span class="px-3 py-1 bg-slate-200 dark:bg-slate-700 rounded-full text-[10px] text-slate-500 font-medium">系统: 这里的重点是行空间与列空间的维度关系</span>
+</div>
+<div class="flex gap-2 items-start">
+<div class="size-6 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-[10px] font-bold shrink-0">L</div>
+<div class="flex flex-col gap-1 max-w-[85%]">
+<div class="flex items-baseline gap-2">
+<span class="text-xs font-bold text-slate-700 dark:text-slate-300">Student B</span>
+<span class="text-[10px] text-slate-400">10:44</span>
+</div>
+<div class="bg-white dark:bg-slate-800 p-2 rounded-r-lg rounded-bl-lg shadow-sm border border-slate-100 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-200">
+                                懂了！谢谢老师。
+                            </div>
+</div>
+</div>
+</div>
+<!-- Chat Input -->
+<div class="p-3 bg-white dark:bg-slate-800 border-t border-border-light dark:border-border-dark">
+<div class="flex gap-2">
+<input class="flex-1 bg-slate-100 dark:bg-slate-700 border-none rounded-lg text-sm px-3 focus:ring-2 focus:ring-primary" placeholder="输入消息..." type="text"/>
+<button class="p-2 bg-slate-100 dark:bg-slate-700 rounded-lg text-slate-500 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">send</span>
+</button>
+</div>
+</div>
+</div>
+</aside>
+</div>
+<!-- Bottom Control Bar -->
+<footer class="h-20 bg-surface-light dark:bg-surface-dark border-t border-border-light dark:border-border-dark flex items-center justify-between px-8 z-30 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+<!-- Media Controls -->
+<div class="flex items-center gap-2">
+<div class="relative group">
+<button class="flex flex-col items-center justify-center w-14 gap-1 text-slate-700 dark:text-slate-200 group-hover:text-primary transition-colors">
+<div class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 group-hover:bg-primary/10 transition-colors border border-slate-200 dark:border-slate-700">
+<span class="material-symbols-outlined text-2xl icon-filled">mic</span>
+</div>
+<span class="text-[10px] font-medium">静音</span>
+</button>
+<div class="absolute top-0 right-1 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white dark:border-slate-900"></div>
+</div>
+<div class="relative group">
+<button class="flex flex-col items-center justify-center w-14 gap-1 text-slate-700 dark:text-slate-200 group-hover:text-primary transition-colors">
+<div class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 group-hover:bg-primary/10 transition-colors border border-slate-200 dark:border-slate-700">
+<span class="material-symbols-outlined text-2xl icon-filled">videocam</span>
+</div>
+<span class="text-[10px] font-medium">停止视频</span>
+</button>
+</div>
+<button class="flex flex-col items-center justify-center w-8 h-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+<span class="material-symbols-outlined text-xl">expand_less</span>
+</button>
+</div>
+<!-- Class Controls -->
+<div class="flex items-center gap-6">
+<button class="flex flex-col items-center gap-1 group">
+<div class="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 group-hover:bg-primary group-hover:text-white transition-all shadow-sm border border-slate-200 dark:border-slate-700">
+<span class="material-symbols-outlined text-2xl">screen_share</span>
+</div>
+<span class="text-xs font-medium text-slate-600 dark:text-slate-400 group-hover:text-primary transition-colors">屏幕共享</span>
+</button>
+<button class="flex flex-col items-center gap-1 group">
+<div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shadow-md shadow-primary/30 ring-4 ring-primary/10 border border-primary">
+<span class="material-symbols-outlined text-2xl">draw</span>
+</div>
+<span class="text-xs font-bold text-primary">白板演示</span>
+</button>
+<button class="flex flex-col items-center gap-1 group">
+<div class="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 group-hover:bg-primary group-hover:text-white transition-all shadow-sm border border-slate-200 dark:border-slate-700">
+<span class="material-symbols-outlined text-2xl">quiz</span>
+</div>
+<span class="text-xs font-medium text-slate-600 dark:text-slate-400 group-hover:text-primary transition-colors">插题/练习</span>
+</button>
+<button class="flex flex-col items-center gap-1 group">
+<div class="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 group-hover:bg-primary group-hover:text-white transition-all shadow-sm border border-slate-200 dark:border-slate-700">
+<span class="material-symbols-outlined text-2xl">poll</span>
+</div>
+<span class="text-xs font-medium text-slate-600 dark:text-slate-400 group-hover:text-primary transition-colors">投票</span>
+</button>
+</div>
+<!-- Session Controls -->
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-sm transition-colors border border-slate-200 dark:border-slate-700">
+<div class="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse"></div>
+                录制中
+            </button>
+<button class="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 font-bold text-sm transition-colors border border-red-200 dark:border-red-800/50">
+<span class="material-symbols-outlined text-lg">stop_circle</span>
+                结束课堂
+            </button>
+</div>
+</footer>
+<!-- Example Modal: Question Bank (Visual Only, positioned absolutely to simulate "Insert Question" action) -->
+<div class="absolute inset-0 z-50 flex items-center justify-center pointer-events-none hidden">
+<div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-[600px] max-h-[80vh] flex flex-col border border-border-light dark:border-border-dark pointer-events-auto overflow-hidden">
+<div class="flex items-center justify-between px-6 py-4 border-b border-border-light dark:border-border-dark bg-slate-50 dark:bg-slate-900">
+<h3 class="font-bold text-lg text-slate-900 dark:text-white">从题库插入题目</h3>
+<button class="text-slate-400 hover:text-slate-600">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="flex-1 p-6 overflow-y-auto">
+<div class="mb-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900" placeholder="搜索题目关键词 (如: 矩阵, 行列式)" type="text"/>
+</div>
+</div>
+<div class="space-y-3">
+<div class="p-4 rounded-xl border-2 border-primary bg-primary/5 cursor-pointer">
+<div class="flex justify-between mb-2">
+<span class="text-xs font-bold text-primary bg-white dark:bg-slate-800 px-2 py-0.5 rounded border border-primary/20">单选题</span>
+<span class="text-xs text-slate-500">ID: 88291</span>
+</div>
+<p class="font-medium text-slate-800 dark:text-slate-200 mb-2">设A为n阶方阵，且|A|=0，则A的列向量组...</p>
+<div class="flex gap-2 text-xs text-slate-500">
+<span>难度: 中等</span>
+<span>•</span>
+<span>正确率: 65%</span>
+</div>
+</div>
+<div class="p-4 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-primary/50 cursor-pointer transition-colors">
+<div class="flex justify-between mb-2">
+<span class="text-xs font-bold text-slate-500 bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded">判断题</span>
+<span class="text-xs text-slate-500">ID: 10293</span>
+</div>
+<p class="font-medium text-slate-800 dark:text-slate-200 mb-2">若向量组a1, a2, a3线性无关，则a1+a2, a2+a3, a3+a1也线性无关。</p>
+</div>
+</div>
+</div>
+<div class="p-4 border-t border-border-light dark:border-border-dark flex justify-end gap-3 bg-slate-50 dark:bg-slate-900">
+<button class="px-4 py-2 rounded-lg text-slate-600 hover:bg-slate-200 font-medium text-sm">取消</button>
+<button class="px-4 py-2 rounded-lg bg-primary hover:bg-primary-hover text-white font-bold text-sm shadow-md shadow-primary/20">发送至答题卡</button>
+</div>
+</div>
+<div class="absolute inset-0 bg-black/20 backdrop-blur-[1px] -z-10"></div>
+</div>
+</body></html>

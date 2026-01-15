@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>协作与审核 - 数学竞赛云平台</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;family=Noto+Sans+SC:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#138aec",
+                        "primary-hover": "#0f73c4",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101a22",
+                        "surface": "#ffffff",
+                        "surface-dark": "#1a2632",
+                        "border": "#e7eef3",
+                    },
+                    fontFamily: {
+                        "display": ['Lexend', '"Noto Sans SC"', 'sans-serif'],
+                        "body": ['"Noto Sans SC"', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem", 
+                        "lg": "0.5rem", 
+                        "xl": "0.75rem", 
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .diff-add {
+            background-color: #dcfce7;
+            color: #166534;
+            text-decoration: none;
+        }
+        .diff-del {
+            background-color: #fee2e2;
+            color: #991b1b;
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 font-display antialiased overflow-hidden h-screen flex">
+<nav class="w-64 bg-surface dark:bg-surface-dark border-r border-border h-full flex flex-col shrink-0 transition-all duration-300">
+<div class="p-6 flex items-center gap-3 shrink-0">
+<div class="size-10 rounded-xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/20 text-white">
+<span class="material-symbols-outlined text-[24px]">school</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-slate-900 dark:text-white text-base font-bold leading-tight">数学竞赛云</h1>
+<p class="text-slate-500 text-xs font-medium">教师协作端 V2.4</p>
+</div>
+</div>
+<div class="flex-1 px-3 flex flex-col gap-1 overflow-y-auto pb-6">
+<div class="px-3 mt-2 mb-2 flex items-center justify-between text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider group cursor-pointer">
+<span>教学总览</span>
+</div>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">dashboard</span>
+<span class="text-sm font-medium">仪表盘</span>
+</a>
+<div class="px-3 mt-6 mb-2 flex items-center justify-between text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider group cursor-pointer">
+<span>课程与教学</span>
+</div>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">calendar_month</span>
+<span class="text-sm font-medium">课程日程</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">videocam</span>
+<span class="text-sm font-medium">直播课堂</span>
+<span class="ml-auto flex size-2 bg-red-500 rounded-full animate-pulse"></span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">play_circle</span>
+<span class="text-sm font-medium">录播与媒体</span>
+</a>
+<div class="px-3 mt-6 mb-2 flex items-center justify-between text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider group cursor-pointer">
+<span>作业与测评</span>
+</div>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">assignment</span>
+<span class="text-sm font-medium">作业管理</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">edit_document</span>
+<span class="text-sm font-medium">批改工作台</span>
+<span class="ml-auto bg-primary/10 text-primary text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-primary/20">12</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">quiz</span>
+<span class="text-sm font-medium">考试管理</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">table_chart</span>
+<span class="text-sm font-medium">成绩册</span>
+</a>
+<div class="px-3 mt-6 mb-2 flex items-center justify-between text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider group cursor-pointer">
+<span>内容资产</span>
+</div>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">library_books</span>
+<span class="text-sm font-medium">题库</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">folder_open</span>
+<span class="text-sm font-medium">教学资源</span>
+</a>
+<div class="px-3 mt-6 mb-2 flex items-center justify-between text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider group cursor-pointer">
+<span>学生与数据</span>
+</div>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">groups</span>
+<span class="text-sm font-medium">学生管理</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">analytics</span>
+<span class="text-sm font-medium">数据分析 / 报表</span>
+</a>
+<div class="px-3 mt-6 mb-2 flex items-center justify-between text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider group cursor-pointer">
+<span>协作与系统</span>
+</div>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">mail</span>
+<span class="text-sm font-medium">消息中心</span>
+<span class="ml-auto bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full shadow-sm shadow-red-500/30">5</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary dark:text-primary-400" href="#">
+<span class="material-symbols-outlined text-[20px] font-variation-settings-'FILL' 1">fact_check</span>
+<span class="text-sm font-bold">协作审核</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">settings</span>
+<span class="text-sm font-medium">设置与权限</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">help</span>
+<span class="text-sm font-medium">帮助与支持</span>
+</a>
+</div>
+<div class="p-4 border-t border-border mt-auto bg-surface dark:bg-surface-dark shrink-0">
+<div class="flex items-center gap-3 px-3">
+<div class="size-8 rounded-full bg-slate-200 bg-cover bg-center" data-alt="User avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBbAiIJqqclQ_K7kjoyYtaLsljAKarvxOUXqfTWSwV_Kjaog_sCQ0unVVoAjo6LDuvrB8DLaD0cyJoyIloLIKUPlm8WMJgpydigDAYHzTx9_z-frHy8Sy9dnuKzygdWfDWRAriSrhxnKyXFl18SLt6QgZFw3zu8CCv7QSxTnnZUHvHRh0Kp42kNwvaZTOxgg_w0gQJaSyKlrbOQxWsCsGzpWd1LrA7F3uWe3TTLsaSfE1s-Tn3N_62tdGyvYgaEis6C0l-V_P36zw0');"></div>
+<div class="flex flex-col">
+<span class="text-sm font-bold text-slate-900 dark:text-white">王建国</span>
+<span class="text-xs text-slate-500">高级教研员</span>
+</div>
+<button class="ml-auto text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</div>
+</nav>
+<div class="flex-1 flex flex-col min-w-0 bg-background-light dark:bg-background-dark">
+<header class="h-16 bg-surface dark:bg-surface-dark border-b border-border flex items-center justify-between px-6 shrink-0 z-20">
+<div class="flex items-center gap-4">
+<button class="text-slate-400 hover:text-slate-600 lg:hidden">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<nav class="flex items-center text-sm font-medium text-slate-500">
+<span class="hover:text-primary cursor-pointer transition-colors">协作中心</span>
+<span class="mx-2 text-slate-300">/</span>
+<span class="text-slate-900 dark:text-white font-semibold">审核队列</span>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full ring-2 ring-white"></span>
+<button class="p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+<button class="flex items-center gap-2 bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-lg text-sm font-bold shadow-sm shadow-blue-500/20 transition-all">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>新建任务</span>
+</button>
+</div>
+</header>
+<div class="flex-1 flex overflow-hidden">
+<aside class="w-[340px] bg-surface dark:bg-surface-dark border-r border-border flex flex-col z-10 shrink-0">
+<div class="p-4 border-b border-border flex flex-col gap-3">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-[20px]">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary/20 text-slate-700 placeholder:text-slate-400" placeholder="搜索题目、试卷 ID..." type="text"/>
+</div>
+<div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+<button class="px-3 py-1 bg-blue-50 text-primary rounded-full text-xs font-bold whitespace-nowrap border border-blue-100">待审 (12)</button>
+<button class="px-3 py-1 bg-white border border-slate-200 text-slate-600 rounded-full text-xs font-medium whitespace-nowrap hover:bg-slate-50">草稿</button>
+<button class="px-3 py-1 bg-white border border-slate-200 text-slate-600 rounded-full text-xs font-medium whitespace-nowrap hover:bg-slate-50">被驳回</button>
+<button class="px-3 py-1 bg-white border border-slate-200 text-slate-600 rounded-full text-xs font-medium whitespace-nowrap hover:bg-slate-50">已通过</button>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto">
+<div class="p-4 border-b border-border bg-blue-50/50 dark:bg-blue-900/10 border-l-4 border-l-primary cursor-pointer relative group">
+<div class="flex justify-between items-start mb-1">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-700">P2409-A03</span>
+<span class="text-xs text-slate-400">10分钟前</span>
+</div>
+<h3 class="text-sm font-bold text-slate-900 dark:text-white mb-1 line-clamp-2">2024高中数学联赛模拟卷(三) - 函数导数综合题</h3>
+<div class="flex items-center justify-between mt-2">
+<div class="flex items-center gap-2">
+<div class="size-5 rounded-full bg-slate-200 bg-cover" data-alt="Avatar T" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDuiZZAc_iGsVUgIygIYDHCGjItW27Hmr2VvNi53DmpVq-i94l0RvB1qVOJ8z1zTWoNlAaLsURRXGoU4gNFz_oN6iSqdu9sk8XSOd0Yh4mc3HLvNRB-128cQTGHIxSaxWt0aZL41Ce0xVECnIWiScM6PWIXzlGZC3xe7JLBQHDF3HLNMF0cReGkytq5MktLe-5IUHPEHFKj3XepLhzXo7KUSUzImqI7dq42P__xIJ7dN03y2DcV_-4nw_pF8pzETbD3cCUJ0QsEMlE');"></div>
+<span class="text-xs text-slate-500">提交人: 张老师</span>
+</div>
+<span class="material-symbols-outlined text-[16px] text-primary">arrow_forward_ios</span>
+</div>
+</div>
+<div class="p-4 border-b border-border hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer transition-colors">
+<div class="flex justify-between items-start mb-1">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-600">Q1023-B11</span>
+<span class="text-xs text-slate-400">2小时前</span>
+</div>
+<h3 class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1 line-clamp-2">解析几何：椭圆的标准方程与性质考点解析</h3>
+<div class="flex items-center justify-between mt-2">
+<div class="flex items-center gap-2">
+<div class="size-5 rounded-full bg-slate-200 bg-cover" data-alt="Avatar L" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBPROd2h19NYr13DjHbV8GIF_sLoqjUpMqJZtlZhfLaqp_2ewYb7Ya5fpNYQ1GGyscbitN5Q44tlF8y5Rq6VIbjB_RhL7jlL64EVvUMnynHKdrMIZ5H8q-EM3jthhFkejXCNOJR60AEz8qOpRi32XFpFMyURbN9dKmk7JDMI0PoU3eiZJsMpkq69_oSDxTA6RXIihBNwMekQ8IrXOlg3IGMz1J7uadO4nT0zBwgiJzn9dPBJRrrHH2bscI8S-z-IeK3KStYICSAtkg');"></div>
+<span class="text-xs text-slate-500">提交人: 李教员</span>
+</div>
+</div>
+</div>
+<div class="p-4 border-b border-border hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer transition-colors">
+<div class="flex justify-between items-start mb-1">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-700">驳回重审</span>
+<span class="text-xs text-slate-400">昨天</span>
+</div>
+<h3 class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1 line-clamp-2">立体几何证明题：三棱锥外接球体积计算</h3>
+<div class="flex items-center justify-between mt-2">
+<div class="flex items-center gap-2">
+<div class="size-5 rounded-full bg-slate-200 bg-cover" data-alt="Avatar W" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA5m5UUFDi-RL0eiTb3ZPhBgsdoGx6EYnfqtCjTRS4iJSbpdRn6JgyH4xz5hmfQXuTa7QjLewVnMqCmJzoOlZmhl2AbC8XsxK-sj-6whMFSm9cOGTr3ZKY7TGMo8RN_-IoWCCC2iYxdHptjDaUz45t6kLRmGRmh5c_46stATKKKx6Y9CD84NTsbaP8LXNiXdM1DFQ_tylh340D--qgJT6GS3RvVZZFGQs80KSIqNxYskAWtEC3dnzWkU9CPt8ey_OF0BxXfZXPmnOE');"></div>
+<span class="text-xs text-slate-500">提交人: 王教授</span>
+</div>
+</div>
+</div>
+<div class="p-4 border-b border-border hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer transition-colors">
+<div class="flex justify-between items-start mb-1">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-600">Q1025-C09</span>
+<span class="text-xs text-slate-400">2天前</span>
+</div>
+<h3 class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1 line-clamp-2">数列通项公式求法总结 (V2)</h3>
+<div class="flex items-center justify-between mt-2">
+<div class="flex items-center gap-2">
+<div class="size-5 rounded-full bg-slate-200 bg-cover" data-alt="Avatar Z" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBxjuQ_K_23aYKb76qX62RoriR1SIRJqb_LpvRirfE2RyxpcbTobZlakv7apjR0VJ5GmrKRtZ8whCpMWwXOH6SDMzlCJ9Wvw1jlTrr9eNd_nXDRkhHa1Osnw1ZB704FfRmYk23vZMySAAlZVs2an4XTrHXSXC3txrNyPMU7CgiCNvCSi5hVszXHoFOXjzJc216PpnEfXmJrG_qz9YYrfYYwin9qIs7LyLu8bJsNJh-I4sH-Gkjpt5O-DRYYC4KLP_y9XPq8rF42ftM');"></div>
+<span class="text-xs text-slate-500">提交人: 赵老师</span>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<main class="flex-1 flex flex-col relative bg-[#f6f7f8] dark:bg-[#0d151b] overflow-hidden">
+<div class="bg-surface dark:bg-surface-dark border-b border-border px-6 py-3 flex items-center justify-between shrink-0 shadow-sm z-10">
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<h2 class="text-lg font-bold text-slate-900 dark:text-white">函数导数综合题</h2>
+<span class="px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-bold rounded">待审</span>
+<span class="text-xs text-slate-400">ID: P2409-A03</span>
+</div>
+<div class="flex items-center gap-4 mt-1">
+<span class="text-xs text-slate-500">包含知识点: <span class="text-slate-700 font-medium">导数的应用, 极值点偏移</span></span>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex items-center bg-slate-100 dark:bg-slate-800 rounded-lg p-1">
+<button class="px-3 py-1.5 rounded-md bg-white dark:bg-slate-700 shadow-sm text-xs font-bold text-slate-800 dark:text-white">对比视图</button>
+<button class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-500 hover:text-slate-700">阅读视图</button>
+</div>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto p-6">
+<div class="max-w-5xl mx-auto flex flex-col gap-6">
+<div class="grid grid-cols-2 gap-6">
+<div class="flex items-center justify-between pb-2 border-b border-border">
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-slate-400"></span>
+<span class="text-sm font-bold text-slate-500">旧版本 (V1.2)</span>
+</div>
+<span class="text-xs text-slate-400">昨天 14:30</span>
+</div>
+<div class="flex items-center justify-between pb-2 border-b border-border">
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-primary"></span>
+<span class="text-sm font-bold text-primary">当前版本 (V1.3)</span>
+</div>
+<span class="text-xs text-slate-400">今天 09:15</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-6 items-stretch">
+<div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-border shadow-sm">
+<p class="text-sm text-slate-500 font-bold mb-3 uppercase tracking-wider">题目描述</p>
+<div class="font-serif text-slate-800 dark:text-slate-200 leading-relaxed space-y-4">
+<p>已知函数 <span class="italic">f(x) = ln x - ax + 1</span>，其中 <span class="diff-del bg-red-100 text-red-800 px-1 rounded">a &gt; 0</span>。</p>
+<p>(1) 讨论 <span class="italic">f(x)</span> 的单调性；</p>
+<p>(2) 若 <span class="italic">f(x)</span> 有两个零点 <span class="italic">x₁, x₂</span>，证明：<span class="italic">x₁x₂ &gt; e²</span>。</p>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-primary/30 shadow-sm relative overflow-hidden">
+<div class="absolute top-0 right-0 size-16 bg-gradient-to-bl from-green-500/10 to-transparent"></div>
+<p class="text-sm text-primary font-bold mb-3 uppercase tracking-wider">题目描述 (已修改)</p>
+<div class="font-serif text-slate-800 dark:text-slate-200 leading-relaxed space-y-4">
+<p>已知函数 <span class="italic">f(x) = ln x - ax + 1</span>，其中 <span class="diff-add bg-green-100 text-green-800 px-1 rounded">a ∈ R</span>。</p>
+<p>(1) 讨论 <span class="italic">f(x)</span> 的单调性；</p>
+<p>(2) 若 <span class="italic">f(x)</span> 有两个零点 <span class="italic">x₁, x₂</span>，证明：<span class="italic">x₁x₂ &gt; e²</span>。</p>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-6 items-stretch">
+<div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-border shadow-sm flex flex-col">
+<p class="text-sm text-slate-500 font-bold mb-3 uppercase tracking-wider">配图</p>
+<div class="flex-1 bg-slate-50 rounded-lg flex items-center justify-center p-4 border border-slate-100">
+<div class="w-full h-48 bg-contain bg-no-repeat bg-center opacity-50 grayscale" data-alt="Old version of function graph schematic" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAkUDFsqJjoUIqFfhhJRLerIRXs0AQXFKZ6JgXDAlH8qiFSSv8TuTK-k08SzrCw7e0QVV1nNIjhYlZbpL0LX28bTOrN8ujD2cBM0IpnhZpUhi91EAalIE4qU8TwnqadxC1ahvq-S69bfDWZ9hGoMB8SShdTeEInPJO9TLZJobJX4gLsRn3QF000GBrIunB3RNfLAfDvdxEPZMjeiH50kPIgWmpgyr_Z8OIvTAO8yKoc-pA9tnrV9-Xx6LinmLJBDwKtfVzV0BooKU0');"></div>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-primary/30 shadow-sm flex flex-col">
+<p class="text-sm text-primary font-bold mb-3 uppercase tracking-wider">配图 (已更新)</p>
+<div class="flex-1 bg-slate-50 rounded-lg flex items-center justify-center p-4 border border-dashed border-primary/30 relative">
+<div class="absolute top-2 right-2 flex items-center gap-1 bg-green-100 text-green-800 px-2 py-1 rounded text-[10px] font-bold">
+<span class="material-symbols-outlined text-[12px]">check</span> 更新
+                                    </div>
+<div class="w-full h-48 bg-contain bg-no-repeat bg-center" data-alt="New version of function graph schematic" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCHF75SEir8HpZrdvW8iZ3j6d0HFG3WOCNzfiH5vvAA6Grl3p6IpmwythkqecLa0Btyqa0450DINPZexKCHIpVFfohSLAJfk6FQrRTCPpry5flzz-_FxbwFZgeTmsfehXo_SQfdjxljmvIK_JkYuqXrU7jsARvhsThXznTYQojDksnaSTS-8W9z1_Rin0yWW_Yhp_1K1TaxclgMAWgCqm__Fy29WTiD7hcGOuY-7fktANpq8sckzGGoiJKoxJxVS-U3Dhg8c2o6GqU');"></div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-6 items-stretch mb-20">
+<div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-border shadow-sm">
+<p class="text-sm text-slate-500 font-bold mb-3 uppercase tracking-wider">题目解析</p>
+<div class="font-serif text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+<p>...利用导数研究函数的单调性，注意定义域 <span class="italic">x &gt; 0</span>。<span class="diff-del bg-red-100 text-red-800 px-1 rounded">直接对 a 分类讨论即可得出结果。</span></p>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-primary/30 shadow-sm relative">
+<p class="text-sm text-primary font-bold mb-3 uppercase tracking-wider">题目解析 (已修改)</p>
+<div class="font-serif text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+<p>...利用导数研究函数的单调性，注意定义域 <span class="italic">x &gt; 0</span>。<span class="diff-add bg-green-100 text-green-800 px-1 rounded">需根据 a 的正负及是否为 0 进行详细分类讨论，并结合极值点的符号判断零点个数。</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<aside class="w-[360px] bg-surface dark:bg-surface-dark border-l border-border flex flex-col shrink-0 z-20 shadow-[-4px_0_15px_-3px_rgba(0,0,0,0.05)]">
+<div class="flex border-b border-border">
+<button class="flex-1 py-3 text-sm font-bold text-primary border-b-2 border-primary bg-primary/5">协作讨论 (3)</button>
+<button class="flex-1 py-3 text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-50">审计日志</button>
+<button class="flex-1 py-3 text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-50">属性</button>
+</div>
+<div class="flex-1 overflow-y-auto p-4 flex flex-col gap-4 bg-slate-50/50">
+<div class="flex gap-3 group">
+<div class="size-8 rounded-full bg-slate-200 bg-cover shrink-0 mt-1" data-alt="User Avatar A" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCKL7DU9z1_8I7XiOvDBx0Nn2mT2z0_seH5EyvVHfGNbmGoxzCTJIlte8ItRnHpcj1D3jMCitXnoNj-EK-B1nrdef2kr_qg10aKTfT-QWjWfrB7KgDcpGSvbL_-zHFr0BqWtA1xL-KQxM7Z8rSCRXqCVKpubeWV4YoIO2WvzOys6I7C0mKBTc17sP6osWGqrNhW8EymqZ_TK6o5kl3hi3HmpCC85SfuXqjajsqzNShGEnD0coIVpPjUetmv9abEDzgYH51EJ59shS4');"></div>
+<div class="flex flex-col gap-1 w-full">
+<div class="flex justify-between items-baseline">
+<span class="text-xs font-bold text-slate-900">王教授</span>
+<span class="text-[10px] text-slate-400">昨天 15:00</span>
+</div>
+<div class="bg-white p-3 rounded-tr-xl rounded-br-xl rounded-bl-xl border border-border shadow-sm text-sm text-slate-700">
+<p>第一问中 <span class="text-primary font-medium">@张老师</span>，参数 a 的范围设定似乎有点问题，如果 a=0 呢？题目里没有明确。</p>
+</div>
+<div class="flex items-center gap-3 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-[10px] text-slate-500 hover:text-primary font-medium">回复</button>
+<button class="text-[10px] text-slate-500 hover:text-primary font-medium">解决</button>
+</div>
+</div>
+</div>
+<div class="flex gap-3 group">
+<div class="size-8 rounded-full bg-slate-200 bg-cover shrink-0 mt-1" data-alt="User Avatar T" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBDkJfu6_Ef6p1y4C6iVzlFvoGwex1DHo39B8mfVm_TJs4Hz8NIbd8lj_i_5UA7-puPdlcTcg3OdyhquijL-E_yJuc8rJdFSq9LFq7asKCFT8PCsp_2xa4Esk6zewUc5Sl-kIfe1lpcRuRajm1r9PBkHph2hLNrfkkGZRWSVIsB-evIab2Hd8dwWh33o6OHhkSR_CycA0uWVVTh3s4Hl84d2hKuXsaATc0W58O_eJc7rFYEJ5GxyclfLJIYaPiPzRzYJEUAiGldT4E');"></div>
+<div class="flex flex-col gap-1 w-full">
+<div class="flex justify-between items-baseline">
+<span class="text-xs font-bold text-slate-900">张老师 (提交人)</span>
+<span class="text-[10px] text-slate-400">今天 09:10</span>
+</div>
+<div class="bg-blue-50 p-3 rounded-tr-xl rounded-br-xl rounded-bl-xl border border-blue-100 shadow-sm text-sm text-slate-700">
+<p>收到，确实遗漏了 <span class="font-mono bg-white px-1 rounded">a=0</span> 的情况。我已经更新了版本 V1.3，请再次审核。</p>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2 my-2">
+<div class="h-px bg-slate-200 flex-1"></div>
+<span class="text-[10px] text-slate-400 font-medium">张老师 更新了版本 V1.3</span>
+<div class="h-px bg-slate-200 flex-1"></div>
+</div>
+<div class="flex gap-3 group">
+<div class="size-8 rounded-full bg-slate-200 bg-cover shrink-0 mt-1" data-alt="User Avatar A" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCXcfibjAvtPjF9ZkqhTb0-c_jI3_sYs5cA63De_s7XyZgldwY0JgYhgdqk-Il5MMBf1TL_5g-nUDocCQEdLeo519kHs_3zGTSQoh340RQKK0dkDTlraHjqkCexSvFtFbCZHZWN4eDyxCf5jCNHs5_0l98aahKRHdQeaKifmCa9Dj64QVoOrfFG5CNJBuYNLFTTmKCacRROzGPUpo6OXK8uU-sObLxWGrgm7UjAyVPtD60tMWCr6RMWgJ2HJnRRkbOQB_mHcFl56Ug');"></div>
+<div class="flex flex-col gap-1 w-full">
+<div class="flex justify-between items-baseline">
+<span class="text-xs font-bold text-slate-900">王教授</span>
+<span class="text-[10px] text-slate-400">刚刚</span>
+</div>
+<div class="bg-white p-3 rounded-tr-xl rounded-br-xl rounded-bl-xl border border-border shadow-sm text-sm text-slate-700">
+<p>修改后的分类讨论看起来没问题了。图表也更清晰了。</p>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 bg-surface dark:bg-surface-dark border-t border-border flex flex-col gap-3">
+<div class="relative">
+<input class="w-full pl-3 pr-10 py-2.5 bg-slate-50 border border-border rounded-lg text-sm focus:ring-1 focus:ring-primary focus:border-primary transition-shadow" placeholder="输入评论或 @提及他人..." type="text"/>
+<button class="absolute right-2 top-2 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">send</span>
+</button>
+</div>
+<div class="flex gap-3 pt-2">
+<button class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg border border-red-200 bg-white text-red-600 text-sm font-bold hover:bg-red-50 transition-colors">
+<span class="material-symbols-outlined text-[18px]">close</span>
+                            驳回修改
+                        </button>
+<button class="flex-[2] flex items-center justify-center gap-2 py-2.5 rounded-lg bg-primary text-white text-sm font-bold shadow-lg shadow-blue-500/30 hover:bg-primary-hover hover:shadow-blue-600/40 transition-all transform hover:-translate-y-0.5">
+<span class="material-symbols-outlined text-[18px]">done_all</span>
+                            通过并发布
+                        </button>
+</div>
+</div>
+</aside>
+</div>
+</div>
+
+</body></html>

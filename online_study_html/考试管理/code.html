@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>数学竞赛平台 - 教师管理端</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;family=Noto+Sans+SC:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#187adc",
+                        "primary-dark": "#1360af",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#111921",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1a2632",
+                        "text-main": "#0e141b",
+                        "text-secondary": "#4e7397",
+                        "border-light": "#d0dbe7",
+                        "border-dark": "#2a3b4d",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "Noto Sans SC", "sans-serif"],
+                        "body": ["Noto Sans SC", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Lexend', 'Noto Sans SC', sans-serif;
+        }::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-main dark:text-gray-100 flex h-screen overflow-hidden">
+<aside class="w-64 bg-surface-light dark:bg-surface-dark border-r border-border-light dark:border-border-dark flex-col hidden lg:flex z-20 shadow-sm">
+<div class="p-6 pb-4">
+<div class="flex items-center gap-3">
+<div class="bg-primary/10 dark:bg-primary/20 p-2 rounded-xl">
+<span class="material-symbols-outlined text-primary text-2xl">school</span>
+</div>
+<div>
+<h1 class="text-base font-bold leading-none text-gray-900 dark:text-white">数学竞赛平台</h1>
+<p class="text-text-secondary text-xs mt-1">教师管理端</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto px-4 pb-6 flex flex-col gap-1">
+<div class="mb-2">
+<p class="px-3 text-[11px] font-bold text-text-secondary/60 uppercase tracking-wider mb-2">教学总览</p>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+</div>
+<div class="mb-2">
+<p class="px-3 text-[11px] font-bold text-text-secondary/60 uppercase tracking-wider mb-2 mt-2">课程与教学</p>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">calendar_month</span>
+<span class="text-sm font-medium">课程日程</span>
+</a>
+<a class="flex items-center justify-between gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">live_tv</span>
+<span class="text-sm font-medium">直播课堂</span>
+</div>
+<span class="bg-red-500 text-white text-[10px] font-bold px-1.5 rounded h-4 flex items-center leading-none">LIVE</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">video_library</span>
+<span class="text-sm font-medium">录播与媒体</span>
+</a>
+</div>
+<div class="mb-2">
+<p class="px-3 text-[11px] font-bold text-text-secondary/60 uppercase tracking-wider mb-2 mt-2">作业与测评</p>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">assignment</span>
+<span class="text-sm font-medium">作业管理</span>
+</a>
+<a class="flex items-center justify-between gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">edit_note</span>
+<span class="text-sm font-medium">批改工作台</span>
+</div>
+<span class="bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300 text-[10px] font-bold px-1.5 rounded-full h-4 min-w-[1.25rem] flex items-center justify-center leading-none">12</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px] font-variation-fill">assignment_turned_in</span>
+<span class="text-sm font-medium">考试管理</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">table_chart</span>
+<span class="text-sm font-medium">成绩册</span>
+</a>
+</div>
+<div class="mb-2">
+<p class="px-3 text-[11px] font-bold text-text-secondary/60 uppercase tracking-wider mb-2 mt-2">内容资产</p>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">library_books</span>
+<span class="text-sm font-medium">题库</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">folder_open</span>
+<span class="text-sm font-medium">教学资源</span>
+</a>
+</div>
+<div class="mb-2">
+<p class="px-3 text-[11px] font-bold text-text-secondary/60 uppercase tracking-wider mb-2 mt-2">学生与数据</p>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">people</span>
+<span class="text-sm font-medium">学生管理</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">bar_chart</span>
+<span class="text-sm font-medium">数据分析 / 报表</span>
+</a>
+</div>
+<div>
+<p class="px-3 text-[11px] font-bold text-text-secondary/60 uppercase tracking-wider mb-2 mt-2">协作与系统</p>
+<a class="flex items-center justify-between gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">mail</span>
+<span class="text-sm font-medium">消息中心</span>
+</div>
+<span class="bg-red-500 text-white text-[10px] font-bold px-1.5 rounded-full h-4 min-w-[1.25rem] flex items-center justify-center leading-none">3</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">fact_check</span>
+<span class="text-sm font-medium">协作审核</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">settings</span>
+<span class="text-sm font-medium">设置与权限</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">help</span>
+<span class="text-sm font-medium">帮助与支持</span>
+</a>
+</div>
+</nav>
+<div class="p-4 border-t border-border-light dark:border-border-dark">
+<div class="flex items-center gap-3 px-2">
+<div class="size-8 rounded-full bg-cover bg-center ring-2 ring-white dark:ring-gray-700" data-alt="Female teacher profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAyt6F8Ocn0axxWDDfAIMrsivkB-4nD0S6P-1H3rLzlZ50Be4UPhHuCbdDlKbYQuSSZUUWsnw32BvNktfQdrLByzJagSc40nG60hsblvdE19wjqTLlNvD8qDLb6KEMJuyL2f0bqv5yGIG_rfxoT-KarCWqNWSwkXmI41Acdr9mERaQfjvETKHkkLJcq_gXjfenqtMUbNc5AW2oYq03EKV_zWGkUIlEOtOht0LX0ve0lp1V5qqnPawmzObHx0KFok1JezT3D7-7l3s4');"></div>
+<div class="flex flex-col">
+<span class="text-sm font-medium text-gray-900 dark:text-white">张文慧 老师</span>
+<span class="text-xs text-text-secondary">高级管理员</span>
+</div>
+</div>
+</div>
+</aside>
+<main class="flex-1 flex flex-col h-full overflow-hidden relative">
+<header class="bg-surface-light dark:bg-surface-dark border-b border-border-light dark:border-border-dark px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shrink-0 z-10">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2 text-sm text-text-secondary mb-1">
+<span>首页</span>
+<span class="material-symbols-outlined text-[10px]">arrow_forward_ios</span>
+<span class="text-text-main dark:text-white font-medium">考试管理</span>
+</div>
+<h1 class="text-2xl font-bold text-text-main dark:text-white tracking-tight">考试列表</h1>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center justify-center size-10 rounded-lg text-text-secondary hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-gray-800"></span>
+</button>
+<button class="bg-primary hover:bg-primary-dark text-white text-sm font-medium px-4 py-2.5 rounded-lg flex items-center gap-2 transition-all shadow-sm active:scale-95">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                    新建考试
+                </button>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
+<div class="max-w-[1600px] mx-auto space-y-6">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-surface-light dark:bg-surface-dark p-5 rounded-xl border border-border-light dark:border-border-dark shadow-sm flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="text-sm font-medium text-text-secondary">今日进行中</span>
+<span class="bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 p-1.5 rounded-lg">
+<span class="material-symbols-outlined text-[20px]">play_circle</span>
+</span>
+</div>
+<p class="text-2xl font-bold text-text-main dark:text-white mt-2">2 <span class="text-sm font-normal text-text-secondary ml-1">场</span></p>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark p-5 rounded-xl border border-border-light dark:border-border-dark shadow-sm flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="text-sm font-medium text-text-secondary">待审核成绩</span>
+<span class="bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 p-1.5 rounded-lg">
+<span class="material-symbols-outlined text-[20px]">assignment_late</span>
+</span>
+</div>
+<p class="text-2xl font-bold text-text-main dark:text-white mt-2">5 <span class="text-sm font-normal text-text-secondary ml-1">份</span></p>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark p-5 rounded-xl border border-border-light dark:border-border-dark shadow-sm flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="text-sm font-medium text-text-secondary">作弊告警</span>
+<span class="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-1.5 rounded-lg">
+<span class="material-symbols-outlined text-[20px]">warning</span>
+</span>
+</div>
+<p class="text-2xl font-bold text-text-main dark:text-white mt-2">12 <span class="text-sm font-normal text-text-secondary ml-1">条</span></p>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark p-5 rounded-xl border border-border-light dark:border-border-dark shadow-sm flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="text-sm font-medium text-text-secondary">复议工单</span>
+<span class="bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 p-1.5 rounded-lg">
+<span class="material-symbols-outlined text-[20px]">gavel</span>
+</span>
+</div>
+<p class="text-2xl font-bold text-text-main dark:text-white mt-2">3 <span class="text-sm font-normal text-text-secondary ml-1">个</span></p>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-6">
+<div class="col-span-12 xl:col-span-8 flex flex-col gap-4">
+<div class="bg-surface-light dark:bg-surface-dark p-4 rounded-xl border border-border-light dark:border-border-dark shadow-sm flex flex-wrap gap-3 items-center">
+<div class="flex-1 min-w-[200px] relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-background-light dark:bg-background-dark border-transparent focus:border-primary focus:ring-0 rounded-lg text-sm transition-all text-text-main dark:text-white placeholder:text-text-secondary/70" placeholder="搜索考试名称、班级..." type="text"/>
+</div>
+<div class="h-8 w-[1px] bg-border-light dark:bg-border-dark mx-1 hidden sm:block"></div>
+<select class="form-select bg-background-light dark:bg-background-dark border-transparent rounded-lg text-sm py-2 pl-3 pr-8 focus:ring-0 focus:border-primary text-text-main dark:text-white cursor-pointer min-w-[100px]">
+<option>所有状态</option>
+<option>进行中</option>
+<option>未开始</option>
+<option>已结束</option>
+</select>
+<select class="form-select bg-background-light dark:bg-background-dark border-transparent rounded-lg text-sm py-2 pl-3 pr-8 focus:ring-0 focus:border-primary text-text-main dark:text-white cursor-pointer min-w-[100px]">
+<option>所有年级</option>
+<option>高一年级</option>
+<option>高二年级</option>
+<option>高三年级</option>
+</select>
+<button class="p-2 text-text-secondary hover:bg-background-light dark:hover:bg-background-dark rounded-lg transition-colors">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+</div>
+<div class="flex flex-col gap-4">
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm hover:shadow-md transition-shadow group relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-green-500"></div>
+<div class="p-5 flex flex-col gap-4">
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-bold px-2 py-0.5 rounded">进行中</span>
+<span class="text-xs text-text-secondary">高二 (3) 班 • 数学竞赛培优</span>
+</div>
+<h3 class="text-lg font-bold text-text-main dark:text-white group-hover:text-primary transition-colors cursor-pointer">2023秋季高二奥数模拟考 (三)</h3>
+</div>
+<div class="flex items-center gap-2">
+<div class="px-3 py-1.5 bg-background-light dark:bg-background-dark rounded-lg border border-border-light dark:border-border-dark flex items-center gap-2">
+<span class="text-xs text-text-secondary uppercase font-bold tracking-wider">Token</span>
+<code class="text-sm font-mono font-bold text-primary">A8F-9K2</code>
+<button class="text-text-secondary hover:text-primary transition-colors" title="复制">
+<span class="material-symbols-outlined text-[16px]">content_copy</span>
+</button>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 py-2 border-t border-border-light dark:border-border-dark border-dashed">
+<div class="flex flex-col">
+<span class="text-xs text-text-secondary mb-1">开始时间</span>
+<span class="text-sm font-medium text-text-main dark:text-white">今天 14:00</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-text-secondary mb-1">时长</span>
+<span class="text-sm font-medium text-text-main dark:text-white">120 分钟</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-text-secondary mb-1">监考老师</span>
+<div class="flex items-center gap-2">
+<div class="size-5 rounded-full bg-cover bg-center" data-alt="Proctor avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBQfHo2RHguIl2AfQNoIysm77rF1xd2CWsKh-lARkRKhcOVT1nMJiAzhxkrLGkeZeqKa-7z65qNCt83GyUXaDu9lcoidErou2q4FtSznhSq0DDj0MLsH3Vxo9HifhZV_9bk58qzpZq3weQ-dfGZ2bcujkfg30x75-MlrtJusIHiIpcc4tRHigPzaIb3a3fW7MtoJ-kx3X1q-sdhouGfHwpcNtoP8pJUwUe5tF3w5shQCnT7AMoW7jK87RNpUjfOWbqnwOvgieQgRh4');"></div>
+<span class="text-sm font-medium text-text-main dark:text-white">李老师</span>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-text-secondary mb-1">参与人数</span>
+<span class="text-sm font-medium text-text-main dark:text-white">42 / 45</span>
+</div>
+</div>
+<div class="flex items-center justify-end gap-3 mt-1">
+<button class="text-sm font-medium text-text-secondary hover:text-text-main px-3 py-2 transition-colors">详情配置</button>
+<button class="bg-primary/10 hover:bg-primary/20 text-primary text-sm font-bold px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">videocam</span>
+                                            进入监考
+                                        </button>
+</div>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm hover:shadow-md transition-shadow group relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-orange-400"></div>
+<div class="p-5 flex flex-col gap-4">
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 text-xs font-bold px-2 py-0.5 rounded">待审核</span>
+<span class="text-xs text-text-secondary">高三 (1) 班 • 期中复习</span>
+</div>
+<h3 class="text-lg font-bold text-text-main dark:text-white group-hover:text-primary transition-colors cursor-pointer">2023函数与导数专题测试</h3>
+</div>
+<div class="flex items-center gap-2">
+<div class="px-3 py-1.5 bg-gray-100 dark:bg-gray-800 rounded-lg border border-border-light dark:border-border-dark">
+<span class="text-xs text-text-secondary font-medium">考试已结束</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3 p-3 bg-blue-50 dark:bg-blue-900/10 rounded-lg border border-blue-100 dark:border-blue-900/30">
+<span class="material-symbols-outlined text-blue-600 dark:text-blue-400">auto_awesome</span>
+<p class="text-sm text-blue-800 dark:text-blue-200 flex-1">系统已自动完成95%的客观题评分，有 3 道主观题需要人工复核。</p>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 py-2 border-t border-border-light dark:border-border-dark border-dashed">
+<div class="flex flex-col">
+<span class="text-xs text-text-secondary mb-1">结束时间</span>
+<span class="text-sm font-medium text-text-main dark:text-white">昨天 16:30</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-text-secondary mb-1">平均分 (预估)</span>
+<span class="text-sm font-medium text-text-main dark:text-white">88.5 / 100</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-text-secondary mb-1">最高分 (预估)</span>
+<span class="text-sm font-medium text-text-main dark:text-white">98</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-text-secondary mb-1">异常记录</span>
+<span class="text-sm font-medium text-red-500">2 条待确认</span>
+</div>
+</div>
+<div class="flex items-center justify-end gap-3 mt-1">
+<button class="bg-primary hover:bg-primary-dark text-white text-sm font-bold px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">rate_review</span>
+                                            审核成绩
+                                        </button>
+</div>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm hover:shadow-md transition-shadow group relative overflow-hidden opacity-80 hover:opacity-100">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-gray-300 dark:bg-gray-600"></div>
+<div class="p-5 flex flex-col gap-4">
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 text-xs font-bold px-2 py-0.5 rounded">未开始</span>
+<span class="text-xs text-text-secondary">高一 (All) • 周末测验</span>
+</div>
+<h3 class="text-lg font-bold text-text-main dark:text-white group-hover:text-primary transition-colors cursor-pointer">高一上学期第一次月考</h3>
+</div>
+<div class="flex items-center gap-2">
+<div class="px-3 py-1.5 bg-background-light dark:bg-background-dark rounded-lg border border-border-light dark:border-border-dark flex items-center gap-2 opacity-50">
+<span class="text-xs text-text-secondary uppercase font-bold tracking-wider">Token</span>
+<code class="text-sm font-mono font-bold text-text-main dark:text-white">待生成</code>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 py-2 border-t border-border-light dark:border-border-dark border-dashed">
+<div class="flex flex-col">
+<span class="text-xs text-text-secondary mb-1">计划开始</span>
+<span class="text-sm font-medium text-text-main dark:text-white">10月28日 09:00</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-text-secondary mb-1">时长</span>
+<span class="text-sm font-medium text-text-main dark:text-white">90 分钟</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-text-secondary mb-1">监考分配</span>
+<span class="text-sm font-medium text-text-secondary italic">未分配</span>
+</div>
+</div>
+<div class="flex items-center justify-end gap-3 mt-1">
+<button class="text-sm font-medium text-text-secondary hover:text-text-main px-3 py-2 transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+                                            编辑配置
+                                        </button>
+<button class="bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark text-text-main dark:text-white text-sm font-bold px-4 py-2 rounded-lg transition-colors hover:bg-gray-50 dark:hover:bg-gray-800">
+                                            分配监考
+                                        </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="col-span-12 xl:col-span-4 flex flex-col gap-6">
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm overflow-hidden flex flex-col">
+<div class="p-4 border-b border-border-light dark:border-border-dark bg-gray-50 dark:bg-gray-800/50 flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">edit_document</span>
+<h3 class="font-bold text-text-main dark:text-white">新建考试配置</h3>
+</div>
+<span class="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded">草稿</span>
+</div>
+<div class="p-5 flex flex-col gap-4">
+<div class="space-y-3">
+<div>
+<label class="block text-xs font-medium text-text-secondary mb-1">考试名称</label>
+<input class="w-full text-sm rounded-lg border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark focus:border-primary focus:ring-0 text-text-main dark:text-white" type="text" value="2023 高一几何专题训练 B卷"/>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div>
+<label class="block text-xs font-medium text-text-secondary mb-1">题库来源</label>
+<select class="w-full text-sm rounded-lg border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark focus:border-primary focus:ring-0 text-text-main dark:text-white">
+<option>校本题库-高一</option>
+<option>全国竞赛真题</option>
+</select>
+</div>
+<div>
+<label class="block text-xs font-medium text-text-secondary mb-1">时长 (分钟)</label>
+<input class="w-full text-sm rounded-lg border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark focus:border-primary focus:ring-0 text-text-main dark:text-white" type="number" value="120"/>
+</div>
+</div>
+<div>
+<label class="block text-xs font-medium text-text-secondary mb-2">反作弊等级</label>
+<div class="grid grid-cols-3 gap-2">
+<button class="px-2 py-1.5 rounded border border-border-light dark:border-border-dark text-xs text-text-secondary hover:bg-gray-50 dark:hover:bg-gray-800">低</button>
+<button class="px-2 py-1.5 rounded border border-primary bg-primary/5 text-primary text-xs font-medium ring-1 ring-primary">中 (推荐)</button>
+<button class="px-2 py-1.5 rounded border border-border-light dark:border-border-dark text-xs text-text-secondary hover:bg-gray-50 dark:hover:bg-gray-800">高 (严格)</button>
+</div>
+</div>
+<div>
+<label class="block text-xs font-medium text-text-secondary mb-1">入场 Token</label>
+<div class="relative">
+<input class="w-full text-sm rounded-lg border-border-light dark:border-border-dark bg-gray-100 dark:bg-gray-800 text-text-secondary cursor-not-allowed" disabled="" placeholder="保存后自动生成" type="text"/>
+</div>
+</div>
+</div>
+<div class="pt-2 border-t border-border-light dark:border-border-dark flex justify-end">
+<button class="bg-primary hover:bg-primary-dark text-white text-sm font-bold px-4 py-2 rounded-lg transition-colors w-full">
+                                        保存并发布
+                                    </button>
+</div>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm overflow-hidden flex flex-col flex-1 min-h-[400px]">
+<div class="p-4 border-b border-border-light dark:border-border-dark flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-red-500 animate-pulse">crisis_alert</span>
+<h3 class="font-bold text-text-main dark:text-white">作弊检测日志</h3>
+</div>
+<span class="text-xs text-text-secondary">实时更新</span>
+</div>
+<div class="overflow-y-auto p-0">
+<div class="p-4 border-b border-border-light dark:border-border-dark hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors group">
+<div class="flex justify-between items-start mb-1">
+<span class="text-xs font-mono text-text-secondary">14:32:05</span>
+<span class="text-[10px] uppercase font-bold text-red-600 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded">严重</span>
+</div>
+<div class="flex items-center gap-2 mb-2">
+<div class="size-6 rounded-full bg-gray-200 dark:bg-gray-700 bg-cover bg-center" data-alt="Student avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDgmVExtlMMB8ue4KWD0qCf5gztnBf9CxCmJWzrqI28zNAgp2QQRt7MjafHL23PFhWB6COVmrhSGBh2oJvkdGFWvOd5WGWaj5kAtCQ_9gkzKUYwerKtLMy7mvq94yYHDr80LL6RRR1Rp6ZDV_j6Hax1mUxE2iZWJzeO9HwFnsZ-d70pDppuScRuqDVQl51Z0pQL-XBNGOuoFNocXl_FbPpgvcRA3oLxVotiGn-ElHW2u3qtl6fgavMxASoEHg4u5S3iNGUJQsjuRZU');"></div>
+<span class="text-sm font-bold text-text-main dark:text-white">张伟 (高二3班)</span>
+</div>
+<p class="text-xs text-text-secondary leading-relaxed">
+                                        检测到视线离开屏幕超过 15 秒，且此时背景有异常人声。
+                                    </p>
+<div class="mt-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="flex-1 bg-white dark:bg-gray-800 border border-border-light dark:border-border-dark text-xs font-medium py-1.5 rounded shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 text-text-main dark:text-white">查看回放</button>
+<button class="flex-1 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-900 text-xs font-medium py-1.5 rounded shadow-sm hover:bg-red-100 dark:hover:bg-red-900/40">发起复议</button>
+</div>
+</div>
+<div class="p-4 border-b border-border-light dark:border-border-dark hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors group">
+<div class="flex justify-between items-start mb-1">
+<span class="text-xs font-mono text-text-secondary">14:28:12</span>
+<span class="text-[10px] uppercase font-bold text-orange-600 bg-orange-100 dark:bg-orange-900/30 px-1.5 py-0.5 rounded">警告</span>
+</div>
+<div class="flex items-center gap-2 mb-2">
+<div class="size-6 rounded-full bg-gray-200 dark:bg-gray-700 bg-cover bg-center" data-alt="Student avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDRImxbLgy1lnHdChUm7_PFh4IDGfyqNibw0VzKBYgXDOOTRzhDQ7VXnZ9G3Y0f2NyugKuL7gbrGOve0qHE9PVEFz0TWsUIOx4msyq_ZATSujLj9INevGTvrMzyS3ZV_Z5MFTS-H_kVMglpk5h4o7zscjGOvZQJI9V6MksPVgg4aqCJUcRwjaNSKOsmjHXAQt1iJmO_NRrY_cHGyqDqwNuYhMmbmsG6iWc3ay9uwo1-I2l10LmMpQhTjlOw8wn9mMWYGka9w6167e0');"></div>
+<span class="text-sm font-bold text-text-main dark:text-white">李明 (高二3班)</span>
+</div>
+<p class="text-xs text-text-secondary leading-relaxed">
+                                        浏览器尝试切出全屏模式。系统已强制阻止。
+                                    </p>
+<div class="mt-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="flex-1 bg-white dark:bg-gray-800 border border-border-light dark:border-border-dark text-xs font-medium py-1.5 rounded shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 text-text-main dark:text-white">标记</button>
+</div>
+</div>
+<div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors group">
+<div class="flex justify-between items-start mb-1">
+<span class="text-xs font-mono text-text-secondary">14:15:30</span>
+<span class="text-[10px] uppercase font-bold text-blue-600 bg-blue-100 dark:bg-blue-900/30 px-1.5 py-0.5 rounded">提示</span>
+</div>
+<div class="flex items-center gap-2 mb-2">
+<div class="size-6 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-[10px] text-text-secondary font-bold">W</div>
+<span class="text-sm font-bold text-text-main dark:text-white">王芳 (高二3班)</span>
+</div>
+<p class="text-xs text-text-secondary leading-relaxed">
+                                        网络连接不稳定，延迟 &gt; 500ms。
+                                    </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+
+</body></html>

@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MathComp - 批改工作台</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;family=Noto+Sans+SC:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#138aec",
+                        "primary-dark": "#0f6fbd",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101a22",
+                        "surface": "#ffffff",
+                        "surface-dark": "#1a2630",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "Noto Sans SC", "sans-serif"],
+                        "sans": ["Lexend", "Noto Sans SC", "sans-serif"],
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .canvas-pattern {
+            background-color: #ffffff;
+            background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 font-display antialiased h-screen overflow-hidden flex">
+<aside class="w-16 lg:w-64 bg-surface dark:bg-surface-dark border-r border-slate-200 dark:border-slate-700 flex flex-col h-full shrink-0 z-20 transition-all duration-300">
+<div class="p-4 lg:p-6 flex items-center gap-3 justify-center lg:justify-start shrink-0">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white shrink-0">
+<span class="material-symbols-outlined">calculate</span>
+</div>
+<h1 class="hidden lg:block text-lg font-bold tracking-tight text-slate-900 dark:text-white">MathComp</h1>
+</div>
+<div class="flex-1 overflow-y-auto px-2 lg:px-4 py-2 space-y-6">
+<div class="flex items-center gap-3 p-2 lg:p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700 justify-center lg:justify-start shrink-0">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-8 lg:size-10 shrink-0" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDuHGQVoU3GUCU8fIxC5GFFs6RukWAa2GF_kpiaWgS4-uEiwbVbL8sjZuY1u_dF4Iwfjv-3zYIHN4Bd6Z7GeoW8A7MtiMtMQUon9kt0VF0bq0CNf1hK7-VXBByJM0jQrGKP5Go-iguKrppunyKia7xnieSavWjOMkaWvpRBemFrB6VZGMYj8IRiTMxjeavXyLo_r4qp6ABgzvWSN73Ub-eb3vuXdMYZfd99B5WEdRaFr6dowEvoxMtHJBT40bEmmOWa8h-sQc9PY8A");'></div>
+<div class="hidden lg:flex flex-col overflow-hidden">
+<h2 class="text-sm font-semibold truncate dark:text-slate-100">张志强</h2>
+<p class="text-xs text-slate-500 dark:text-slate-400 truncate">高级数学讲师</p>
+</div>
+</div>
+<nav class="flex flex-col gap-6">
+<div class="flex flex-col gap-1">
+<h3 class="hidden lg:block px-3 mb-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">教学总览</h3>
+<a class="flex items-center gap-3 px-2 lg:px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors justify-center lg:justify-start group relative" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="hidden lg:block text-sm font-medium">Dashboard</span>
+</a>
+</div>
+<div class="flex flex-col gap-1">
+<h3 class="hidden lg:block px-3 mb-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">课程与教学</h3>
+<a class="flex items-center gap-3 px-2 lg:px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors justify-center lg:justify-start" href="#">
+<span class="material-symbols-outlined text-[20px]">calendar_month</span>
+<span class="hidden lg:block text-sm font-medium">课程日程</span>
+</a>
+<a class="flex items-center gap-3 px-2 lg:px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors justify-center lg:justify-start" href="#">
+<span class="material-symbols-outlined text-[20px]">videocam</span>
+<span class="hidden lg:block text-sm font-medium flex-1">直播课堂</span>
+<span class="hidden lg:flex items-center justify-center bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400 text-[10px] font-bold px-1.5 py-0.5 rounded">LIVE</span>
+</a>
+<a class="flex items-center gap-3 px-2 lg:px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors justify-center lg:justify-start" href="#">
+<span class="material-symbols-outlined text-[20px]">video_library</span>
+<span class="hidden lg:block text-sm font-medium">录播与媒体</span>
+</a>
+</div>
+<div class="flex flex-col gap-1">
+<h3 class="hidden lg:block px-3 mb-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">作业与测评</h3>
+<a class="flex items-center gap-3 px-2 lg:px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors justify-center lg:justify-start" href="#">
+<span class="material-symbols-outlined text-[20px]">assignment</span>
+<span class="hidden lg:block text-sm font-medium">作业管理</span>
+</a>
+<a class="flex items-center gap-3 px-2 lg:px-3 py-2 rounded-lg bg-primary/10 text-primary dark:text-primary-light justify-center lg:justify-start" href="#">
+<span class="material-symbols-outlined text-[20px] fill-1">edit_document</span>
+<span class="hidden lg:block text-sm font-medium flex-1">批改工作台</span>
+<span class="hidden lg:flex items-center justify-center bg-primary text-white text-[10px] font-bold px-1.5 h-4 min-w-[16px] rounded-full">12</span>
+</a>
+<a class="flex items-center gap-3 px-2 lg:px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors justify-center lg:justify-start" href="#">
+<span class="material-symbols-outlined text-[20px]">quiz</span>
+<span class="hidden lg:block text-sm font-medium">考试管理</span>
+</a>
+<a class="flex items-center gap-3 px-2 lg:px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors justify-center lg:justify-start" href="#">
+<span class="material-symbols-outlined text-[20px]">grade</span>
+<span class="hidden lg:block text-sm font-medium">成绩册</span>
+</a>
+</div>
+<div class="flex flex-col gap-1">
+<h3 class="hidden lg:block px-3 mb-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">内容资产</h3>
+<a class="flex items-center gap-3 px-2 lg:px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors justify-center lg:justify-start" href="#">
+<span class="material-symbols-outlined text-[20px]">library_books</span>
+<span class="hidden lg:block text-sm font-medium">题库</span>
+</a>
+<a class="flex items-center gap-3 px-2 lg:px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors justify-center lg:justify-start" href="#">
+<span class="material-symbols-outlined text-[20px]">folder_open</span>
+<span class="hidden lg:block text-sm font-medium">教学资源</span>
+</a>
+</div>
+<div class="flex flex-col gap-1">
+<h3 class="hidden lg:block px-3 mb-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">学生与数据</h3>
+<a class="flex items-center gap-3 px-2 lg:px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors justify-center lg:justify-start" href="#">
+<span class="material-symbols-outlined text-[20px]">groups</span>
+<span class="hidden lg:block text-sm font-medium">学生管理</span>
+</a>
+<a class="flex items-center gap-3 px-2 lg:px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors justify-center lg:justify-start" href="#">
+<span class="material-symbols-outlined text-[20px]">analytics</span>
+<span class="hidden lg:block text-sm font-medium">数据分析 / 报表</span>
+</a>
+</div>
+<div class="flex flex-col gap-1">
+<h3 class="hidden lg:block px-3 mb-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">协作与系统</h3>
+<a class="flex items-center gap-3 px-2 lg:px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors justify-center lg:justify-start" href="#">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="hidden lg:block text-sm font-medium flex-1">消息中心</span>
+<span class="hidden lg:flex items-center justify-center bg-red-500 text-white text-[10px] font-bold px-1.5 h-4 min-w-[16px] rounded-full">3</span>
+</a>
+<a class="flex items-center gap-3 px-2 lg:px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors justify-center lg:justify-start" href="#">
+<span class="material-symbols-outlined text-[20px]">fact_check</span>
+<span class="hidden lg:block text-sm font-medium">协作审核</span>
+</a>
+<a class="flex items-center gap-3 px-2 lg:px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors justify-center lg:justify-start" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="hidden lg:block text-sm font-medium">设置与权限</span>
+</a>
+<a class="flex items-center gap-3 px-2 lg:px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors justify-center lg:justify-start" href="#">
+<span class="material-symbols-outlined text-[20px]">help</span>
+<span class="hidden lg:block text-sm font-medium">帮助与支持</span>
+</a>
+</div>
+<div class="h-4"></div>
+</nav>
+</div>
+</aside>
+<main class="flex-1 flex flex-col min-w-0 h-full relative">
+<header class="bg-surface dark:bg-surface-dark border-b border-slate-200 dark:border-slate-700 px-6 py-3 flex items-center justify-between shrink-0 h-16 z-10">
+<div class="flex items-center gap-4">
+<button class="lg:hidden text-slate-500 hover:text-slate-700 dark:text-slate-400">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="flex flex-col">
+<nav class="flex items-center gap-2 text-xs text-slate-500 mb-0.5">
+<span class="font-medium text-slate-600 dark:text-slate-300">数学竞赛提高班</span>
+<span class="material-symbols-outlined text-[10px]">arrow_forward_ios</span>
+<span class="text-slate-400">2023秋季联赛模拟测试一</span>
+</nav>
+<h1 class="text-lg font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+                        批改工作台
+                        <span class="px-2 py-0.5 rounded text-[10px] font-normal bg-blue-50 text-blue-600 border border-blue-100 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800">进行中</span>
+</h1>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex flex-col items-end gap-1 mr-4">
+<div class="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                        批改进度 <span class="text-slate-900 dark:text-white">45</span> / 50
+                    </div>
+<div class="w-32 h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="h-full bg-emerald-500 rounded-full" style="width: 90%"></div>
+</div>
+</div>
+<div class="h-8 w-px bg-slate-200 dark:bg-slate-700 mx-1 hidden md:block"></div>
+<button aria-label="快捷键列表" class="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors">
+<span class="material-symbols-outlined text-[20px]">keyboard</span>
+</button>
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-medium hover:opacity-90 transition-opacity shadow-sm">
+<span class="material-symbols-outlined text-[18px]">done_all</span>
+                    结束批改
+                </button>
+</div>
+</header>
+<div class="flex-1 overflow-hidden grid grid-cols-12 bg-background-light dark:bg-background-dark">
+<div class="col-span-12 md:col-span-3 lg:col-span-3 xl:col-span-2 border-r border-slate-200 dark:border-slate-700 bg-surface dark:bg-surface-dark flex flex-col h-full z-10">
+<div class="p-3 border-b border-slate-100 dark:border-slate-700 shrink-0 space-y-3">
+<div class="relative">
+<span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 material-symbols-outlined text-[18px]">search</span>
+<input class="pl-8 pr-3 py-1.5 w-full rounded-md border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-sm focus:ring-1 focus:ring-primary focus:border-primary placeholder-slate-400 transition-all" placeholder="搜索学生..." type="text"/>
+</div>
+<div class="flex gap-1 p-1 bg-slate-100 dark:bg-slate-800 rounded-lg">
+<button class="flex-1 py-1 px-2 rounded-md bg-white dark:bg-slate-700 shadow-sm text-xs font-medium text-slate-800 dark:text-slate-200 text-center transition-all">未批 (5)</button>
+<button class="flex-1 py-1 px-2 rounded-md hover:bg-white/50 dark:hover:bg-slate-700/50 text-xs font-medium text-slate-500 dark:text-slate-400 text-center transition-all">已批</button>
+<button class="flex-1 py-1 px-2 rounded-md hover:bg-white/50 dark:hover:bg-slate-700/50 text-xs font-medium text-slate-500 dark:text-slate-400 text-center transition-all">复审</button>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto">
+<div class="group flex flex-col gap-1 p-3 border-l-4 border-primary bg-blue-50/50 dark:bg-slate-800/80 cursor-pointer hover:bg-blue-50 dark:hover:bg-slate-800 transition-colors">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-2">
+<div class="size-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs font-bold">李</div>
+<span class="text-sm font-semibold text-slate-900 dark:text-white">李明</span>
+</div>
+<span class="text-[10px] text-slate-400 font-mono">10:42</span>
+</div>
+<div class="flex items-center gap-2 mt-1 pl-8">
+<span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300">
+                                批改中
+                            </span>
+</div>
+</div>
+<div class="group flex flex-col gap-1 p-3 border-l-4 border-transparent hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-colors border-b border-slate-50 dark:border-slate-800">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-2">
+<div class="size-6 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-xs font-bold">王</div>
+<span class="text-sm font-medium text-slate-700 dark:text-slate-300">王芳</span>
+</div>
+<span class="text-[10px] text-slate-400 font-mono">09:15</span>
+</div>
+<div class="flex items-center gap-2 mt-1 pl-8">
+<span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px]">warning</span>
+                                AI置信度低
+                            </span>
+</div>
+</div>
+<div class="group flex flex-col gap-1 p-3 border-l-4 border-transparent hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-colors border-b border-slate-50 dark:border-slate-800">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-2">
+<div class="size-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs font-bold">张</div>
+<span class="text-sm font-medium text-slate-700 dark:text-slate-300">张伟</span>
+</div>
+<span class="text-[10px] text-slate-400 font-mono">09:10</span>
+</div>
+<div class="flex items-center gap-2 mt-1 pl-8">
+<span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+                                未批改
+                            </span>
+</div>
+</div>
+<div class="group flex flex-col gap-1 p-3 border-l-4 border-transparent hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-colors opacity-60">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-2">
+<div class="size-6 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-xs font-bold">陈</div>
+<span class="text-sm font-medium text-slate-700 dark:text-slate-300">陈曦</span>
+</div>
+<span class="text-sm font-bold text-emerald-600">92分</span>
+</div>
+<div class="flex items-center gap-2 mt-1 pl-8">
+<span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+                                已完成
+                            </span>
+</div>
+</div>
+</div>
+</div>
+<div class="col-span-12 md:col-span-6 lg:col-span-6 xl:col-span-7 flex flex-col relative h-full bg-slate-100 dark:bg-[#0f151a]">
+<div class="absolute top-4 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1 p-1 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700">
+<button aria-label="Select tool" class="p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors" title="选择 (V)">
+<span class="material-symbols-outlined text-[20px]">near_me</span>
+</button>
+<button aria-label="Pen tool" class="p-2 rounded bg-primary/10 text-primary transition-colors" title="画笔 (B)">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button aria-label="Text tool" class="p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors" title="文本 (T)">
+<span class="material-symbols-outlined text-[20px]">title</span>
+</button>
+<button aria-label="Rectangle tool" class="p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors" title="矩形框 (R)">
+<span class="material-symbols-outlined text-[20px]">crop_square</span>
+</button>
+<div class="w-px h-6 bg-slate-200 dark:bg-slate-600 mx-1"></div>
+<button aria-label="Mark wrong" class="p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-700 text-red-500 transition-colors" title="错误标记 (X)">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+<button aria-label="Mark correct" class="p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-700 text-emerald-500 transition-colors" title="正确标记 (C)">
+<span class="material-symbols-outlined text-[20px]">check</span>
+</button>
+<div class="w-px h-6 bg-slate-200 dark:bg-slate-600 mx-1"></div>
+<button aria-label="Zoom in" class="p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors" title="放大 (+)">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+<button aria-label="Zoom out" class="p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors" title="缩小 (-)">
+<span class="material-symbols-outlined text-[20px]">remove</span>
+</button>
+</div>
+<div class="flex-1 overflow-auto p-8 flex items-center justify-center canvas-pattern relative">
+<div class="bg-white shadow-xl w-[600px] min-h-[800px] relative p-8">
+<div class="font-serif text-slate-800 space-y-6">
+<div>
+<h3 class="font-bold text-lg mb-2">题目 1:求解不等式 |2x - 1| &lt; 5</h3>
+<p class="text-slate-600 font-handwriting text-lg leading-relaxed" style="font-family: 'Comic Sans MS', cursive, sans-serif;">
+                                    解：<br/>
+                                    -5 &lt; 2x - 1 &lt; 5 <br/>
+                                    -4 &lt; 2x &lt; 6 <br/>
+                                    -2 &lt; x &lt; 3 <br/>
+<br/>
+                                    所以，解集为 (-2, 3)。
+                                </p>
+<div class="absolute top-[120px] left-[300px] pointer-events-none">
+<svg height="60" width="80" xmlns="http://www.w3.org/2000/svg">
+<path d="M10 30 L30 50 L70 10" fill="none" stroke="#ef4444" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path>
+</svg>
+</div>
+</div>
+<div class="pt-8 border-t border-dashed border-slate-200">
+<h3 class="font-bold text-lg mb-2">题目 2: 证明...</h3>
+<p class="text-slate-600 font-handwriting text-lg leading-relaxed" style="font-family: 'Comic Sans MS', cursive, sans-serif;">
+                                    证明：<br/>
+                                    设 f(x) = x^2 + 1<br/>
+                                    当 x &gt; 0 时... <br/>
+                                    (此处省略过程)<br/>
+                                    故得证。
+                                </p>
+<div class="absolute top-[320px] left-[80px] pointer-events-none">
+<div class="text-red-500 font-bold border border-red-500 rounded px-1 text-sm bg-red-50/80 inline-block">逻辑跳跃?</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="shrink-0 bg-surface dark:bg-surface-dark border-t border-slate-200 dark:border-slate-700 p-4 shadow-[-5px_0_15px_rgba(0,0,0,0.05)] z-20">
+<div class="flex flex-col gap-4">
+<div class="flex items-start gap-4">
+<div class="w-32 shrink-0">
+<label class="block text-xs font-semibold text-slate-500 mb-1">本题得分 (满分20)</label>
+<div class="relative">
+<input class="block w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-2xl font-bold text-center focus:border-primary focus:ring-primary h-12" placeholder="-" type="number"/>
+</div>
+</div>
+<div class="flex-1">
+<label class="block text-xs font-semibold text-slate-500 mb-1">评语</label>
+<div class="relative">
+<input class="block w-full rounded-lg border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm focus:border-primary focus:ring-primary pl-3 pr-10 py-2.5" placeholder="输入评语，或使用快捷键选择常用评语..." type="text"/>
+<button class="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">chat_bubble</span>
+</button>
+</div>
+<div class="flex gap-2 mt-2 overflow-x-auto pb-1 no-scrollbar">
+<button class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors whitespace-nowrap">计算错误</button>
+<button class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors whitespace-nowrap">逻辑严密</button>
+<button class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors whitespace-nowrap">书写规范</button>
+<button class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors whitespace-nowrap">步骤缺失</button>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-700/50">
+<div class="flex items-center gap-4 text-xs text-slate-400">
+<span>快捷键: <strong>S</strong> 保存</span>
+<span><strong>N</strong> 下一位</span>
+</div>
+<div class="flex items-center gap-3">
+<button class="px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                                    标记复审
+                                </button>
+<button class="px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                                    保存草稿 (S)
+                                </button>
+<button class="px-6 py-2 rounded-lg bg-primary text-white text-sm font-bold hover:bg-primary-dark shadow-md hover:shadow-lg transition-all flex items-center gap-2">
+                                    提交评分 (Enter)
+                                    <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="hidden md:flex col-span-12 md:col-span-3 lg:col-span-3 border-l border-slate-200 dark:border-slate-700 bg-surface dark:bg-surface-dark flex-col h-full z-10">
+<div class="flex border-b border-slate-200 dark:border-slate-700">
+<button class="flex-1 py-3 text-sm font-medium text-slate-500 hover:text-slate-700 border-b-2 border-transparent transition-colors">标准答案</button>
+<button class="flex-1 py-3 text-sm font-medium text-primary border-b-2 border-primary bg-primary/5 transition-colors">AI 辅助</button>
+<button class="flex-1 py-3 text-sm font-medium text-slate-500 hover:text-slate-700 border-b-2 border-transparent transition-colors">历史</button>
+</div>
+<div class="flex-1 overflow-y-auto p-4 space-y-6">
+<div class="rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4">
+<div class="flex items-center justify-between mb-2">
+<h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider">AI 预判分析</h3>
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">高置信度</span>
+</div>
+<div class="flex items-end gap-2 mb-1">
+<span class="text-2xl font-bold text-slate-900 dark:text-white">92%</span>
+<span class="text-xs text-slate-500 mb-1.5">准确率</span>
+</div>
+<div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5 mb-3">
+<div class="bg-emerald-500 h-1.5 rounded-full" style="width: 92%"></div>
+</div>
+<div class="space-y-2">
+<div class="flex gap-2 items-start p-2 rounded bg-white dark:bg-slate-700/50 border border-slate-100 dark:border-slate-600">
+<span class="material-symbols-outlined text-emerald-500 text-[16px] mt-0.5">check_circle</span>
+<p class="text-xs text-slate-600 dark:text-slate-300">题目1: 最终答案区间 (-2, 3) 与标准答案一致。</p>
+</div>
+<div class="flex gap-2 items-start p-2 rounded bg-white dark:bg-slate-700/50 border border-slate-100 dark:border-slate-600">
+<span class="material-symbols-outlined text-amber-500 text-[16px] mt-0.5">warning</span>
+<p class="text-xs text-slate-600 dark:text-slate-300">题目2: 步骤3 处检测到潜在的逻辑跳跃，建议人工复核。</p>
+</div>
+</div>
+</div>
+<div>
+<h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">OCR 识别结果</h3>
+<div class="p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700 text-xs text-slate-600 dark:text-slate-400 font-mono leading-relaxed">
+                             解：<br/>
+                             -5 &lt; 2x - 1 &lt; 5<br/>
+                             ...<br/>
+                             所以，解集为 (-2, 3)。
+                         </div>
+</div>
+<div>
+<div class="flex items-center justify-between mb-3">
+<h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider">评分细则 (Rubric)</h3>
+<button class="text-primary text-xs hover:underline">展开全部</button>
+</div>
+<div class="space-y-2">
+<label class="flex items-start gap-3 p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer group">
+<input checked="" class="mt-1 rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/>
+<div class="flex-1">
+<div class="flex justify-between">
+<span class="text-xs font-medium text-slate-700 dark:text-slate-200">正确去绝对值符号</span>
+<span class="text-xs font-bold text-slate-400 group-hover:text-primary transition-colors">2分</span>
+</div>
+<p class="text-[10px] text-slate-400 mt-0.5">将不等式转化为 -5 &lt; 2x-1 &lt; 5</p>
+</div>
+</label>
+<label class="flex items-start gap-3 p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer group">
+<input checked="" class="mt-1 rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/>
+<div class="flex-1">
+<div class="flex justify-between">
+<span class="text-xs font-medium text-slate-700 dark:text-slate-200">求解过程无计算错误</span>
+<span class="text-xs font-bold text-slate-400 group-hover:text-primary transition-colors">3分</span>
+</div>
+</div>
+</label>
+<label class="flex items-start gap-3 p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer group">
+<input class="mt-1 rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/>
+<div class="flex-1">
+<div class="flex justify-between">
+<span class="text-xs font-medium text-slate-700 dark:text-slate-200">最终答案书写规范</span>
+<span class="text-xs font-bold text-slate-400 group-hover:text-primary transition-colors">1分</span>
+</div>
+</div>
+</label>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>
