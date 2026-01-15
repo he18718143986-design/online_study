@@ -1,22 +1,46 @@
+/**
+ * 录播库页面
+ * 
+ * 支持查询参数：
+ * - ?courseId=xxx - 按课程筛选
+ * - ?recordingId=xxx - 自动选中指定录播
+ */
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import RecordingList from '../../modules/recordings/components/RecordingList'
 import RecordingPlayer from '../../modules/recordings/components/RecordingPlayer'
 import useRecordings from '../../modules/recordings/hooks/useRecordings'
+import { useCourseId, useRecordingId } from '@/hooks/useRouteId'
+import { getRecordingDetailUrl } from '@/app/routes'
 
 const RecordingLibraryPage: React.FC = () => {
-	const { recordings, isLoading, error, filters, setFilters, refetch } = useRecordings()
-	const [activeId, setActiveId] = React.useState<string | undefined>(undefined)
+	const navigate = useNavigate()
+	
+	// 使用统一的路由参数获取 hook
+	const { id: initialCourseId } = useCourseId()
+	const { id: initialRecordingId } = useRecordingId()
+	
+	const { recordings, isLoading, error, filters, setFilters, refetch } = useRecordings({
+		courseId: initialCourseId
+	})
+	
+	const [activeId, setActiveId] = React.useState<string | undefined>(initialRecordingId)
 	const [shareLink, setShareLink] = React.useState<string | null>(null)
 	const [shareMessage, setShareMessage] = React.useState<string | null>(null)
 
+	// 当 initialCourseId 变化时更新筛选
 	React.useEffect(() => {
-		if (typeof window === 'undefined') return
-		const params = new URLSearchParams(window.location.search)
-		const courseId = params.get('courseId')?.trim() || undefined
-		const recordingId = params.get('recordingId')?.trim() || undefined
-		if (courseId && courseId !== filters.courseId) setFilters({ courseId })
-		if (recordingId) setActiveId(recordingId)
-	}, [filters.courseId, setFilters])
+		if (initialCourseId && initialCourseId !== filters.courseId) {
+			setFilters({ courseId: initialCourseId })
+		}
+	}, [initialCourseId, filters.courseId, setFilters])
+
+	// 当 initialRecordingId 变化时更新选中
+	React.useEffect(() => {
+		if (initialRecordingId) {
+			setActiveId(initialRecordingId)
+		}
+	}, [initialRecordingId])
 
 	const activeRecording = React.useMemo(() => recordings.find((rec) => rec.id === activeId), [activeId, recordings])
 
@@ -24,14 +48,18 @@ const RecordingLibraryPage: React.FC = () => {
 		setActiveId(id)
 	}, [])
 
+	const handleViewDetail = React.useCallback((id: string) => {
+		navigate(getRecordingDetailUrl(id, filters.courseId))
+	}, [navigate, filters.courseId])
+
 	const handleShare = React.useCallback(
 		async (id: string) => {
-			const link = `https://campus.example.com/recordings/${id}?expires=7d`
+			const link = `${window.location.origin}/recordings/${id}`
 			setShareLink(link)
 			try {
 				if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
 					await navigator.clipboard.writeText(link)
-					setShareMessage('分享链接已复制，7 天内有效')
+					setShareMessage('分享链接已复制')
 					return
 				}
 				setShareMessage('复制到剪贴板不可用，请手动复制链接')
@@ -53,10 +81,10 @@ const RecordingLibraryPage: React.FC = () => {
 	}, [])
 
 	return (
-		<div className="p-6 space-y-6">
+		<div className="p-6 space-y-6" data-testid="recording-library-page">
 			<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 				<div>
-					<h1 className="text-xl font-bold text-text-main">录播与媒体库</h1>
+					<h1 className="text-xl font-bold text-text-main dark:text-white">录播与媒体库</h1>
 					<p className="text-sm text-text-secondary">集中管理课程录播，处理中录播会自动轮询状态，可手动刷新。</p>
 				</div>
 				<div className="flex items-center gap-2">
@@ -95,7 +123,14 @@ const RecordingLibraryPage: React.FC = () => {
 			{error ? <div className="text-sm text-red-600">{error.message}</div> : null}
 			{isLoading ? <div className="text-sm text-text-secondary">加载中...</div> : null}
 
-			<RecordingList recordings={recordings} onPlay={handlePlay} onShare={handleShare} onExport={handleExport} onFilterChange={setFilters} filters={filters} />
+			<RecordingList 
+				recordings={recordings} 
+				onPlay={handlePlay} 
+				onShare={handleShare} 
+				onExport={handleExport} 
+				onFilterChange={setFilters} 
+				filters={filters} 
+			/>
 
 			<RecordingPlayer recording={activeRecording} onClose={handleClosePlayer} />
 		</div>

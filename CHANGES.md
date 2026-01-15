@@ -1,73 +1,101 @@
-# 改动清单 - Live 教学页 Deep-Link 路由修复
+# 改动清单 - 全面质量检查与修复
 
 ## 版本信息
 
 - **日期**: 2026-01-15
 - **分支**: `cursor/-bc-b73e0cbe-eafb-4c70-b9b4-ef257904bba9-9d7d`
-- **类型**: 功能增强 + Bug 修复
+- **类型**: 功能增强 + 架构优化 + 测试补强
 
 ## 改动摘要
 
-本次改动修复了直播教学页面的路由问题，使 `/live/:courseId` 参数化路由能正常工作，支持 Deep-Link 直接访问指定课程的直播页面。
+本次改动对前端项目进行了全面的质量检查和修复，重点解决以下问题：
+1. 路由 Deep-Link 支持不完整
+2. Hook 与组件的数据获取逻辑不一致
+3. 测试覆盖不足
+4. CI 流程不完整
 
 ## 改动文件清单
 
-### 路由配置
+### 一、路由配置
 
-| 文件 | 操作 | 说明 |
+| 文件 | 操作 | 目的 | 影响范围 |
+|------|------|------|---------|
+| `src/app/routes.ts` | 修改 | 添加所有参数化路由常量和 URL 生成辅助函数 | 全局路由 |
+| `src/app/router.tsx` | 修改 | 注册新的参数化路由（录播详情、作业详情） | 路由系统 |
+
+**新增路由**:
+- `/recordings/:recordingId` - 录播详情
+- `/assignments/:assignmentId` - 作业详情
+
+**新增辅助函数**:
+- `getRecordingDetailUrl(recordingId, courseId?)` - 生成录播详情 URL
+- `getAssignmentDetailUrl(assignmentId)` - 生成作业详情 URL
+- `getStudentProfileUrl(studentId)` - 生成学生档案 URL
+- `getExamDetailUrl(examId)` - 生成考试详情 URL
+
+### 二、统一的路由参数获取
+
+| 文件 | 操作 | 目的 |
 |------|------|------|
-| `src/app/routes.ts` | 修改 | 添加 `liveTeachingWithCourse` 路由常量、`getLiveTeachingUrl()` 和 `getCourseDetailUrl()` 辅助函数 |
-| `src/app/router.tsx` | 修改 | 注册 `/live/:courseId` 参数化路由，确保路由匹配顺序正确 |
+| `src/hooks/useRouteId.ts` | 新增 | 创建统一的路由参数获取 Hook |
 
-### 页面组件
+**核心功能**:
+- `useRouteId(paramName, fallback)` - 通用 Hook
+- `useCourseId(fallback)` - 课程 ID 专用
+- `useRecordingId(fallback)` - 录播 ID 专用
+- `useAssignmentId(fallback)` - 作业 ID 专用
+- `useStudentId(fallback)` - 学生 ID 专用
 
-| 文件 | 操作 | 说明 |
+**优先级契约**:
+1. 路径参数（params）- 最高
+2. 查询参数（query）- 次优
+3. fallback 值 - 最低
+
+### 三、页面组件更新
+
+| 文件 | 操作 | 目的 |
 |------|------|------|
-| `src/pages/shell/LiveTeachingRoutePage.tsx` | 修改 | 从 URL params/query 解析 courseId，实现优先级：路径参数 > 查询参数 > 默认值 |
-| `src/pages/live/LiveTeachingPage.tsx` | 修改 | 接收 courseId 作为必传 prop，添加 data-testid 属性便于测试 |
-| `src/pages/dashboard/DashboardPage.tsx` | 修改 | 使用 `getLiveTeachingUrl()` 辅助函数生成直播页 URL |
+| `src/pages/recordings/RecordingDetailPage.tsx` | 新增 | 录播详情页面（支持 Deep-Link） |
+| `src/pages/assignments/AssignmentDetailPage.tsx` | 新增 | 作业详情页面（支持 Deep-Link） |
+| `src/pages/recordings/RecordingLibraryPage.tsx` | 修改 | 使用 `useRouteId` 统一参数获取 |
+| `src/pages/courses/CourseDetailPage.tsx` | 修改 | 使用 `useRouteId` 统一参数获取 |
 
-### Mock 数据
+### 四、类型定义更新
 
-| 文件 | 操作 | 说明 |
+| 文件 | 操作 | 目的 |
 |------|------|------|
-| `data/mock/data.json` | 修改 | 添加 `course-live-1` 默认直播课程数据 |
+| `src/types/models/assignment.ts` | 修改 | 添加 `description` 字段 |
+| `src/types/index.d.ts` | 修改 | 添加 `createMemoryRouter` 类型声明 |
 
-### 测试
+### 五、测试补强
 
-| 文件 | 操作 | 说明 |
+| 文件 | 操作 | 目的 |
 |------|------|------|
-| `src/tests/unit/hooks/useLiveSession.test.ts` | 新增 | useLiveSession hook 单元测试（9 个测试用例） |
-| `src/tests/e2e/liveDeepLink.spec.ts` | 新增 | Deep-Link E2E 测试（9 个测试用例） |
+| `src/tests/unit/hooks/useRouteId.test.tsx` | 新增 | useRouteId Hook 单元测试（13 tests） |
+| `src/tests/e2e/deepLink.spec.ts` | 新增 | Deep-Link 路由 E2E 测试（15+ tests） |
 
-### 文档
+### 六、CI 配置
 
-| 文件 | 操作 | 说明 |
+| 文件 | 操作 | 目的 |
 |------|------|------|
-| `README.md` | 修改 | 添加"直播页面 Deep-Link"使用说明 |
-| `spec/api-samples.md` | 修改 | 添加获取直播会话 API 示例和 Deep-Link 路由说明 |
+| `.github/workflows/ci.yml` | 新增 | 完整的 CI 流程（Lint/TypeCheck/Test/Build/E2E） |
 
-## 技术要点
+**CI Jobs**:
+1. `lint-and-typecheck` - 代码质量检查
+2. `unit-tests` - 单元测试
+3. `build` - 构建验证
+4. `e2e-tests` - E2E 测试
+5. `smoke-test` - PR 快速验证
 
-### 路由解析优先级
+## Deep-Link 路由列表
 
-```
-1. 路径参数: /live/:courseId → params.courseId
-2. 查询参数: /live?courseId=xxx → searchParams.get('courseId')
-3. 默认值: 'course-live-1'
-```
-
-### 新增辅助函数
-
-```typescript
-// 生成直播页 URL
-getLiveTeachingUrl(courseId: string): string
-// => `/live/${encodeURIComponent(courseId)}`
-
-// 生成课程详情页 URL
-getCourseDetailUrl(courseId: string): string
-// => `/courses/${encodeURIComponent(courseId)}`
-```
+| 路由 | 参数 | 示例 |
+|------|------|------|
+| `/live/:courseId` | courseId | `/live/course-live-1` |
+| `/courses/:courseId` | courseId | `/courses/course-001` |
+| `/recordings/:recordingId` | recordingId | `/recordings/rec-001` |
+| `/assignments/:assignmentId` | assignmentId | `/assignments/assign-101` |
+| `/students/:studentId` | studentId | `/students/s001` |
 
 ## 本地验证步骤
 
@@ -81,25 +109,35 @@ pnpm typecheck
 # 3. 运行单元测试
 pnpm test
 
-# 4. 启动 Mock 模式开发服务器
+# 4. 构建
+pnpm build
+
+# 5. 启动 Mock 模式
 pnpm dev:mock
 
-# 5. 在浏览器测试 Deep-Link
-#    - http://localhost:5173/live/course-live-1
-#    - http://localhost:5173/live/course-002
-#    - http://localhost:5173/live?courseId=course-001
-#    - http://localhost:5173/live （默认课程）
+# 6. 测试 Deep-Link（在浏览器中访问）
+# - http://localhost:5173/live/course-live-1
+# - http://localhost:5173/courses/course-001
+# - http://localhost:5173/recordings/rec-001
+# - http://localhost:5173/assignments/assign-101
+# - http://localhost:5173/students/s001
 
-# 6. 运行 E2E 测试
-npx playwright install  # 首次需要安装浏览器
+# 7. 运行 E2E 测试
+npx playwright install
 pnpm test:e2e
 ```
 
-## 验收标准
+## 验收结果
 
-- [x] `pnpm install` 成功
-- [x] `pnpm typecheck` 通过
-- [x] `pnpm test` 单元测试通过（45 tests）
-- [x] `pnpm build` 构建成功
-- [x] `/live/course-live-1` 能正常渲染直播页面
-- [x] 页面显示正确的课程 ID
+| 检查项 | 状态 |
+|--------|------|
+| `pnpm typecheck` | ✅ 通过 |
+| `pnpm test` | ✅ 58 tests 通过 |
+| `pnpm build` | ✅ 构建成功 |
+| Deep-Link 路由 | ✅ 正常工作 |
+
+## 回归风险
+
+- **低风险**: 路由配置变更，已通过类型检查和测试验证
+- **低风险**: 新增 Hook 使用标准 React Router API
+- **注意**: E2E 测试需要 Playwright 浏览器环境

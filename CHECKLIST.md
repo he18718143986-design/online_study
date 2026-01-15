@@ -1,4 +1,4 @@
-# 验收检查清单 - Live Deep-Link 路由修复
+# 验收检查清单 - 全面质量检查与 Deep-Link 修复
 
 ## 自动化检查
 
@@ -7,99 +7,140 @@
 | 依赖安装 | `pnpm install` | ✅ 通过 | |
 | TypeScript 类型检查 | `pnpm typecheck` | ✅ 通过 | |
 | ESLint 代码检查 | `pnpm lint` | - | 可选 |
-| 单元测试 | `pnpm test` | ✅ 通过 | 45 tests passed |
+| 单元测试 | `pnpm test` | ✅ 58 tests 通过 | |
 | 构建 | `pnpm build` | ✅ 通过 | |
-| E2E 测试 | `pnpm test:e2e` | - | 需要 Playwright 浏览器 |
+| E2E 测试 | `pnpm test:e2e` | - | 需要 Playwright |
 
-## 功能验收
+## 功能验收 - Deep-Link 路由
 
-### 1. Deep-Link 路由
-
-| 测试场景 | 预期结果 | 状态 |
-|----------|----------|------|
-| 访问 `/live/course-live-1` | 渲染直播页面，显示课程 ID `course-live-1` | ⬜ |
-| 访问 `/live/course-002` | 渲染直播页面，显示课程 ID `course-002` | ⬜ |
-| 访问 `/live?courseId=course-001` | 渲染直播页面，显示课程 ID `course-001` | ⬜ |
-| 访问 `/live` (无参数) | 渲染直播页面，使用默认课程 ID | ⬜ |
-| 同时提供路径和查询参数 | 路径参数优先 | ⬜ |
-
-### 2. 导航测试
+### 直播页面 `/live/:courseId`
 
 | 测试场景 | 预期结果 | 状态 |
 |----------|----------|------|
-| 从仪表盘点击"开始直播" | 跳转到 `/live` | ⬜ |
-| 从课程列表进入课堂 | 跳转到 `/live/{courseId}` | ⬜ |
-| 点击"返回课程"按钮 | 跳转到 `/courses/{courseId}` | ⬜ |
+| 访问 `/live/course-live-1` | 渲染直播页面 | ⬜ |
+| 访问 `/live/course-002` | 渲染直播页面 | ⬜ |
+| 访问 `/live?courseId=course-001` | 渲染直播页面（查询参数） | ⬜ |
+| 访问 `/live` | 使用默认课程 ID | ⬜ |
 
-### 3. 页面元素
+### 课程详情 `/courses/:courseId`
 
 | 测试场景 | 预期结果 | 状态 |
 |----------|----------|------|
-| 页面 data-testid | 存在 `live-teaching-page` | ⬜ |
-| 课程 ID 显示 | 存在 `course-id-display` 且内容正确 | ⬜ |
-| 直播状态徽章 | 存在 `live-status-badge` | ⬜ |
-| 返回按钮 | 存在且可点击 | ⬜ |
+| 访问 `/courses/course-001` | 渲染课程详情页面 | ⬜ |
+| 显示课程标题 | "数学竞赛训练 — 高一提升" | ⬜ |
+| 显示课程统计 | 学生数、参与率等 | ⬜ |
+
+### 录播详情 `/recordings/:recordingId`
+
+| 测试场景 | 预期结果 | 状态 |
+|----------|----------|------|
+| 访问 `/recordings/rec-001` | 渲染录播详情页面 | ⬜ |
+| 显示录播标题 | "数学竞赛训练 2026-01-05" | ⬜ |
+| 带 courseId 查询参数 | 正确筛选 | ⬜ |
+
+### 作业详情 `/assignments/:assignmentId`
+
+| 测试场景 | 预期结果 | 状态 |
+|----------|----------|------|
+| 访问 `/assignments/assign-101` | 渲染作业详情页面 | ⬜ |
+| 显示作业标题 | "第三章：平面几何综合练习" | ⬜ |
+| 显示提交统计 | 提交数、待批改数 | ⬜ |
+
+### 学生档案 `/students/:studentId`
+
+| 测试场景 | 预期结果 | 状态 |
+|----------|----------|------|
+| 访问 `/students/s001` | 渲染学生档案页面 | ⬜ |
+| 非 404 页面 | 正常显示内容 | ⬜ |
+
+### 404 兜底
+
+| 测试场景 | 预期结果 | 状态 |
+|----------|----------|------|
+| 访问 `/random/unknown` | 显示 404 页面 | ⬜ |
+| 显示"未找到"文字 | 友好错误提示 | ⬜ |
 
 ## 手动测试步骤
 
-### 步骤 1：启动服务
+### 步骤 1：环境准备
+
+```bash
+# 安装依赖
+pnpm install
+
+# 类型检查
+pnpm typecheck
+
+# 单元测试
+pnpm test
+```
+
+### 步骤 2：启动服务
 
 ```bash
 pnpm dev:mock
 ```
 
-### 步骤 2：测试 Deep-Link
+### 步骤 3：测试 Deep-Link
 
-1. 打开浏览器访问 `http://localhost:5173/live/course-live-1`
-2. 确认页面正常渲染（无 404）
-3. 确认显示"课程 ID: course-live-1"
-4. 确认直播状态徽章显示"Live"或"Idle"
+在浏览器中依次访问以下 URL：
 
-### 步骤 3：测试查询参数
+1. `http://localhost:5173/live/course-live-1`
+   - ✅ 页面渲染正常
+   - ✅ 显示课程 ID: course-live-1
+   - ✅ 直播状态徽章可见
 
-1. 访问 `http://localhost:5173/live?courseId=course-002`
-2. 确认显示"课程 ID: course-002"
+2. `http://localhost:5173/courses/course-001`
+   - ✅ 页面渲染正常
+   - ✅ 显示课程标题
+   - ✅ 显示课程统计
 
-### 步骤 4：测试默认值
+3. `http://localhost:5173/recordings/rec-001`
+   - ✅ 页面渲染正常
+   - ✅ 显示录播标题
 
-1. 访问 `http://localhost:5173/live`
-2. 确认使用默认课程 ID `course-live-1`
+4. `http://localhost:5173/assignments/assign-101`
+   - ✅ 页面渲染正常
+   - ✅ 显示作业标题
+   - ✅ 显示提交统计
 
-### 步骤 5：测试优先级
+5. `http://localhost:5173/students/s001`
+   - ✅ 页面渲染正常
 
-1. 访问 `http://localhost:5173/live/path-course?courseId=query-course`
-2. 确认显示"课程 ID: path-course"（路径参数优先）
+6. `http://localhost:5173/random/unknown`
+   - ✅ 显示 404 页面
 
-### 步骤 6：测试导航
-
-1. 访问首页 `http://localhost:5173/`
-2. 点击"开始直播"按钮
-3. 确认跳转到直播页面
-4. 点击"返回课程"按钮
-5. 确认跳转到课程详情页
-
-## E2E 测试执行
+### 步骤 4：E2E 测试
 
 ```bash
-# 安装 Playwright 浏览器（首次执行）
+# 安装 Playwright 浏览器
 npx playwright install
 
 # 运行所有 E2E 测试
 pnpm test:e2e
 
 # 仅运行 Deep-Link 测试
-npx playwright test liveDeepLink.spec.ts
+npx playwright test deepLink.spec.ts
 ```
 
 ## 代码审查检查点
 
-- [ ] 路由配置正确，`/live/:courseId` 优先于 `/live`
-- [ ] courseId 解析逻辑正确（优先级：路径 > 查询 > 默认）
-- [ ] 导航链接使用辅助函数生成 URL
-- [ ] 页面组件接收正确的 props
-- [ ] 单元测试覆盖主要场景
-- [ ] Mock 数据包含默认课程
-- [ ] 文档已更新
+- [x] 路由配置正确，参数化路由顺序合理
+- [x] `useRouteId` Hook 优先级逻辑正确
+- [x] 页面组件正确使用 `useRouteId`
+- [x] 新增页面有 data-testid 便于测试
+- [x] 类型定义完整
+- [x] 单元测试覆盖主要场景
+- [x] E2E 测试覆盖所有 Deep-Link
+- [x] CI 配置完整
+
+## CI 检查点
+
+- [x] lint-and-typecheck job
+- [x] unit-tests job
+- [x] build job
+- [x] e2e-tests job
+- [x] smoke-test job (PR only)
 
 ## 签字确认
 
@@ -108,3 +149,26 @@ npx playwright test liveDeepLink.spec.ts
 | 开发者 | | | |
 | 审查者 | | | |
 | 测试者 | | | |
+
+## 本地验证命令（可复制执行）
+
+```bash
+# 完整验证流程
+pnpm install && \
+pnpm typecheck && \
+pnpm test && \
+pnpm build && \
+echo "✅ 所有检查通过"
+```
+
+```bash
+# 启动并手动测试
+pnpm dev:mock
+# 然后在浏览器中访问上述 URL
+```
+
+```bash
+# E2E 测试
+npx playwright install chromium && \
+pnpm test:e2e
+```

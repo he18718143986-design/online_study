@@ -1,9 +1,13 @@
 /**
+ * 课程详情页面 - 支持 Deep-Link
+ * 
+ * 路由：/courses/:courseId
+ * 
  * 来源 HTML: screen_id: db7e4a443f6545ee97956546f94f340d
  * Generated from Stitch export
  */
 import React from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import CourseOverview from '../../modules/courses/components/CourseOverview'
 import CourseTabs from '../../modules/courses/components/CourseTabs'
 import CourseStudentsPanel from '../../modules/courses/components/CourseStudentsPanel'
@@ -12,19 +16,24 @@ import CourseRecordingsPanel from '../../modules/courses/components/CourseRecord
 import { type MetricPreview } from '../../modules/courses/types'
 import useCourseDetail from '../../modules/courses/hooks/useCourseDetail'
 import MetricCard from '../../components/widgets/MetricCard'
-import { ROUTES } from '../../app/routes'
+import { useCourseId } from '@/hooks/useRouteId'
+import { ROUTES, getLiveTeachingUrl, getRecordingDetailUrl, getCourseDetailUrl } from '@/app/routes'
 import recordingsService from '@/services/recordings.service'
 
 const CourseDetailPage: React.FC = () => {
-	const params = useParams()
-	const courseId = (params as any)?.courseId || 'course-1'
 	const navigate = useNavigate()
+	
+	// 使用统一的路由参数获取 hook
+	const { id: courseId, source: courseIdSource } = useCourseId('course-001')
 
 	// TODO: integrate real API via modules/courses/services
 	const {
 		data: { course, students, assignments, recordings },
+		isLoading,
+		error,
 		actions
-	} = useCourseDetail(courseId)
+	} = useCourseDetail(courseId!)
+	
 	const [activeTab, setActiveTab] = React.useState<'overview' | 'students' | 'assignments' | 'recordings' | 'settings'>('overview')
 
 	const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
@@ -89,16 +98,17 @@ const CourseDetailPage: React.FC = () => {
 	}
 
 	const handleStartLive = () => {
-		navigate(`${ROUTES.liveTeaching}?courseId=${encodeURIComponent(courseId)}`)
+		navigate(getLiveTeachingUrl(courseId!))
 	}
 
 	const handleViewRecording = async (recordingId?: string) => {
 		if (!recordingId) {
-			navigate(`${ROUTES.recordings}?courseId=${encodeURIComponent(courseId)}`)
+			navigate(`${ROUTES.recordings}?courseId=${encodeURIComponent(courseId!)}`)
 			return
 		}
 		await pollRecordingBeforeNavigate(recordingId)
-		navigate(`${ROUTES.recordings}?courseId=${encodeURIComponent(courseId)}&recordingId=${encodeURIComponent(recordingId)}`)
+		// 使用参数化路由
+		navigate(getRecordingDetailUrl(recordingId, courseId))
 	}
 
 	const handleGoToAssignments = () => {
@@ -106,11 +116,42 @@ const CourseDetailPage: React.FC = () => {
 	}
 
 	const handleEditCourse = () => {
-		navigate(ROUTES.courseEdit.replace(':courseId', courseId))
+		navigate(ROUTES.courseEdit.replace(':courseId', courseId!))
+	}
+
+	// 加载状态
+	if (isLoading) {
+		return (
+			<div className="min-h-screen flex items-center justify-center">
+				<div className="text-center">
+					<div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent mx-auto mb-4" />
+					<p className="text-sm text-text-secondary">加载课程详情...</p>
+				</div>
+			</div>
+		)
+	}
+
+	// 错误状态
+	if (error) {
+		return (
+			<div className="min-h-screen flex items-center justify-center p-6">
+				<div className="bg-surface-light dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-lg p-8 max-w-md text-center">
+					<span className="material-symbols-outlined text-5xl text-red-500 mb-4">error</span>
+					<h1 className="text-xl font-bold text-text-main dark:text-white mb-2">课程加载失败</h1>
+					<p className="text-sm text-text-secondary mb-4">{error.message}</p>
+					<button
+						onClick={() => navigate(ROUTES.courseSchedule)}
+						className="px-4 py-2 rounded-lg bg-primary text-white text-sm"
+					>
+						返回课程列表
+					</button>
+				</div>
+			</div>
+		)
 	}
 
 	return (
-		<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+		<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8" data-testid="course-detail-page">
 			<nav className="flex items-center text-sm text-text-secondary" aria-label="Breadcrumb">
 				{breadcrumb.map((item, idx) => (
 					<span key={item} className="flex items-center">
@@ -119,6 +160,9 @@ const CourseDetailPage: React.FC = () => {
 					</span>
 				))}
 			</nav>
+
+			{/* 课程 ID 显示（用于测试） */}
+			<div className="sr-only" data-testid="course-id-display">{courseId}</div>
 
 			<CourseOverview
 				course={course}
