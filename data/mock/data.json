@@ -1,41 +1,168 @@
 {
   "users": [
-    { "id": "u1", "name": "张老师", "role": "teacher", "avatar": null, "last_login": "2026-01-09T08:12:00+08:00" },
-    { "id": "u2", "name": "系统管理员", "role": "admin", "avatar": null, "last_login": "2026-01-05T11:02:00+08:00" }
+    {
+      "id": "u1",
+      "name": "张老师",
+      "email": "zhang@example.com",
+      "role": "teacher",
+      "avatar": null,
+      "last_login": "2026-01-09T08:12:00+08:00"
+    },
+    {
+      "id": "u2",
+      "name": "系统管理员",
+      "email": "admin@example.com",
+      "role": "admin",
+      "avatar": null,
+      "last_login": "2026-01-05T11:02:00+08:00"
+    }
+  ],
+  "teachers": [
+    {
+      "user_id": "u1",
+      "subjects": ["数学"],
+      "bio": "数学竞赛教练，从业10年",
+      "rating": 4.8
+    }
   ],
   "students": [
-    { "id": "s001", "name": "张三", "avatar": null, "classId": "class-A", "overallScore": 87, "attendanceStatus": "present" },
-    { "id": "s002", "name": "李四", "avatar": null, "classId": "class-A", "overallScore": 74, "attendanceStatus": "absent" },
-    { "id": "s003", "name": "王五", "avatar": null, "classId": "class-B", "overallScore": 92, "attendanceStatus": "present" }
+    {
+      "id": "s001",
+      "studentNumber": "2026001",
+      "name": "张三",
+      "avatar": null,
+      "classId": "class-A",
+      "courseId": "course-001",
+      "grade": "高一",
+      "className": "高一A班",
+      "group": "A组",
+      "overallScore": 87,
+      "onlineStatus": "online",
+      "attendance": "present",
+      "lastActive": "刚刚"
+    },
+    {
+      "id": "s002",
+      "studentNumber": "2026002",
+      "name": "李四",
+      "avatar": null,
+      "classId": "class-A",
+      "courseId": "course-001",
+      "grade": "高一",
+      "className": "高一A班",
+      "group": "A组",
+      "overallScore": 74,
+      "onlineStatus": "offline",
+      "attendance": "absent",
+      "lastActive": "2小时前"
+    },
+    {
+      "id": "s003",
+      "studentNumber": "2026003",
+      "name": "王五",
+      "avatar": null,
+      "classId": "class-B",
+      "courseId": "course-002",
+      "grade": "初三",
+      "className": "初三集训",
+      "group": "B组",
+      "overallScore": 92,
+      "onlineStatus": "online",
+      "attendance": "present",
+      "lastActive": "5分钟前"
+    },
+    {
+      "id": "s004",
+      "studentNumber": "2026004",
+      "name": "赵六",
+      "avatar": null,
+      "classId": "class-A",
+      "courseId": "course-001",
+      "grade": "高一",
+      "className": "高一A班",
+      "group": "B组",
+      "overallScore": 81,
+      "onlineStatus": "online",
+      "attendance": "present",
+      "lastActive": "刚刚"
+    },
+    {
+      "id": "s005",
+      "studentNumber": "2026005",
+      "name": "孙七",
+      "avatar": null,
+      "classId": "class-B",
+      "courseId": "course-002",
+      "grade": "初三",
+      "className": "初三集训",
+      "group": "A组",
+      "overallScore": 88,
+      "onlineStatus": "idle",
+      "attendance": "present",
+      "lastActive": "30分钟前"
+    }
+  ],
+  "classes": [
+    { "id": "class-A", "name": "高一A班", "grade": "高一", "studentCount": 32 },
+    { "id": "class-B", "name": "初三集训", "grade": "初三", "studentCount": 40 }
   ],
   "courses": [
     {
       "id": "course-001",
       "title": "数学竞赛训练 — 高一提升",
+      "description": "针对高一学生的数学竞赛基础训练课程",
+      "subtitle": "第一学期",
+      "teacher": "张老师",
       "teacher_id": "u1",
-      "class": "高一A班",
-      "schedule": [
-        { "session_id": "sess-1001", "start_time": "2026-01-12T19:00:00+08:00", "end_time": "2026-01-12T20:30:00+08:00" }
-      ],
-      "chapters": ["数论基础", "同余方程"],
-      "default_duration_minutes": 90,
-      "students_count": 32,
-      "next_session": "2026-01-12T19:00:00+08:00",
-      "status": "upcoming"
+      "classLabel": "高一A班",
+      "schedule": "每周一、三 19:00-20:30",
+      "term": "2025-2026学年第二学期",
+      "timeRange": "19:00 - 20:30",
+      "studentsCount": 32,
+      "status": "upcoming",
+      "stats": {
+        "studentsTotal": 32,
+        "participationRate": 92,
+        "homeworkSubmissionRate": 85
+      }
     },
     {
       "id": "course-002",
       "title": "初三奥数集训营",
+      "description": "初三年级数学奥林匹克集中训练",
+      "subtitle": "寒假特训",
+      "teacher": "张老师",
       "teacher_id": "u1",
-      "class": "初三集训",
-      "schedule": [
-        { "session_id": "sess-1002", "start_time": "2026-01-12T14:00:00+08:00", "end_time": "2026-01-12T16:00:00+08:00" }
-      ],
-      "chapters": ["几何技巧"],
-      "default_duration_minutes": 120,
-      "students_count": 40,
-      "next_session": "2026-01-12T14:00:00+08:00",
-      "status": "live"
+      "classLabel": "初三集训",
+      "schedule": "每周二、四 14:00-16:00",
+      "term": "2025-2026学年第二学期",
+      "timeRange": "14:00 - 16:00",
+      "studentsCount": 40,
+      "status": "live",
+      "stats": {
+        "studentsTotal": 40,
+        "participationRate": 88,
+        "homeworkSubmissionRate": 78
+      }
+    },
+    {
+      "id": "course-003",
+      "title": "高二竞赛冲刺班",
+      "description": "高二年级数学竞赛强化训练",
+      "subtitle": "春季班",
+      "teacher": "张老师",
+      "teacher_id": "u1",
+      "classLabel": "高二竞赛",
+      "schedule": "每周六 09:00-12:00",
+      "term": "2025-2026学年第二学期",
+      "timeRange": "09:00 - 12:00",
+      "studentsCount": 25,
+      "status": "completed",
+      "stats": {
+        "studentsTotal": 25,
+        "participationRate": 95,
+        "homeworkSubmissionRate": 90
+      }
     }
   ],
   "live_sessions": [
@@ -45,32 +172,92 @@
       "start_time": "2026-01-12T14:00:00+08:00",
       "end_time": null,
       "status": "live",
-      "recording_id": null
+      "recording_id": null,
+      "participants_count": 35
     }
   ],
   "recordings": [
     {
       "id": "rec-001",
+      "courseId": "course-001",
       "title": "数学竞赛训练 2026-01-05",
-      "course_id": "course-001",
-      "duration_seconds": 3600,
+      "duration": "01:30:00",
+      "date": "2026-01-05",
       "status": "ready",
-      "thumbnailUrl": null,
+      "preview": "",
       "created_at": "2026-01-05T20:30:00+08:00",
-      "play_url": null
+      "play_url": ""
     },
     {
       "id": "rec-002",
-      "title": "初三奥数集训 2026-01-12 (processing)",
-      "course_id": "course-002",
-      "duration_seconds": 0,
+      "courseId": "course-002",
+      "title": "初三奥数集训 2026-01-08",
+      "duration": "02:00:00",
+      "date": "2026-01-08",
+      "status": "ready",
+      "preview": "",
+      "created_at": "2026-01-08T16:05:00+08:00",
+      "play_url": ""
+    },
+    {
+      "id": "rec-003",
+      "courseId": "course-001",
+      "title": "数学竞赛训练 2026-01-10",
+      "duration": "00:00:00",
+      "date": "2026-01-10",
       "status": "processing",
-      "thumbnailUrl": null,
-      "created_at": "2026-01-12T16:05:00+08:00",
-      "play_url": null
+      "preview": "",
+      "created_at": "2026-01-10T20:35:00+08:00",
+      "play_url": ""
     }
   ],
   "problems": [
+    {
+      "id": "p001",
+      "title": "数论基本题：整除性判断",
+      "stem_html": "<p>证明：对于任意正整数 n，n³ - n 总是能被 6 整除。</p>",
+      "stem_latex": "n^3 - n \\equiv 0 \\pmod{6}",
+      "type": "subjective",
+      "difficulty": "easy",
+      "tags": ["数论", "整除"],
+      "knowledge_points": ["整除性", "因数分解"],
+      "attachments": [],
+      "choices": [],
+      "testcases": [],
+      "solution_html": "<p>将 n³ - n 因式分解为 n(n-1)(n+1)，即连续三个整数的乘积...</p>",
+      "solution_latex": null,
+      "hints": ["尝试因式分解", "考虑连续整数的性质"],
+      "author_id": "u1",
+      "version": 1,
+      "status": "published",
+      "review": null,
+      "created_at": "2026-01-03T10:00:00+08:00",
+      "updated_at": "2026-01-03T10:00:00+08:00",
+      "meta": { "estimated_minutes": 15, "tags_count": 2 }
+    },
+    {
+      "id": "p002",
+      "title": "平面几何综合",
+      "stem_html": "<p>在三角形 ABC 中，D 是 BC 的中点，E 是 AD 上的一点。证明...</p>",
+      "stem_latex": null,
+      "type": "subjective",
+      "difficulty": "hard",
+      "tags": ["几何", "三角形"],
+      "knowledge_points": ["中线", "面积比"],
+      "attachments": [],
+      "choices": [],
+      "testcases": [],
+      "solution_html": "<p>利用面积法和中线性质...</p>",
+      "solution_latex": null,
+      "hints": ["考虑使用面积比", "利用中线性质"],
+      "author_id": "u1",
+      "version": 1,
+      "status": "published",
+      "review": null,
+      "created_at": "2026-01-04T09:00:00+08:00",
+      "updated_at": "2026-01-04T09:00:00+08:00",
+      "meta": { "estimated_minutes": 25, "tags_count": 2 }
+    },
     {
       "id": "p003",
       "title": "数论：寻找最小非平凡解",
@@ -104,13 +291,13 @@
       "type": "single_choice",
       "difficulty": "medium",
       "tags": ["复数", "代数"],
-      "knowledge_points": [],
+      "knowledge_points": ["复数模", "复数运算"],
       "attachments": [],
       "choices": [
-        { "id": "c1", "label": "A", "content_html": "<p>选项 A</p>" },
-        { "id": "c2", "label": "B", "content_html": "<p>选项 B</p>" },
-        { "id": "c3", "label": "C", "content_html": "<p>选项 C</p>" },
-        { "id": "c4", "label": "D", "content_html": "<p>选项 D</p>" }
+        { "id": "c1", "label": "A", "content_html": "<p>选项 A: z + \\bar{z} = 4</p>" },
+        { "id": "c2", "label": "B", "content_html": "<p>选项 B: z \\cdot \\bar{z} = 4</p>" },
+        { "id": "c3", "label": "C", "content_html": "<p>选项 C: |z|^2 = 2</p>" },
+        { "id": "c4", "label": "D", "content_html": "<p>选项 D: z - \\bar{z} = 4i</p>" }
       ],
       "testcases": [],
       "solution_html": null,
@@ -128,14 +315,59 @@
   "assignments": [
     {
       "id": "assign-101",
-      "course_id": "course-001",
+      "courseId": "course-001",
       "title": "第三章：平面几何综合练习",
-      "description": "请完成以下题目",
+      "description": "请完成以下题目，注意书写规范",
       "dueAt": "2026-01-15T23:59:00+08:00",
       "totalPoints": 100,
       "status": "published",
-      "submissionsCount": 8,
+      "submissionsCount": 28,
+      "ungradedCount": 8,
+      "classLabel": "高一A班",
+      "priority": "high",
       "created_at": "2026-01-10T10:00:00+08:00"
+    },
+    {
+      "id": "assign-102",
+      "courseId": "course-002",
+      "title": "数论：同余方程组强化训练",
+      "description": "练习同余方程的解法",
+      "dueAt": "2026-01-20T23:59:00+08:00",
+      "totalPoints": 100,
+      "status": "draft",
+      "submissionsCount": 0,
+      "ungradedCount": 0,
+      "classLabel": "初三集训",
+      "priority": "normal",
+      "created_at": "2026-01-11T09:00:00+08:00"
+    },
+    {
+      "id": "assign-103",
+      "courseId": "course-001",
+      "title": "第四章：数论基础测验",
+      "description": "测验内容包括整除性、同余、质数分解",
+      "dueAt": "2026-01-18T23:59:00+08:00",
+      "totalPoints": 80,
+      "status": "published",
+      "submissionsCount": 15,
+      "ungradedCount": 5,
+      "classLabel": "高一A班",
+      "priority": "normal",
+      "created_at": "2026-01-12T14:00:00+08:00"
+    },
+    {
+      "id": "assign-104",
+      "courseId": "course-002",
+      "title": "几何技巧专项练习",
+      "description": "练习常见几何证明技巧",
+      "dueAt": "2026-01-22T23:59:00+08:00",
+      "totalPoints": 100,
+      "status": "published",
+      "submissionsCount": 35,
+      "ungradedCount": 12,
+      "classLabel": "初三集训",
+      "priority": "high",
+      "created_at": "2026-01-08T10:00:00+08:00"
     }
   ],
   "submissions": [
@@ -143,20 +375,148 @@
       "id": "sub-5001",
       "assignment_id": "assign-101",
       "student_id": "s001",
+      "student_name": "张三",
+      "files": [
+        { "id": "file-1", "name": "作业.pdf", "url": "", "size": 1024000 }
+      ],
+      "status": "submitted",
+      "grade": null,
+      "feedback": null,
+      "submitted_at": "2026-01-13T20:12:00+08:00"
+    },
+    {
+      "id": "sub-5002",
+      "assignment_id": "assign-101",
+      "student_id": "s004",
+      "student_name": "赵六",
+      "files": [
+        { "id": "file-2", "name": "几何练习.pdf", "url": "", "size": 2048000 }
+      ],
+      "status": "graded",
+      "grade": 85,
+      "feedback": "解题思路清晰，但书写可以更规范",
+      "submitted_at": "2026-01-13T18:30:00+08:00"
+    },
+    {
+      "id": "sub-5003",
+      "assignment_id": "assign-103",
+      "student_id": "s001",
+      "student_name": "张三",
       "files": [],
       "status": "submitted",
       "grade": null,
-      "submitted_at": "2026-01-13T20:12:00+08:00"
+      "feedback": null,
+      "submitted_at": "2026-01-14T21:00:00+08:00"
+    }
+  ],
+  "grades": [
+    {
+      "id": "g001",
+      "submission_id": "sub-5001",
+      "grader_id": "u1",
+      "score": null,
+      "feedback": null,
+      "draft": true,
+      "created_at": "2026-01-13T21:00:00+08:00"
+    },
+    {
+      "id": "g002",
+      "submission_id": "sub-5002",
+      "grader_id": "u1",
+      "score": 85,
+      "feedback": "解题思路清晰，但书写可以更规范",
+      "draft": false,
+      "created_at": "2026-01-14T10:00:00+08:00"
+    }
+  ],
+  "exams": [
+    {
+      "id": "exam-001",
+      "title": "期中考试 - 数学竞赛",
+      "courseId": "course-001",
+      "duration_minutes": 120,
+      "total_score": 150,
+      "status": "scheduled",
+      "scheduled_at": "2026-01-25T09:00:00+08:00",
+      "created_at": "2026-01-10T10:00:00+08:00"
+    },
+    {
+      "id": "exam-002",
+      "title": "模拟赛 - 初三奥数",
+      "courseId": "course-002",
+      "duration_minutes": 180,
+      "total_score": 200,
+      "status": "draft",
+      "scheduled_at": null,
+      "created_at": "2026-01-12T14:00:00+08:00"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "notif-001",
+      "type": "assignment",
+      "title": "新作业提交",
+      "message": "张三提交了「第三章：平面几何综合练习」",
+      "read": false,
+      "created_at": "2026-01-13T20:12:00+08:00"
+    },
+    {
+      "id": "notif-002",
+      "type": "system",
+      "title": "系统维护通知",
+      "message": "系统将于本周日凌晨2点进行维护升级",
+      "read": true,
+      "created_at": "2026-01-10T10:00:00+08:00"
+    },
+    {
+      "id": "notif-003",
+      "type": "course",
+      "title": "课程即将开始",
+      "message": "「初三奥数集训营」将于30分钟后开始",
+      "read": false,
+      "created_at": "2026-01-12T13:30:00+08:00"
     }
   ],
   "dashboard": {
     "metrics": [
-      { "key": "participation", "label": "参与率", "value": 92, "unit": "%" },
-      { "key": "accuracy", "label": "正确率", "value": 78, "unit": "%" },
-      { "key": "hands", "label": "举手数", "value": 5, "unit": "人" }
+      { "key": "participation", "label": "参与率", "value": 92, "unit": "%", "color": "blue" },
+      { "key": "accuracy", "label": "正确率", "value": 78, "unit": "%", "color": "orange" },
+      { "key": "hands", "label": "举手数", "value": 5, "unit": "人", "color": "purple" }
     ],
-    "today_courses": ["course-001", "course-002"]
+    "today_courses": ["course-001", "course-002"],
+    "pending_grading_count": 25,
+    "total_students": 97
   },
-  "reports": [],
-  "imports": []
+  "reports": [
+    {
+      "id": "report-001",
+      "type": "class_performance",
+      "title": "高一A班 - 月度学习报告",
+      "status": "ready",
+      "created_at": "2026-01-01T00:00:00+08:00",
+      "download_url": ""
+    }
+  ],
+  "imports": [],
+  "resources": [
+    {
+      "id": "res-001",
+      "title": "数论基础讲义",
+      "type": "document",
+      "format": "pdf",
+      "size": 2048000,
+      "courseId": "course-001",
+      "created_at": "2026-01-05T10:00:00+08:00"
+    },
+    {
+      "id": "res-002",
+      "title": "几何证明技巧视频",
+      "type": "video",
+      "format": "mp4",
+      "duration": 1800,
+      "size": 150000000,
+      "courseId": "course-002",
+      "created_at": "2026-01-08T14:00:00+08:00"
+    }
+  ]
 }
