@@ -1,93 +1,330 @@
-app/：应用入口层（路由、全局 Providers、样式入口）。
-    App.tsx：应用根组件，挂载 RouterProvider。
-    AppProviders.tsx：全局上下文与 QueryClientProvider、主题状态容器。
-    index.css：应用级样式入口（占位，可放全局覆盖）。
-    router.tsx：路由树定义，绑定各 layout 与页面组件。
-    routes.ts：路由路径常量及键名类型。
+# 数学竞赛在线学习平台 - 教师端前端
 
-assets/：静态资源占位（icons/images）。
-components/：全局可复用组件（cards、widgets、table、布局辅助）。
-    cards/
-        AssignmentItem.tsx：作业列表卡片，显示班级/状态/未批数量，支持点击和行动按钮。
-        CourseCard.tsx：课程卡片，展示标题、时间段、人数和状态，提供进入/更多操作。
-        MetricCard.tsx：KPI 小卡片组件，支持颜色、进度条与图标。
-        RecordingCard.tsx：录播卡片，含预览、状态徽标与播放/分享/导出操作。
-    breadcrumb/
-        Breadcrumb.tsx：面包屑导航组件。
-    header/
-        Header.tsx：主头部栏，容纳导航/用户区。
-    sidebar/
-        Sidebar.tsx：全局侧边导航菜单。
-    table/
-        StudentRow.tsx：学生表格行，展示头像、在线状态、出勤与操作。
-    ui/
-        Drawer.tsx：抽屉容器组件。
-        Modal.tsx：模态对话框组件。
-        StatusBadge.tsx：通用状态徽章。
-    widgets/
-        AvatarStack.tsx：头像堆叠展示小部件。
-        MetricCard.tsx：与 cards 版本配合的指标卡片封装。
+> 一个现代化的在线教学平台前端应用，支持直播授课、作业批改、学生管理等功能。
 
-assets/：静态资源占位。
-    icons/、images/：图标与图片占位（含 .gitkeep）。
+## 技术栈
 
-data/：数据文件。
-    mock/：本地 mock 数据 JSON（assignments/courses/dashboard/...）。
-    fixtures/：预留固定数据位置。
+- **框架**: React 18 + TypeScript
+- **构建工具**: Vite 5
+- **状态管理**: Zustand + React Query
+- **样式**: Tailwind CSS 4
+- **路由**: React Router 7
+- **HTTP 客户端**: Axios
+- **测试**: Vitest + Playwright
+- **文档**: Storybook
 
-layouts/：页面框架布局。
-    AppLayout.tsx：应用级布局容器。
-    MainLayout.tsx：主导航布局（含 Sidebar/Header）。
-    DetailLayout.tsx：详情页布局（窄侧栏）。
-    ImmersiveLayout.tsx：沉浸式布局（直播等）。
+## 快速开始
 
-modules/：按业务域拆分的组件与 hooks（示例）。
-    dashboard/：实时指标、待办、课程卡片等。
-    assignments/：作业管理、成绩册、批改工作室。
-    courses/：课程日程、详情抽屉、日历、花名册。
-    recordings/：录播列表/播放器。
-    students/：学生表格、筛选、hooks。
-    exams/、question-bank/、analytics/、collaboration/ 等：对应业务子模块。
+### 环境要求
 
-pages/：路由页面入口（与 routes.ts 对应）。
-    dashboard/DashboardPage.tsx：教学总览，今日课程、实时指标、待办作业。 
-    courses/
-        CourseSchedulePage.tsx：课程日程与花名册入口（日历+列表+抽屉）。
-        CourseDetailPage.tsx：课程详情与分栏信息。
-    assignments/
-        AssignmentManagementPage.tsx：作业管理列表与操作。
-        GradebookPage.tsx：成绩册视图。
-        GradingWorkspacePage.tsx：批改工作室。
-    recordings/RecordingLibraryPage.tsx：录播库页面。
-    students/
-        StudentListPage.tsx：学生列表、筛选与批量操作。
-        StudentProfilePage.tsx：学生档案详情。
-    exams/ExamManagementPage.tsx：考试管理。
-    question-bank/QuestionBankPage.tsx：题库与试题管理。
-    analytics/TeachingAnalyticsPage.tsx：教学分析报表。
-    live/LiveTeachingPage.tsx：直播授课页面。
-    resources/ResourceLibraryPage.tsx：教学资源库。
-    notifications/InboxPage.tsx：通知/收件箱。
-    settings/SettingsPage.tsx：系统设置与权限。
-    collaboration/CollaborationReviewPage.tsx：协作与审核。
-    NotFoundPage.tsx：404 占位。
+- Node.js >= 18.0.0
+- pnpm >= 8.0.0
 
-services/：API/数据服务封装。
-    apiClient.ts：HTTP 客户端封装。
-    courses.service.ts：课程数据服务（列表/详情）。
-    assignments.service.ts：作业数据服务。
-    dashboard.service.ts：仪表盘数据（含 mock 回落）。
-    recordings.service.ts：录播数据服务。
-    students.service.ts：学生数据服务。
+### 安装依赖
 
-styles/：全局样式。
-    tailwind.css：Tailwind 入口。
+```bash
+pnpm install
+```
 
-tests/：测试目录占位（e2e/unit）。
+### 配置环境变量
 
-types/：全局类型定义。
-    models/：领域模型（assignment/course/exam/question/student/recording 等）。
-    dashboard.ts：仪表盘相关类型。
-    index.d.ts：React/JSX/库 shim 与全局类型声明。
+```bash
+# 复制环境变量模板
+cp .env.example .env.local
 
-main.tsx：应用启动入口，挂载 App 并加载样式。
+# 编辑 .env.local 填入实际值
+```
+
+### 启动开发服务器
+
+```bash
+# 使用 Mock 数据启动（推荐用于前端开发）
+pnpm run dev:mock
+
+# 或使用真实后端 API
+pnpm run dev
+```
+
+访问 http://localhost:5173 查看应用。
+
+## 项目结构
+
+```
+src/
+├── app/                    # 应用入口层
+│   ├── App.tsx            # 根组件
+│   ├── AppProviders.tsx   # 全局 Providers
+│   ├── router.tsx         # 路由配置
+│   └── routes.ts          # 路由常量
+├── components/            # 全局可复用组件
+│   ├── ui/               # 基础 UI 组件
+│   ├── cards/            # 卡片组件
+│   ├── table/            # 表格组件
+│   └── ...
+├── layouts/               # 页面布局组件
+├── modules/               # 业务模块（按功能域划分）
+│   ├── dashboard/        # 仪表盘模块
+│   ├── courses/          # 课程模块
+│   ├── assignments/      # 作业模块
+│   ├── live/             # 直播模块
+│   └── ...
+├── pages/                 # 页面组件
+├── services/              # API 服务层
+│   ├── apiClient.ts      # HTTP 客户端
+│   ├── auth.service.ts   # 认证服务
+│   ├── courses.service.ts
+│   └── ...
+├── hooks/                 # 自定义 Hooks
+├── types/                 # 类型定义
+├── data/mock/             # Mock 数据
+├── styles/                # 全局样式
+└── tests/                 # 测试文件
+    ├── unit/             # 单元测试
+    └── e2e/              # E2E 测试
+```
+
+## 可用脚本
+
+| 脚本 | 说明 |
+|------|------|
+| `pnpm dev` | 启动开发服务器 |
+| `pnpm dev:mock` | 使用 Mock 数据启动开发服务器 |
+| `pnpm build` | 构建生产版本 |
+| `pnpm preview` | 预览生产构建 |
+| `pnpm test` | 运行单元测试 |
+| `pnpm test:watch` | 监听模式运行测试 |
+| `pnpm test:coverage` | 生成测试覆盖率报告 |
+| `pnpm test:e2e` | 运行 E2E 测试 |
+| `pnpm lint` | 运行 ESLint 检查 |
+| `pnpm lint:fix` | 自动修复 lint 问题 |
+| `pnpm format` | 格式化代码 |
+| `pnpm typecheck` | TypeScript 类型检查 |
+| `pnpm storybook` | 启动 Storybook |
+
+## Mock/Real API 切换
+
+项目支持在 Mock 数据和真实后端 API 之间切换：
+
+### 使用 Mock 数据（推荐用于前端开发）
+
+```bash
+# 方式 1: 使用专用脚本
+pnpm dev:mock
+
+# 方式 2: 设置环境变量
+VITE_USE_MOCK=true pnpm dev
+```
+
+### 使用真实后端 API
+
+1. 在 `.env.local` 中设置：
+```env
+VITE_USE_MOCK=false
+VITE_API_BASE=http://localhost:3000/api
+```
+
+2. 启动开发服务器：
+```bash
+pnpm dev
+```
+
+### Mock 数据位置
+
+Mock 数据存放在 `src/data/mock/data.json`，其结构与后端 API 响应保持一致。
+
+## 本地验收步骤
+
+以下命令序列可用于验证项目正常工作：
+
+```bash
+# 1. 安装依赖
+pnpm install
+
+# 2. 类型检查
+pnpm typecheck
+
+# 3. 代码检查
+pnpm lint
+
+# 4. 运行单元测试
+pnpm test
+
+# 5. 启动开发服务器（使用 Mock）
+pnpm dev:mock
+
+# 6. 在浏览器中验证主流程：
+#    - 访问 http://localhost:5173/login
+#    - 使用演示账号登录（demo@example.com / demo123）
+#    - 进入仪表盘，查看今日课程
+#    - 点击"开始直播"进入直播页面
+#    - 点击"结束课堂"结束直播
+#    - 前往录播库查看生成的录播
+
+# 7. 运行 E2E 测试
+pnpm test:e2e
+```
+
+## 关键功能流程
+
+### 登录流程
+
+1. 访问 `/login` 页面
+2. 输入账号和密码（演示账号：demo@example.com / demo123）
+3. 点击登录按钮
+4. 登录成功后跳转到仪表盘
+
+### 直播流程
+
+1. 在仪表盘点击"开始直播"或从课程详情进入
+2. 进入直播页面，可以使用白板、聊天等功能
+3. 点击"结束课堂"结束直播
+4. 系统自动生成录播（状态：处理中 → 就绪）
+
+### 直播页面 Deep-Link（参数化路由）
+
+直播教学页面支持通过 URL 直接访问指定课程的直播，便于分享链接或从其他系统跳转：
+
+**路由格式**：
+
+| URL 格式 | 说明 | 示例 |
+|----------|------|------|
+| `/live/:courseId` | 推荐，通过路径参数指定课程 | `/live/course-live-1` |
+| `/live?courseId=xxx` | 兼容旧逻辑，通过查询参数指定 | `/live?courseId=course-002` |
+| `/live` | 无参数时使用默认课程 | 默认进入 `course-live-1` |
+
+**优先级**：路径参数 > 查询参数 > 默认值
+
+**Mock 模式测试**：
+
+```bash
+# 启动 Mock 模式开发服务器
+pnpm dev:mock
+
+# 在浏览器访问以下 URL 测试：
+# http://localhost:5173/live/course-live-1
+# http://localhost:5173/live/course-002
+# http://localhost:5173/live?courseId=course-001
+```
+
+**Staging/生产环境**：
+
+将 `localhost:5173` 替换为实际部署域名即可，例如：
+- `https://your-domain.com/live/course-abc-123`
+
+### 作业批改流程
+
+1. 在仪表盘查看待批改作业
+2. 点击进入批改工作室
+3. 查看学生提交，添加批注和评分
+4. 保存草稿或提交最终批改
+
+## 环境变量说明
+
+| 变量名 | 说明 | 默认值 |
+|--------|------|--------|
+| `VITE_API_BASE` | 后端 API 地址 | `http://localhost:3000/api` |
+| `VITE_USE_MOCK` | 是否使用 Mock 数据 | `true` |
+| `VITE_WS_BASE` | WebSocket 服务地址 | `ws://localhost:3000` |
+| `VITE_AGORA_APP_ID` | 声网 App ID（用于音视频） | - |
+| `VITE_DEBUG` | 调试模式 | `false` |
+
+> ⚠️ **安全警告**：请勿将敏感配置（如 API 密钥、App Certificate）提交到代码仓库！
+
+## 测试
+
+### 单元测试
+
+使用 Vitest 进行单元测试：
+
+```bash
+# 运行所有测试
+pnpm test
+
+# 监听模式
+pnpm test:watch
+
+# 生成覆盖率报告
+pnpm test:coverage
+
+# 使用 UI 界面
+pnpm test:ui
+```
+
+### E2E 测试
+
+使用 Playwright 进行端到端测试：
+
+```bash
+# 安装 Playwright 浏览器
+npx playwright install
+
+# 运行所有 E2E 测试
+pnpm test:e2e
+
+# 使用 UI 模式
+pnpm test:e2e:ui
+
+# 运行带浏览器界面的测试
+pnpm test:e2e:headed
+```
+
+## 组件文档
+
+使用 Storybook 查看和开发组件：
+
+```bash
+# 启动 Storybook
+pnpm storybook
+
+# 构建静态文档
+pnpm build-storybook
+```
+
+访问 http://localhost:6006 查看组件库。
+
+## API 文档
+
+- [API 参考文档](./spec/api-reference.md) - 完整的后端 API 规范
+- [API 请求/响应示例](./spec/api-samples.md) - 具体的请求/响应示例
+- [WebSocket 协议](./spec/ws-live.md) - 直播实时通信协议
+- [JSON Schema](./spec/schemas/) - 数据模型定义
+
+## 构建部署
+
+```bash
+# 构建生产版本
+pnpm build
+
+# 预览构建结果
+pnpm preview
+```
+
+构建产物输出到 `dist/` 目录。
+
+## 贡献指南
+
+1. Fork 本仓库
+2. 创建功能分支：`git checkout -b feat/your-feature`
+3. 提交更改：`git commit -m 'feat: add some feature'`
+4. 推送分支：`git push origin feat/your-feature`
+5. 创建 Pull Request
+
+### 提交规范
+
+使用 [Conventional Commits](https://www.conventionalcommits.org/) 规范：
+
+- `feat:` 新功能
+- `fix:` 修复 Bug
+- `docs:` 文档更新
+- `style:` 代码格式
+- `refactor:` 代码重构
+- `test:` 测试相关
+- `chore:` 构建/工具
+
+### 代码质量
+
+提交前会自动运行 lint 和格式化（通过 husky + lint-staged）。
+
+## 许可证
+
+MIT License

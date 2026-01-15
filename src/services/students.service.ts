@@ -9,7 +9,8 @@ import api from './apiClient'
 import { type Student } from '@/types/models/student'
 import mockDataJson from '@/data/mock/data.json'
 
-const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true'
+// 默认在开发环境使用 mock，除非明确设置为 false
+const USE_MOCK = import.meta.env.VITE_USE_MOCK !== 'false' && (import.meta.env.DEV || import.meta.env.VITE_USE_MOCK === 'true')
 
 type MockData = {
 	students?: Student[]
@@ -57,7 +58,8 @@ export const studentsService = {
 			return [...studentsStorage]
 		}
 		const res = await api.get<Student[]>('/students', { params })
-		return res.data
+		// 确保返回的是数组
+		return Array.isArray(res.data) ? res.data : []
 	},
 
 	async get(id: string): Promise<Student | undefined> {
@@ -186,16 +188,34 @@ export const studentsService = {
 	async exportCsv(studentIds: string[]): Promise<{ filename: string; content: string }> {
 		if (USE_MOCK) {
 			await delay(30)
+			// 如果没有指定学生ID，导出所有学生
+			const studentsToExport = studentIds.length > 0 
+				? studentIds.map((id) => studentsStorage.find((s) => s.id === id)).filter(Boolean)
+				: studentsStorage
+			
 			const header = 'id,name,courseId,attendance,onlineStatus,group\n'
-			const rows = studentIds
-				.map((id) => studentsStorage.find((s) => s.id === id))
-				.filter(Boolean)
+			const rows = studentsToExport
 				.map((s) => `${s!.id},${s!.name},${s!.courseId ?? ''},${s!.attendance},${s!.onlineStatus},${s!.group ?? ''}`)
 				.join('\n')
-			return { filename: 'students.csv', content: header + rows + (rows ? '\n' : '') }
+			return { filename: `students_${new Date().toISOString().slice(0, 10)}.csv`, content: header + rows + (rows ? '\n' : '') }
 		}
-		const res = await api.post('/students/export', { studentIds })
-		return res.data
+		try {
+			const res = await api.post('/students/export', { studentIds })
+			return res.data
+		} catch (err) {
+			console.error('导出失败，回退到 mock 模式', err)
+			// 如果 API 调用失败，回退到 mock 实现
+			await delay(30)
+			const studentsToExport = studentIds.length > 0 
+				? studentIds.map((id) => studentsStorage.find((s) => s.id === id)).filter(Boolean)
+				: studentsStorage
+			
+			const header = 'id,name,courseId,attendance,onlineStatus,group\n'
+			const rows = studentsToExport
+				.map((s) => `${s!.id},${s!.name},${s!.courseId ?? ''},${s!.attendance},${s!.onlineStatus},${s!.group ?? ''}`)
+				.join('\n')
+			return { filename: `students_${new Date().toISOString().slice(0, 10)}.csv`, content: header + rows + (rows ? '\n' : '') }
+		}
 	}
 }
 

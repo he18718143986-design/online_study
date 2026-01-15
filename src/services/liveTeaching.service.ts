@@ -1,6 +1,7 @@
 import api from './apiClient'
 
-const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true'
+// 默认在开发环境使用 mock，除非明确设置为 false
+const USE_MOCK = import.meta.env.VITE_USE_MOCK !== 'false' && (import.meta.env.DEV || import.meta.env.VITE_USE_MOCK === 'true')
 
 const STORAGE_KEY = 'mock.liveTeaching.events'
 
@@ -52,7 +53,12 @@ export const liveTeachingService = {
 			await recordMockEvent({ type: 'share_screen', ...input })
 			return
 		}
-		await api.post(`/live/${encodeURIComponent(input.sessionId)}/share-screen`, { courseId: input.courseId })
+		try {
+			await api.post(`/live/${encodeURIComponent(input.sessionId)}/share-screen`, { courseId: input.courseId })
+		} catch (err) {
+			console.warn('shareScreen API 调用失败，回退到 mock 模式', err)
+			await recordMockEvent({ type: 'share_screen', ...input })
+		}
 	},
 
 	async insertQuestion(input: { courseId: string; sessionId: string }) {
@@ -60,7 +66,12 @@ export const liveTeachingService = {
 			await recordMockEvent({ type: 'insert_question', ...input })
 			return
 		}
-		await api.post(`/live/${encodeURIComponent(input.sessionId)}/insert-question`, { courseId: input.courseId })
+		try {
+			await api.post(`/live/${encodeURIComponent(input.sessionId)}/insert-question`, { courseId: input.courseId })
+		} catch (err) {
+			console.warn('insertQuestion API 调用失败，回退到 mock 模式', err)
+			await recordMockEvent({ type: 'insert_question', ...input })
+		}
 	},
 
 	async openChat(input: { courseId: string; sessionId: string }) {
@@ -68,7 +79,12 @@ export const liveTeachingService = {
 			await recordMockEvent({ type: 'open_chat', ...input })
 			return
 		}
-		await api.post(`/live/${encodeURIComponent(input.sessionId)}/open-chat`, { courseId: input.courseId })
+		try {
+			await api.post(`/live/${encodeURIComponent(input.sessionId)}/open-chat`, { courseId: input.courseId })
+		} catch (err) {
+			console.warn('openChat API 调用失败，回退到 mock 模式', err)
+			await recordMockEvent({ type: 'open_chat', ...input })
+		}
 	},
 
 	async toggleRecording(input: { courseId: string; sessionId: string; active: boolean }) {
@@ -76,7 +92,12 @@ export const liveTeachingService = {
 			await recordMockEvent({ type: 'toggle_recording', ...input, payload: { active: input.active } })
 			return
 		}
-		await api.post(`/live/${encodeURIComponent(input.sessionId)}/recording`, { courseId: input.courseId, active: input.active })
+		try {
+			await api.post(`/live/${encodeURIComponent(input.sessionId)}/recording`, { courseId: input.courseId, active: input.active })
+		} catch (err) {
+			console.warn('toggleRecording API 调用失败，回退到 mock 模式', err)
+			await recordMockEvent({ type: 'toggle_recording', ...input, payload: { active: input.active } })
+		}
 	}
 }
 

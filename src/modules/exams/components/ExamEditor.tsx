@@ -1,7 +1,7 @@
 // 来源 HTML: online_study/考试管理
 import React from 'react'
 import Modal from '../../../components/ui/Modal'
-import type { Exam, ExamStatus } from '@/types/models/exam'
+import type { Exam, ExamStatus, ExamSegment, AntiCheatLevel } from '@/types/models/exam'
 
 export interface ExamEditorProps {
 	open: boolean
@@ -19,6 +19,9 @@ const ExamEditor: React.FC<ExamEditorProps> = ({ open, onClose, onSave, initialE
 	const [duration, setDuration] = React.useState('')
 	const [proctor, setProctor] = React.useState('')
 	const [note, setNote] = React.useState('')
+	const [segments, setSegments] = React.useState<ExamSegment[]>([])
+	const [antiCheatLevel, setAntiCheatLevel] = React.useState<AntiCheatLevel>('medium')
+	const [timeWindow, setTimeWindow] = React.useState('')
 	const [saving, setSaving] = React.useState(false)
 
 	React.useEffect(() => {
@@ -31,6 +34,9 @@ const ExamEditor: React.FC<ExamEditorProps> = ({ open, onClose, onSave, initialE
 			setDuration(initialExam.durationMinutes ? String(initialExam.durationMinutes) : '')
 			setProctor(initialExam.proctor ?? '')
 			setNote(initialExam.note ?? '')
+			setSegments(initialExam.segments ?? [])
+			setAntiCheatLevel(initialExam.antiCheatLevel ?? 'medium')
+			setTimeWindow(initialExam.timeWindow ? String(initialExam.timeWindow) : '')
 		} else {
 			setTitle('')
 			setStatus('draft')
@@ -40,6 +46,9 @@ const ExamEditor: React.FC<ExamEditorProps> = ({ open, onClose, onSave, initialE
 			setDuration('')
 			setProctor('')
 			setNote('')
+			setSegments([])
+			setAntiCheatLevel('medium')
+			setTimeWindow('')
 		}
 	}, [initialExam])
 
@@ -54,7 +63,10 @@ const ExamEditor: React.FC<ExamEditorProps> = ({ open, onClose, onSave, initialE
 			endAt: endAt || undefined,
 			durationMinutes: duration ? Number(duration) : undefined,
 			proctor: proctor || undefined,
-			note: note || undefined
+			note: note || undefined,
+			segments: segments.length > 0 ? segments : undefined,
+			antiCheatLevel,
+			timeWindow: timeWindow ? Number(timeWindow) : undefined
 		})
 		setSaving(false)
 		onClose()
@@ -69,7 +81,7 @@ const ExamEditor: React.FC<ExamEditorProps> = ({ open, onClose, onSave, initialE
 						<input className="h-10 px-3 rounded-lg border border-border-light" value={title} onChange={(e) => setTitle(e.target.value)} required />
 					</label>
 					<label className="flex flex-col gap-1 text-xs text-text-secondary">
-						描述/备注（占位）
+						描述/备注
 						<textarea className="min-h-[80px] px-3 py-2 rounded-lg border border-border-light" value={note} onChange={(e) => setNote(e.target.value)} placeholder="考纲、监考要求等" />
 					</label>
 				</div>
@@ -110,9 +122,122 @@ const ExamEditor: React.FC<ExamEditorProps> = ({ open, onClose, onSave, initialE
 						<input className="h-10 px-3 rounded-lg border border-border-light" value={proctor} onChange={(e) => setProctor(e.target.value)} placeholder="李老师" />
 					</label>
 				</div>
-				<div className="flex flex-col gap-1 text-xs text-text-secondary">
-					分段设置（占位）
-					<p className="text-[11px] text-text-tertiary">TODO: 添加题段、时间窗和反作弊等级等详细配置。</p>
+				<div className="space-y-3 rounded-lg border border-border-light p-4 bg-background-light/50">
+					<div className="flex items-center justify-between">
+						<label className="text-xs font-semibold text-text-main">分段设置</label>
+					</div>
+					
+					{/* 反作弊等级 */}
+					<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+						<label className="flex flex-col gap-1 text-xs text-text-secondary">
+							反作弊等级
+							<select className="h-10 px-3 rounded-lg border border-border-light bg-white" value={antiCheatLevel} onChange={(e) => setAntiCheatLevel(e.target.value as AntiCheatLevel)}>
+								<option value="low">低 - 基础检测</option>
+								<option value="medium">中 - 标准检测（推荐）</option>
+								<option value="high">高 - 严格检测</option>
+								<option value="strict">严格 - 最高级别</option>
+							</select>
+						</label>
+						<label className="flex flex-col gap-1 text-xs text-text-secondary">
+							时间窗（分钟）
+							<input 
+								className="h-10 px-3 rounded-lg border border-border-light" 
+								type="number" 
+								value={timeWindow} 
+								onChange={(e) => setTimeWindow(e.target.value)} 
+								placeholder="允许在此时间范围内开始考试"
+								min="0"
+							/>
+						</label>
+					</div>
+
+					{/* 题段管理 */}
+					<div className="space-y-2">
+						<div className="flex items-center justify-between">
+							<span className="text-xs text-text-secondary">题段配置</span>
+							<button
+								type="button"
+								className="px-2 h-7 text-xs rounded border border-border-light bg-white hover:bg-background-light"
+								onClick={() => {
+									const newSegment: ExamSegment = {
+										id: `segment-${Date.now()}`,
+										name: `题段 ${segments.length + 1}`,
+										startTime: 0,
+										duration: 30,
+										questionCount: 10
+									}
+									setSegments([...segments, newSegment])
+								}}
+							>
+								+ 添加题段
+							</button>
+						</div>
+						{segments.length === 0 ? (
+							<p className="text-[11px] text-text-tertiary py-2">暂无题段，点击"添加题段"开始配置</p>
+						) : (
+							<div className="space-y-2">
+								{segments.map((segment, index) => (
+									<div key={segment.id} className="grid grid-cols-1 sm:grid-cols-5 gap-2 p-2 rounded border border-border-light bg-white">
+										<input
+											className="h-8 px-2 rounded border border-border-light text-xs"
+											value={segment.name}
+											onChange={(e) => {
+												const updated = [...segments]
+												updated[index] = { ...updated[index], name: e.target.value }
+												setSegments(updated)
+											}}
+											placeholder="题段名称"
+										/>
+										<input
+											className="h-8 px-2 rounded border border-border-light text-xs"
+											type="number"
+											value={segment.startTime ?? ''}
+											onChange={(e) => {
+												const updated = [...segments]
+												updated[index] = { ...updated[index], startTime: e.target.value ? Number(e.target.value) : undefined }
+												setSegments(updated)
+											}}
+											placeholder="开始时间(分)"
+											min="0"
+										/>
+										<input
+											className="h-8 px-2 rounded border border-border-light text-xs"
+											type="number"
+											value={segment.duration ?? ''}
+											onChange={(e) => {
+												const updated = [...segments]
+												updated[index] = { ...updated[index], duration: e.target.value ? Number(e.target.value) : undefined }
+												setSegments(updated)
+											}}
+											placeholder="时长(分)"
+											min="1"
+										/>
+										<input
+											className="h-8 px-2 rounded border border-border-light text-xs"
+											type="number"
+											value={segment.questionCount ?? ''}
+											onChange={(e) => {
+												const updated = [...segments]
+												updated[index] = { ...updated[index], questionCount: e.target.value ? Number(e.target.value) : undefined }
+												setSegments(updated)
+											}}
+											placeholder="题目数"
+											min="1"
+										/>
+										<button
+											type="button"
+											className="h-8 px-2 text-xs rounded border border-red-200 text-red-600 hover:bg-red-50"
+											onClick={() => {
+												setSegments(segments.filter((_, i) => i !== index))
+											}}
+										>
+											删除
+										</button>
+									</div>
+								))}
+							</div>
+						)}
+					</div>
 				</div>
 				<div className="flex items-center justify-end gap-2 pt-2">
 					<button type="button" className="px-3 h-10 rounded-lg border border-border-light" onClick={onClose}>

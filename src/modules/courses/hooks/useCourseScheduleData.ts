@@ -50,10 +50,11 @@ export function useCourseScheduleData(initialCourseId?: string): CourseScheduleR
 				assignmentsService.list(),
 				recordingsService.list()
 			])
-			setCoursesRaw(courses)
-			setStudents(baseStudents)
-			setAssignmentsRaw(assignments)
-			setRecordingsRaw(recordings)
+			// 确保所有数据都是数组
+			setCoursesRaw(Array.isArray(courses) ? courses : [])
+			setStudents(Array.isArray(baseStudents) ? baseStudents : [])
+			setAssignmentsRaw(Array.isArray(assignments) ? assignments : [])
+			setRecordingsRaw(Array.isArray(recordings) ? recordings : [])
 		} catch (err) {
 			setError(err as Error)
 		} finally {
@@ -66,6 +67,10 @@ export function useCourseScheduleData(initialCourseId?: string): CourseScheduleR
 	}, [refetch])
 
 	const courses = React.useMemo<CourseScheduleSession[]>(() => {
+		// 确保 coursesRaw 是数组
+		if (!Array.isArray(coursesRaw)) {
+			return []
+		}
 		return coursesRaw.map((course, index) => {
 			const [startTime = '00:00', endTime = '01:00'] = (course.timeRange ?? '00:00 - 01:00')
 				.split('-')

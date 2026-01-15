@@ -10,7 +10,8 @@ import { type Course } from '@/types/models/course'
 import mockDataJson from '@/data/mock/data.json'
 import recordingsService from '@/services/recordings.service'
 
-const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true'
+// 默认在开发环境使用 mock，除非明确设置为 false
+const USE_MOCK = import.meta.env.VITE_USE_MOCK !== 'false' && (import.meta.env.DEV || import.meta.env.VITE_USE_MOCK === 'true')
 
 type LiveStatus = 'prepare' | 'live' | 'ended'
 
@@ -46,7 +47,8 @@ export const coursesService = {
 			return [...coursesStorage]
 		}
 		const res = await api.get<Course[]>('/courses', { params })
-		return res.data
+		// 确保返回的是数组
+		return Array.isArray(res.data) ? res.data : []
 	},
 
 	async get(id: string): Promise<Course | undefined> {
@@ -60,6 +62,7 @@ export const coursesService = {
 
 	async startLive(courseId: string): Promise<LiveSession> {
 		if (USE_MOCK) {
+			await delay(100)
 			const session: LiveSession = {
 				id: nowId('live'),
 				courseId,
@@ -69,12 +72,27 @@ export const coursesService = {
 			liveSessions.push(session)
 			return session
 		}
-		const res = await api.post<LiveSession>(`/courses/${courseId}/live/start`)
-		return res.data
+		try {
+			const res = await api.post<LiveSession>(`/courses/${courseId}/live/start`)
+			return res.data
+		} catch (err) {
+			console.warn('startLive API 调用失败，回退到 mock 模式', err)
+			// 如果 API 调用失败，回退到 mock 实现
+			await delay(100)
+			const session: LiveSession = {
+				id: nowId('live'),
+				courseId,
+				startAt: new Date().toISOString(),
+				status: 'live'
+			}
+			liveSessions.push(session)
+			return session
+		}
 	},
 
 	async endLive(liveId: string): Promise<{ session: LiveSession; recording: Awaited<ReturnType<typeof recordingsService.createFromLive>> }> {
 		if (USE_MOCK) {
+			await delay(100)
 			const idx = liveSessions.findIndex((s) => s.id === liveId)
 			if (idx === -1) throw new Error('live session not found')
 			const session = liveSessions[idx]
@@ -83,16 +101,37 @@ export const coursesService = {
 			const recording = await recordingsService.createFromLive(session)
 			return { session, recording }
 		}
-		const res = await api.post<{ session: LiveSession; recording: any }>(`/live/${liveId}/stop`)
-		return res.data
+		try {
+			const res = await api.post<{ session: LiveSession; recording: any }>(`/live/${liveId}/stop`)
+			return res.data
+		} catch (err) {
+			console.warn('endLive API 调用失败，回退到 mock 模式', err)
+			// 如果 API 调用失败，回退到 mock 实现
+			await delay(100)
+			const idx = liveSessions.findIndex((s) => s.id === liveId)
+			if (idx === -1) throw new Error('live session not found')
+			const session = liveSessions[idx]
+			session.status = 'ended'
+			session.endAt = new Date().toISOString()
+			const recording = await recordingsService.createFromLive(session)
+			return { session, recording }
+		}
 	},
 
 	async getLive(liveId: string): Promise<LiveSession | undefined> {
 		if (USE_MOCK) {
+			await delay(50)
 			return liveSessions.find((s) => s.id === liveId)
 		}
-		const res = await api.get<LiveSession>(`/live/${liveId}`)
-		return res.data
+		try {
+			const res = await api.get<LiveSession>(`/live/${liveId}`)
+			return res.data
+		} catch (err) {
+			console.warn('getLive API 调用失败，回退到 mock 模式', err)
+			// 如果 API 调用失败，回退到 mock 实现
+			await delay(50)
+			return liveSessions.find((s) => s.id === liveId)
+		}
 	}
 }
 

@@ -231,19 +231,26 @@ export function useStudents(initialFilters: Partial<StudentFilters> = {}): UseSt
 	}, [clearSelection])
 
 	const bulkExport = React.useCallback(async (ids: string[]) => {
-		const { filename, content } = await studentsService.exportCsv(ids)
-		const blob = new Blob([content], { type: 'text/csv;charset=utf-8' })
-		const url = URL.createObjectURL(blob)
-		const a = document.createElement('a')
-		a.href = url
-		a.download = filename
-		a.style.display = 'none'
-		document.body.appendChild(a)
-		a.click()
-		a.remove()
-		URL.revokeObjectURL(url)
-		window.alert(`已导出 ${ids.length} 名学生的 CSV`)
-		clearSelection()
+		try {
+			const { filename, content } = await studentsService.exportCsv(ids)
+			// 添加 BOM 以支持 Excel 正确显示中文
+			const blob = new Blob(['\ufeff' + content], { type: 'text/csv;charset=utf-8;' })
+			const url = URL.createObjectURL(blob)
+			const a = document.createElement('a')
+			a.href = url
+			a.download = filename
+			a.style.display = 'none'
+			document.body.appendChild(a)
+			a.click()
+			a.remove()
+			URL.revokeObjectURL(url)
+			const count = ids.length || '所有'
+			window.alert(`已导出 ${count} 名学生的 CSV`)
+			clearSelection()
+		} catch (error) {
+			console.error('导出失败:', error)
+			window.alert('导出失败，请重试')
+		}
 	}, [clearSelection])
 
 	const bulkGroup = React.useCallback(async (ids: string[]) => {

@@ -4,6 +4,7 @@ export interface Assignment {
 	id: string
 	courseId: string
 	title: string
+	description?: string
 	dueAt?: string
 	totalPoints?: number
 	status: AssignmentStatus

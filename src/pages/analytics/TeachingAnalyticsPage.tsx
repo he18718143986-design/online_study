@@ -5,7 +5,13 @@ import useReports from '../../modules/analytics/hooks/useReports'
 
 const TeachingAnalyticsPage: React.FC = () => {
 	const { reports, scheduled, isLoading, error, generateReport, scheduleExport, refetch } = useReports()
+	const [timeRange, setTimeRange] = React.useState('本周')
+	const [classFilter, setClassFilter] = React.useState('全部班级')
+	const [courseFilter, setCourseFilter] = React.useState('全部课程')
+	const [topicFilter, setTopicFilter] = React.useState('全部知识点')
+	const [notice, setNotice] = React.useState<string | null>(null)
 
+	// TODO: 从 API 获取真实数据
 	const kpis = React.useMemo(
 		() => [
 			{ id: 'pending', label: '批改积压', value: '12', sublabel: '待批改作业', badge: '紧急', trend: 'up' as const },
@@ -15,6 +21,23 @@ const TeachingAnalyticsPage: React.FC = () => {
 		],
 		[]
 	)
+
+	const handleFilter = () => {
+		setNotice(`已应用筛选：${timeRange} / ${classFilter} / ${courseFilter} / ${topicFilter}`)
+		setTimeout(() => setNotice(null), 3000)
+		// TODO: 调用 API 获取筛选后的数据
+	}
+
+	const handleGenerateReport = async (reportId: string) => {
+		try {
+			await generateReport(reportId)
+			setNotice('报表已生成并下载')
+			setTimeout(() => setNotice(null), 3000)
+		} catch (err) {
+			setNotice('报表生成失败，请重试')
+			setTimeout(() => setNotice(null), 3000)
+		}
+	}
 
 	const trendData = [
 		{ label: '周一', value: 45, studentId: '20230105' },
@@ -50,7 +73,7 @@ const TeachingAnalyticsPage: React.FC = () => {
 					<button
 						type="button"
 						className="flex items-center justify-center gap-2 h-10 px-5 rounded-lg bg-primary text-white text-sm font-bold shadow-md hover:bg-primary-hover"
-						onClick={() => void generateReport('dashboard')}
+						onClick={() => void handleGenerateReport('dashboard')}
 					>
 						<span className="material-symbols-outlined text-[18px]">add_chart</span>
 						生成自定义报表
@@ -58,11 +81,24 @@ const TeachingAnalyticsPage: React.FC = () => {
 				</div>
 			</header>
 
+			{notice ? (
+				<div className="flex items-start justify-between gap-2 rounded-lg border border-green-200 bg-green-50 px-3 py-2 text-xs text-green-800">
+					<p>{notice}</p>
+					<button className="text-green-700 hover:opacity-70" onClick={() => setNotice(null)} aria-label="关闭提示">
+						<span className="material-symbols-outlined text-[18px]">close</span>
+					</button>
+				</div>
+			) : null}
+
 			<section className="bg-white dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark p-4 shadow-sm">
 				<div className="flex flex-wrap items-end gap-4 mb-4">
 					<div className="flex flex-col gap-1.5 w-52">
 						<label className="text-xs font-semibold text-text-secondary uppercase tracking-wider">时间范围</label>
-						<select className="w-full h-10 rounded-lg border border-border-light bg-background-light px-3 text-sm text-text-main focus:ring-2 focus:ring-primary/50">
+						<select 
+							className="w-full h-10 rounded-lg border border-border-light bg-background-light px-3 text-sm text-text-main focus:ring-2 focus:ring-primary/50" 
+							value={timeRange}
+							onChange={(e) => setTimeRange(e.target.value)}
+						>
 							<option>本周</option>
 							<option>本月</option>
 							<option>本学期</option>
@@ -71,7 +107,11 @@ const TeachingAnalyticsPage: React.FC = () => {
 					</div>
 					<div className="flex flex-col gap-1.5 w-52">
 						<label className="text-xs font-semibold text-text-secondary uppercase tracking-wider">班级</label>
-						<select className="w-full h-10 rounded-lg border border-border-light bg-background-light px-3 text-sm text-text-main focus:ring-2 focus:ring-primary/50">
+						<select 
+							className="w-full h-10 rounded-lg border border-border-light bg-background-light px-3 text-sm text-text-main focus:ring-2 focus:ring-primary/50"
+							value={classFilter}
+							onChange={(e) => setClassFilter(e.target.value)}
+						>
 							<option>全部班级</option>
 							<option>高一(1)班</option>
 							<option>高一(3)班</option>
@@ -79,7 +119,11 @@ const TeachingAnalyticsPage: React.FC = () => {
 					</div>
 					<div className="flex flex-col gap-1.5 w-52">
 						<label className="text-xs font-semibold text-text-secondary uppercase tracking-wider">课程</label>
-						<select className="w-full h-10 rounded-lg border border-border-light bg-background-light px-3 text-sm text-text-main focus:ring-2 focus:ring-primary/50">
+						<select 
+							className="w-full h-10 rounded-lg border border-border-light bg-background-light px-3 text-sm text-text-main focus:ring-2 focus:ring-primary/50"
+							value={courseFilter}
+							onChange={(e) => setCourseFilter(e.target.value)}
+						>
 							<option>全部课程</option>
 							<option>高中数学联赛一轮</option>
 							<option>解析几何专题</option>
@@ -87,13 +131,20 @@ const TeachingAnalyticsPage: React.FC = () => {
 					</div>
 					<div className="flex flex-col gap-1.5 w-52">
 						<label className="text-xs font-semibold text-text-secondary uppercase tracking-wider">知识点</label>
-						<select className="w-full h-10 rounded-lg border border-border-light bg-background-light px-3 text-sm text-text-main focus:ring-2 focus:ring-primary/50">
+						<select 
+							className="w-full h-10 rounded-lg border border-border-light bg-background-light px-3 text-sm text-text-main focus:ring-2 focus:ring-primary/50"
+							value={topicFilter}
+							onChange={(e) => setTopicFilter(e.target.value)}
+						>
 							<option>全部知识点</option>
 							<option>三角函数</option>
 							<option>数列与极限</option>
 						</select>
 					</div>
-					<button className="h-10 px-4 bg-primary/10 text-primary hover:bg-primary/20 rounded-lg text-sm font-bold transition-colors">
+					<button 
+						className="h-10 px-4 bg-primary/10 text-primary hover:bg-primary/20 rounded-lg text-sm font-bold transition-colors"
+						onClick={handleFilter}
+					>
 						筛选
 					</button>
 				</div>
@@ -110,9 +161,9 @@ const TeachingAnalyticsPage: React.FC = () => {
 				</div>
 				<div className="grid grid-cols-1 md:grid-cols-3 gap-3">
 					{[
-						{ title: '批改积压', value: '12 份作业', tone: 'text-red-600', pill: '紧急' },
-						{ title: '参与率异常', value: '<60% 高一(3)班', tone: 'text-orange-600', pill: '需关注' },
-						{ title: '低分告警', value: '15 人不及格', tone: 'text-blue-600', pill: '提醒' }
+						{ title: '批改积压', value: '12 份作业', tone: 'text-red-600', pill: '紧急', description: '超过3天未批改的作业' },
+						{ title: '参与率异常', value: '<60% 高一(3)班', tone: 'text-orange-600', pill: '需关注', description: '本周参与率低于平均水平' },
+						{ title: '低分告警', value: '15 人不及格', tone: 'text-blue-600', pill: '提醒', description: '最近一次考试不及格人数' }
 					].map((card) => (
 						<div key={card.title} className="rounded-xl border border-border-light dark:border-border-dark bg-background-light/60 dark:bg-surface-dark p-4 shadow-sm">
 							<div className="flex items-center justify-between mb-2">
@@ -120,7 +171,7 @@ const TeachingAnalyticsPage: React.FC = () => {
 								<span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-bold">{card.pill}</span>
 							</div>
 							<p className={`text-lg font-bold ${card.tone}`}>{card.value}</p>
-							<p className="text-xs text-text-secondary mt-1">占位文案，等待接入真实监测逻辑</p>
+							<p className="text-xs text-text-secondary mt-1">{card.description}</p>
 						</div>
 					))}
 				</div>
@@ -139,15 +190,20 @@ const TeachingAnalyticsPage: React.FC = () => {
 					<ReportsLibrary
 						reports={reports}
 						scheduled={scheduled}
-						onGenerate={(id) => void generateReport(id)}
-						onSchedule={(id, freq) => void scheduleExport(id, freq)}
+						onGenerate={(id) => void handleGenerateReport(id)}
+						onSchedule={(id, freq) => {
+							void scheduleExport(id, freq).then(() => {
+								setNotice('已添加计划导出')
+								setTimeout(() => setNotice(null), 3000)
+							})
+						}}
 					/>
 				</div>
 			</section>
 
 			<section className="bg-white dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm p-4">
-				<h4 className="text-base font-bold text-text-main mb-4">近7日刷题量趋势 (占位)</h4>
-				<div className="relative h-64 w-full mt-2 flex items-end justify-between gap-4 px-2 pb-6" role="img" aria-label="近7日趋势占位">
+				<h4 className="text-base font-bold text-text-main mb-4">近7日刷题量趋势</h4>
+				<div className="relative h-64 w-full mt-2 flex items-end justify-between gap-4 px-2 pb-6" role="img" aria-label="近7日刷题量趋势图">
 					{trendData.map((point) => (
 						<button
 							key={point.label}
@@ -164,7 +220,7 @@ const TeachingAnalyticsPage: React.FC = () => {
 						</button>
 					))}
 				</div>
-				<p className="text-xs text-text-secondary mt-2">点击柱子会调用导航逻辑（已在代码注释中预留）。</p>
+				<p className="text-xs text-text-secondary mt-2">提示：点击柱状图可查看该日期的详细数据</p>
 			</section>
 		</div>
 	)

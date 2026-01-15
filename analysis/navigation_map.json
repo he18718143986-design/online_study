@@ -1,0 +1,311 @@
+{
+  "generatedAt": "2026-01-15T10:50:00Z",
+  "summary": {
+    "totalNavigationPoints": 58,
+    "declarativeLinks": 0,
+    "programmaticNavigations": 58,
+    "routeHelperUsage": 24,
+    "hardcodedPaths": 34
+  },
+  "navigationPoints": [
+    {
+      "from": "src/pages/dashboard/DashboardPage.tsx:27",
+      "type": "programmatic",
+      "target": "getCourseDetailUrl(courseId)",
+      "targetResolved": "/courses/:courseId",
+      "contextComponent": "DashboardPage",
+      "usesHelper": true
+    },
+    {
+      "from": "src/pages/dashboard/DashboardPage.tsx:32",
+      "type": "programmatic",
+      "target": "getLiveTeachingUrl(courseId)",
+      "targetResolved": "/live/:courseId",
+      "contextComponent": "DashboardPage",
+      "usesHelper": true
+    },
+    {
+      "from": "src/pages/dashboard/DashboardPage.tsx:36",
+      "type": "programmatic",
+      "target": "ROUTES.courseSchedule",
+      "targetResolved": "/courses/schedule",
+      "contextComponent": "DashboardPage",
+      "usesHelper": false
+    },
+    {
+      "from": "src/pages/dashboard/DashboardPage.tsx:40",
+      "type": "programmatic",
+      "target": "${ROUTES.assignmentManagement}/${assignmentId}/grading",
+      "targetResolved": "/assignments/:assignmentId/grading",
+      "contextComponent": "DashboardPage",
+      "usesHelper": false,
+      "needsHelper": "getAssignmentGradingUrl"
+    },
+    {
+      "from": "src/pages/dashboard/DashboardPage.tsx:44",
+      "type": "programmatic",
+      "target": "ROUTES.assignmentManagement",
+      "targetResolved": "/assignments",
+      "contextComponent": "DashboardPage",
+      "usesHelper": false
+    },
+    {
+      "from": "src/pages/dashboard/DashboardPage.tsx:49",
+      "type": "programmatic",
+      "target": "ROUTES.liveTeaching",
+      "targetResolved": "/live",
+      "contextComponent": "DashboardPage",
+      "usesHelper": false
+    },
+    {
+      "from": "src/pages/dashboard/DashboardPage.tsx:53",
+      "type": "programmatic",
+      "target": "${ROUTES.courseSchedule}/new",
+      "targetResolved": "/courses/schedule/new",
+      "contextComponent": "DashboardPage",
+      "usesHelper": false,
+      "needsHelper": "getCourseScheduleNewUrl"
+    },
+    {
+      "from": "src/pages/dashboard/DashboardPage.tsx:57",
+      "type": "programmatic",
+      "target": "${ROUTES.assignmentManagement}/new",
+      "targetResolved": "/assignments/new",
+      "contextComponent": "DashboardPage",
+      "usesHelper": false
+    },
+    {
+      "from": "src/pages/dashboard/DashboardPage.tsx:61",
+      "type": "programmatic",
+      "target": "${ROUTES.resourceLibrary}/upload",
+      "targetResolved": "/resources/upload",
+      "contextComponent": "DashboardPage",
+      "usesHelper": false
+    },
+    {
+      "from": "src/pages/courses/CourseDetailPage.tsx:101",
+      "type": "programmatic",
+      "target": "getLiveTeachingUrl(courseId)",
+      "targetResolved": "/live/:courseId",
+      "contextComponent": "CourseDetailPage",
+      "usesHelper": true
+    },
+    {
+      "from": "src/pages/courses/CourseDetailPage.tsx:106",
+      "type": "programmatic",
+      "target": "${ROUTES.recordings}?courseId=...",
+      "targetResolved": "/recordings?courseId=:courseId",
+      "contextComponent": "CourseDetailPage",
+      "usesHelper": false,
+      "needsHelper": "getRecordingsWithCourseUrl"
+    },
+    {
+      "from": "src/pages/courses/CourseDetailPage.tsx:111",
+      "type": "programmatic",
+      "target": "getRecordingDetailUrl(recordingId, courseId)",
+      "targetResolved": "/recordings/:recordingId?courseId=:courseId",
+      "contextComponent": "CourseDetailPage",
+      "usesHelper": true
+    },
+    {
+      "from": "src/pages/courses/CourseDetailPage.tsx:115",
+      "type": "programmatic",
+      "target": "ROUTES.assignmentManagement",
+      "targetResolved": "/assignments",
+      "contextComponent": "CourseDetailPage",
+      "usesHelper": false
+    },
+    {
+      "from": "src/pages/courses/CourseDetailPage.tsx:119",
+      "type": "programmatic",
+      "target": "ROUTES.courseEdit.replace(':courseId', courseId)",
+      "targetResolved": "/courses/:courseId/edit",
+      "contextComponent": "CourseDetailPage",
+      "usesHelper": false,
+      "needsHelper": "getCourseEditUrl"
+    },
+    {
+      "from": "src/pages/courses/CourseDetailPage.tsx:143",
+      "type": "programmatic",
+      "target": "ROUTES.courseSchedule",
+      "targetResolved": "/courses/schedule",
+      "contextComponent": "CourseDetailPage",
+      "usesHelper": false
+    },
+    {
+      "from": "src/pages/courses/CourseEditPage.tsx:24",
+      "type": "programmatic",
+      "target": "ROUTES.courseDetail.replace(':courseId', courseId)",
+      "targetResolved": "/courses/:courseId",
+      "contextComponent": "CourseEditPage",
+      "usesHelper": false,
+      "needsHelper": "getCourseDetailUrl"
+    },
+    {
+      "from": "src/pages/courses/CourseEditPage.tsx:45",
+      "type": "programmatic",
+      "target": "ROUTES.courseDetail.replace(':courseId', courseId)",
+      "targetResolved": "/courses/:courseId",
+      "contextComponent": "CourseEditPage",
+      "usesHelper": false,
+      "needsHelper": "getCourseDetailUrl"
+    },
+    {
+      "from": "src/pages/recordings/RecordingLibraryPage.tsx:52",
+      "type": "programmatic",
+      "target": "getRecordingDetailUrl(id, filters.courseId)",
+      "targetResolved": "/recordings/:recordingId",
+      "contextComponent": "RecordingLibraryPage",
+      "usesHelper": true
+    },
+    {
+      "from": "src/pages/recordings/RecordingDetailPage.tsx:65",
+      "type": "programmatic",
+      "target": "${ROUTES.recordings}?courseId=...",
+      "targetResolved": "/recordings?courseId=:courseId",
+      "contextComponent": "RecordingDetailPage",
+      "usesHelper": false
+    },
+    {
+      "from": "src/pages/recordings/RecordingDetailPage.tsx:67",
+      "type": "programmatic",
+      "target": "ROUTES.recordings",
+      "targetResolved": "/recordings",
+      "contextComponent": "RecordingDetailPage",
+      "usesHelper": false
+    },
+    {
+      "from": "src/pages/assignments/AssignmentDetailPage.tsx:60",
+      "type": "programmatic",
+      "target": "ROUTES.assignmentManagement",
+      "targetResolved": "/assignments",
+      "contextComponent": "AssignmentDetailPage",
+      "usesHelper": false
+    },
+    {
+      "from": "src/pages/assignments/AssignmentDetailPage.tsx:65",
+      "type": "programmatic",
+      "target": "getCourseDetailUrl(assignment.courseId)",
+      "targetResolved": "/courses/:courseId",
+      "contextComponent": "AssignmentDetailPage",
+      "usesHelper": true
+    },
+    {
+      "from": "src/pages/assignments/AssignmentDetailPage.tsx:71",
+      "type": "programmatic",
+      "target": "${ROUTES.gradingWorkspace}?assignmentId=...",
+      "targetResolved": "/assignments/grading?assignmentId=:assignmentId",
+      "contextComponent": "AssignmentDetailPage",
+      "usesHelper": false,
+      "needsHelper": "getGradingWorkspaceUrl"
+    },
+    {
+      "from": "src/pages/assignments/NewAssignmentPage.tsx:47",
+      "type": "programmatic",
+      "target": "${ROUTES.assignmentManagement}?notice=...",
+      "targetResolved": "/assignments?notice=:notice",
+      "contextComponent": "NewAssignmentPage",
+      "usesHelper": false
+    },
+    {
+      "from": "src/pages/live/LiveTeachingPage.tsx:139",
+      "type": "programmatic",
+      "target": "${ROUTES.recordings}?courseId=...",
+      "targetResolved": "/recordings?courseId=:courseId",
+      "contextComponent": "LiveTeachingPage",
+      "usesHelper": false
+    },
+    {
+      "from": "src/pages/shell/LiveTeachingRoutePage.tsx:38",
+      "type": "programmatic",
+      "target": "getCourseDetailUrl(cid)",
+      "targetResolved": "/courses/:courseId",
+      "contextComponent": "LiveTeachingRoutePage",
+      "usesHelper": true
+    },
+    {
+      "from": "src/pages/auth/LoginPage.tsx:70",
+      "type": "programmatic",
+      "target": "ROUTES.dashboard",
+      "targetResolved": "/",
+      "contextComponent": "LoginPage",
+      "usesHelper": false
+    },
+    {
+      "from": "src/pages/resources/UploadResourcePage.tsx:24",
+      "type": "programmatic",
+      "target": "ROUTES.resourceLibrary",
+      "targetResolved": "/resources",
+      "contextComponent": "UploadResourcePage",
+      "usesHelper": false
+    },
+    {
+      "from": "src/pages/students/StudentListPage.tsx:67",
+      "type": "programmatic",
+      "target": "ROUTES.studentProfile.replace(':studentId', id)",
+      "targetResolved": "/students/:studentId",
+      "contextComponent": "StudentListPage",
+      "usesHelper": false,
+      "needsHelper": "getStudentProfileUrl"
+    },
+    {
+      "from": "src/pages/students/StudentProfilePage.tsx:22-26",
+      "type": "programmatic",
+      "target": "ROUTES.studentList",
+      "targetResolved": "/students",
+      "contextComponent": "StudentProfilePage",
+      "usesHelper": false
+    },
+    {
+      "from": "src/pages/students/StudentProfilePage.tsx:29",
+      "type": "programmatic",
+      "target": "${ROUTES.assignmentManagement}?assignmentId=...",
+      "targetResolved": "/assignments?assignmentId=:assignmentId",
+      "contextComponent": "StudentProfilePage",
+      "usesHelper": false
+    },
+    {
+      "from": "src/components/sidebar/Sidebar.tsx:12-54",
+      "type": "programmatic",
+      "target": "ROUTES.* (15 navigation points)",
+      "targetResolved": "various main routes",
+      "contextComponent": "Sidebar",
+      "usesHelper": false,
+      "note": "Sidebar uses onNavigate callback with ROUTES constants"
+    }
+  ],
+  "missingRoutes": [
+    {
+      "path": "/assignments/:assignmentId/grading",
+      "usedIn": ["src/pages/dashboard/DashboardPage.tsx:40"],
+      "suggestion": "Add ROUTES.assignmentGrading and getAssignmentGradingUrl helper"
+    },
+    {
+      "path": "/courses/schedule/new",
+      "usedIn": ["src/pages/dashboard/DashboardPage.tsx:53"],
+      "suggestion": "Add ROUTES.courseScheduleNew constant"
+    }
+  ],
+  "helpersMissing": [
+    {
+      "name": "getAssignmentGradingUrl",
+      "signature": "(assignmentId: string) => string",
+      "usedIn": ["DashboardPage", "AssignmentDetailPage"]
+    },
+    {
+      "name": "getCourseEditUrl",
+      "signature": "(courseId: string) => string",
+      "usedIn": ["CourseDetailPage", "CourseEditPage"]
+    },
+    {
+      "name": "getRecordingsWithCourseUrl",
+      "signature": "(courseId: string) => string",
+      "usedIn": ["CourseDetailPage", "RecordingDetailPage", "LiveTeachingPage"]
+    },
+    {
+      "name": "getGradingWorkspaceUrl",
+      "signature": "(assignmentId?: string) => string",
+      "usedIn": ["AssignmentDetailPage"]
+    }
+  ]
+}

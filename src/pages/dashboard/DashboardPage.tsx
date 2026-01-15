@@ -1,4 +1,9 @@
-// 来源 HTML: screen_id: e2ff3e9e9b5148b28a6741d0c8901e64 — Generated from Stitch export
+/**
+ * 教学总览（仪表盘）页面
+ * 
+ * 来源 HTML: screen_id: e2ff3e9e9b5148b28a6741d0c8901e64
+ * Generated from Stitch export
+ */
 import React from 'react'
 import AppLayout from '../../layouts/AppLayout'
 import TodayCoursesSection from '../../modules/dashboard/components/TodayCoursesSection'
@@ -7,23 +12,37 @@ import PendingAssignments from '../../modules/dashboard/components/PendingAssign
 import useDashboardData from '../../modules/dashboard/hooks/useDashboardData'
 import type { MetricColor } from '../../components/widgets/MetricCard'
 import { useNavigate } from 'react-router-dom'
-import { ROUTES } from '../../app/routes'
+import { 
+  ROUTES, 
+  getLiveTeachingUrl, 
+  getCourseDetailUrl,
+  getAssignmentGradingUrl
+} from '../../app/routes'
 
 const DashboardPage: React.FC = () => {
   // TODO: replace useDashboardData mock with real API (modules/dashboard/services)
   const {
-    data: { courses, assignments, metrics },
+    data,
     actions: { refresh }
   } = useDashboardData()
 
   const navigate = useNavigate()
 
+  // 安全地解构数据，提供默认值
+  const courses = data?.courses ?? []
+  const assignments = data?.assignments ?? []
+  const metrics = data?.metrics ?? []
+
+  // ========================================
+  // 导航处理函数（全部使用 URL helpers）
+  // ========================================
+
   const handleCourseDetail = (courseId: string) => {
-    navigate(ROUTES.courseDetail.replace(':courseId', courseId))
+    navigate(getCourseDetailUrl(courseId))
   }
 
   const handleEnterClass = (courseId: string) => {
-    navigate(`${ROUTES.liveTeaching}/${courseId}`)
+    navigate(getLiveTeachingUrl(courseId))
   }
 
   const handleViewAllCourses = () => {
@@ -31,7 +50,8 @@ const DashboardPage: React.FC = () => {
   }
 
   const handleGradeAssignment = (assignmentId: string) => {
-    navigate(`${ROUTES.assignmentManagement}/${assignmentId}/grading`)
+    // 使用新的参数化路由 /assignments/:assignmentId/grading
+    navigate(getAssignmentGradingUrl(assignmentId))
   }
 
   const handleViewAllAssignments = () => {
@@ -43,15 +63,15 @@ const DashboardPage: React.FC = () => {
   }
 
   const handleAddCourseSchedule = () => {
-    navigate(`${ROUTES.courseSchedule}/new`)
+    navigate(ROUTES.courseScheduleNew)
   }
 
   const handleCreateTask = () => {
-    navigate(`${ROUTES.assignmentManagement}/new`)
+    navigate(ROUTES.assignmentNew)
   }
 
   const handleUploadResources = () => {
-    navigate(`${ROUTES.resourceLibrary}/upload`)
+    navigate(ROUTES.resourceUpload)
   }
 
   const palette: MetricColor[] = ['blue', 'orange', 'purple']

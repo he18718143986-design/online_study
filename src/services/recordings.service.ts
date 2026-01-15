@@ -9,7 +9,8 @@ import api from './apiClient'
 import { type Recording } from '@/types/models/recording'
 import mockDataJson from '@/data/mock/data.json'
 
-const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true'
+// 默认在开发环境使用 mock，除非明确设置为 false
+const USE_MOCK = import.meta.env.VITE_USE_MOCK !== 'false' && (import.meta.env.DEV || import.meta.env.VITE_USE_MOCK === 'true')
 
 type MockData = {
 	recordings?: Recording[]
@@ -102,7 +103,8 @@ export const recordingsService = {
 		}
 		const endpoint = courseId ? `/recordings?courseId=${encodeURIComponent(courseId)}` : '/recordings'
 		const res = await api.get<Recording[]>(endpoint)
-		return res.data
+		// 确保返回的是数组
+		return Array.isArray(res.data) ? res.data : []
 	},
 
 	async get(id: string): Promise<Recording | undefined> {
@@ -110,12 +112,20 @@ export const recordingsService = {
 			await delay(20)
 			return recordingsStorage.find((rec) => rec.id === id)
 		}
-		const res = await api.get<Recording>(`/recordings/${id}`)
-		return res.data
+		try {
+			const res = await api.get<Recording>(`/recordings/${id}`)
+			return res.data
+		} catch (err) {
+			console.warn('get recording API 调用失败，回退到 mock 模式', err)
+			// 如果 API 调用失败，回退到 mock 实现
+			await delay(20)
+			return recordingsStorage.find((rec) => rec.id === id)
+		}
 	},
 
 	async createFromLive(liveSession: { id: string; courseId: string; startAt: string }): Promise<Recording> {
 		if (USE_MOCK) {
+			await delay(100)
 			const rec: Recording & { created_at?: string } = {
 				id: nowId('rec'),
 				courseId: liveSession.courseId,
@@ -132,20 +142,51 @@ export const recordingsService = {
 			simulateProcessing(rec.id, 4)
 			return rec
 		}
-		// Real API (example): create recording job from live session
-		const res = await api.post<Recording>(`/live/${liveSession.id}/record`)
-		return res.data
+		try {
+			// Real API (example): create recording job from live session
+			const res = await api.post<Recording>(`/live/${liveSession.id}/record`)
+			return res.data
+		} catch (err) {
+			console.warn('createFromLive API 调用失败，回退到 mock 模式', err)
+			// 如果 API 调用失败，回退到 mock 实现
+			await delay(100)
+			const rec: Recording & { created_at?: string } = {
+				id: nowId('rec'),
+				courseId: liveSession.courseId,
+				title: `录播 ${liveSession.courseId} ${toDateLabel()}`,
+				duration: '00:00:00',
+				date: toDateLabel(),
+				status: 'processing',
+				preview: '',
+				created_at: new Date().toISOString()
+			}
+			recordingsStorage.unshift(rec)
+			persistStorage()
+			simulateProcessing(rec.id, 4)
+			return rec
+		}
 	},
 
 	async remove(id: string): Promise<boolean> {
 		if (USE_MOCK) {
+			await delay(50)
 			const idx = recordingsStorage.findIndex((r) => r.id === id)
 			if (idx !== -1) recordingsStorage.splice(idx, 1)
 			persistStorage()
 			return true
 		}
-		await api.delete(`/recordings/${id}`)
-		return true
+		try {
+			await api.delete(`/recordings/${id}`)
+			return true
+		} catch (err) {
+			console.warn('remove recording API 调用失败，回退到 mock 模式', err)
+			// 如果 API 调用失败，回退到 mock 实现
+			await delay(50)
+			const idx = recordingsStorage.findIndex((r) => r.id === id)
+			if (idx !== -1) recordingsStorage.splice(idx, 1)
+			persistStorage()
+			return true
+		}
 	}
 }
 

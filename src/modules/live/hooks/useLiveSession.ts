@@ -31,27 +31,37 @@ export function useLiveSession(initialCourseId?: string): UseLiveSessionResult {
 	const status = session.status
 
 	const start = React.useCallback(async (courseId: string): Promise<LiveSession> => {
-		const started = await coursesService.startLive(courseId)
-		const newSession: LiveSession = {
-			id: started.id,
-			courseId: started.courseId,
-			status: 'live',
-			startedAt: (started as ServiceLiveSession).startAt
+		try {
+			const started = await coursesService.startLive(courseId)
+			const newSession: LiveSession = {
+				id: started.id,
+				courseId: started.courseId,
+				status: 'live',
+				startedAt: (started as ServiceLiveSession).startAt
+			}
+			setSession(newSession)
+			return newSession
+		} catch (error) {
+			console.error('启动直播失败:', error)
+			throw error
 		}
-		setSession(newSession)
-		return newSession
 	}, [])
 
 	const end = React.useCallback(async (sessionId: string): Promise<string> => {
-		const { session: ended, recording } = await coursesService.endLive(sessionId)
-		setSession((prev) => ({
-			...prev,
-			id: ended.id,
-			courseId: ended.courseId,
-			status: 'ended',
-			recordingId: recording.id
-		}))
-		return recording.id
+		try {
+			const { session: ended, recording } = await coursesService.endLive(sessionId)
+			setSession((prev) => ({
+				...prev,
+				id: ended.id,
+				courseId: ended.courseId,
+				status: 'ended',
+				recordingId: recording.id
+			}))
+			return recording.id
+		} catch (error) {
+			console.error('结束直播失败:', error)
+			throw error
+		}
 	}, [])
 
 	return { session, status, start, end }
