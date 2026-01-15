@@ -163,6 +163,25 @@
         "participationRate": 95,
         "homeworkSubmissionRate": 90
       }
+    },
+    {
+      "id": "course-live-1",
+      "title": "直播示例课程",
+      "description": "用于演示和测试直播教学功能的示例课程",
+      "subtitle": "实时直播",
+      "teacher": "张老师",
+      "teacher_id": "u1",
+      "classLabel": "测试班级",
+      "schedule": "按需直播",
+      "term": "2025-2026学年第二学期",
+      "timeRange": "灵活安排",
+      "studentsCount": 20,
+      "status": "live",
+      "stats": {
+        "studentsTotal": 20,
+        "participationRate": 100,
+        "homeworkSubmissionRate": 0
+      }
     }
   ],
   "live_sessions": [

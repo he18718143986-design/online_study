@@ -7,7 +7,7 @@ import PendingAssignments from '../../modules/dashboard/components/PendingAssign
 import useDashboardData from '../../modules/dashboard/hooks/useDashboardData'
 import type { MetricColor } from '../../components/widgets/MetricCard'
 import { useNavigate } from 'react-router-dom'
-import { ROUTES } from '../../app/routes'
+import { ROUTES, getLiveTeachingUrl, getCourseDetailUrl } from '../../app/routes'
 
 const DashboardPage: React.FC = () => {
   // TODO: replace useDashboardData mock with real API (modules/dashboard/services)
@@ -24,11 +24,12 @@ const DashboardPage: React.FC = () => {
   const metrics = data?.metrics ?? []
 
   const handleCourseDetail = (courseId: string) => {
-    navigate(ROUTES.courseDetail.replace(':courseId', courseId))
+    navigate(getCourseDetailUrl(courseId))
   }
 
   const handleEnterClass = (courseId: string) => {
-    navigate(`${ROUTES.liveTeaching}/${courseId}`)
+    // 使用参数化路由 /live/:courseId
+    navigate(getLiveTeachingUrl(courseId))
   }
 
   const handleViewAllCourses = () => {
@@ -44,6 +45,7 @@ const DashboardPage: React.FC = () => {
   }
 
   const handleStartLive = () => {
+    // 无指定课程时使用默认入口
     navigate(ROUTES.liveTeaching)
   }
 

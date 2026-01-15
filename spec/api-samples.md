@@ -195,6 +195,56 @@ Authorization: Bearer <token>
 }
 ```
 
+### 获取直播会话详情
+
+用于 deep-link 场景，前端根据 courseId 获取当前直播会话信息。
+
+**请求:**
+```http
+GET /api/live/session?courseId=course-live-1
+Authorization: Bearer <token>
+```
+
+**响应 (200 OK - 存在活跃直播):**
+```json
+{
+  "data": {
+    "id": "live-20260115-002",
+    "courseId": "course-live-1",
+    "startAt": "2026-01-15T10:00:00+08:00",
+    "endAt": null,
+    "status": "live",
+    "participantsCount": 15,
+    "wsUrl": "wss://live.campus.example.com/live/live-20260115-002/ws",
+    "wsToken": "ws_token_xyz789"
+  }
+}
+```
+
+**响应 (200 OK - 无活跃直播):**
+```json
+{
+  "data": null
+}
+```
+
+### Deep-Link 路由说明
+
+前端支持以下 URL 格式访问直播页面：
+
+| URL | 说明 |
+|-----|------|
+| `/live/:courseId` | 推荐格式，courseId 作为路径参数 |
+| `/live?courseId=xxx` | 兼容格式，courseId 作为查询参数 |
+| `/live` | 无参数，使用默认课程 ID |
+
+**前端解析优先级**: 路径参数 > 查询参数 > 默认值 (`course-live-1`)
+
+**Mock 模式测试 URL**:
+- `http://localhost:5173/live/course-live-1`
+- `http://localhost:5173/live/course-002`
+- `http://localhost:5173/live?courseId=course-001`
+
 ---
 
 ## 作业模块

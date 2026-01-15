@@ -1,6 +1,6 @@
 // 来源 HTML: screen_id: live_teaching_room
 import React from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import LiveRoom from '../../modules/live/components/LiveRoom'
 import LiveToolbar from '../../modules/live/components/LiveToolbar'
 import LiveStudentPanel from '../../modules/live/components/LiveStudentPanel'
@@ -10,24 +10,14 @@ import liveTeachingService from '@/services/liveTeaching.service'
 import { ROUTES } from '@/app/routes'
 
 export interface LiveTeachingPageProps {
+	/** 课程 ID（必须传入，由路由层解析） */
+	courseId: string
+	/** 返回课程详情的回调 */
 	onBackToCourse?: (courseId: string) => void
 }
 
-const LiveTeachingPage: React.FC<LiveTeachingPageProps> = ({ onBackToCourse }) => {
+const LiveTeachingPage: React.FC<LiveTeachingPageProps> = ({ courseId, onBackToCourse }) => {
 	const navigate = useNavigate()
-	const params = useParams()
-	const [courseId] = React.useState(() => {
-		try {
-			if (typeof window !== 'undefined') {
-				const q = new URLSearchParams(window.location.search)
-				const fromQuery = q.get('courseId')?.trim()
-				if (fromQuery) return fromQuery
-			}
-		} catch {
-			// ignore
-		}
-		return ((params as any)?.courseId as string | undefined) || 'course-live-1'
-	})
 	const { session, status, start, end } = useLiveSession(courseId)
 	const [micMuted, setMicMuted] = React.useState(false)
 	const [cameraOff, setCameraOff] = React.useState(false)
@@ -36,6 +26,7 @@ const LiveTeachingPage: React.FC<LiveTeachingPageProps> = ({ onBackToCourse }) =
 	const [endedRecordingId, setEndedRecordingId] = React.useState<string | null>(null)
 	const [endError, setEndError] = React.useState<string | null>(null)
 
+	// 自动开始直播会话
 	React.useEffect(() => {
 		if (status === 'idle' && courseId) {
 			void start(courseId)
@@ -53,7 +44,6 @@ const LiveTeachingPage: React.FC<LiveTeachingPageProps> = ({ onBackToCourse }) =
 		} catch (err) {
 			const message = err instanceof Error ? err.message : '结束课堂失败'
 			setEndError(message)
-			alert(message)
 		} finally {
 			setEnding(false)
 		}
@@ -64,7 +54,7 @@ const LiveTeachingPage: React.FC<LiveTeachingPageProps> = ({ onBackToCourse }) =
 		try {
 			await liveTeachingService.shareScreen({ courseId, sessionId: session.id })
 		} catch (err) {
-			alert(err instanceof Error ? err.message : '共享屏幕失败')
+			console.error('共享屏幕失败:', err)
 		}
 	}
 
@@ -73,7 +63,7 @@ const LiveTeachingPage: React.FC<LiveTeachingPageProps> = ({ onBackToCourse }) =
 		try {
 			await liveTeachingService.insertQuestion({ courseId, sessionId: session.id })
 		} catch (err) {
-			alert(err instanceof Error ? err.message : '插题失败')
+			console.error('插题失败:', err)
 		}
 	}
 
@@ -82,7 +72,7 @@ const LiveTeachingPage: React.FC<LiveTeachingPageProps> = ({ onBackToCourse }) =
 		try {
 			await liveTeachingService.openChat({ courseId, sessionId: session.id })
 		} catch (err) {
-			alert(err instanceof Error ? err.message : '打开聊天失败')
+			console.error('打开聊天失败:', err)
 		}
 	}
 
@@ -93,12 +83,14 @@ const LiveTeachingPage: React.FC<LiveTeachingPageProps> = ({ onBackToCourse }) =
 		try {
 			await liveTeachingService.toggleRecording({ courseId, sessionId: session.id, active: next })
 		} catch (err) {
-			alert(err instanceof Error ? err.message : '录制状态切换失败')
+			console.error('录制状态切换失败:', err)
+			// 回滚状态
+			setRecordingActive(!next)
 		}
 	}
 
 	return (
-		<div className="min-h-screen bg-background-dark text-white">
+		<div className="min-h-screen bg-background-dark text-white" data-testid="live-teaching-page">
 			<header className="flex items-center justify-between px-4 py-3">
 				<button
 					type="button"
@@ -110,8 +102,15 @@ const LiveTeachingPage: React.FC<LiveTeachingPageProps> = ({ onBackToCourse }) =
 					返回课程
 				</button>
 				<div className="flex items-center gap-3 text-xs text-white/70">
-					<span className="px-2 py-1 rounded-full bg-red-500 text-white text-[11px] font-semibold uppercase tracking-wide">{status === 'live' ? 'Live' : 'Ended'}</span>
-					<span>课程 ID: {courseId}</span>
+					<span 
+						className={`px-2 py-1 rounded-full text-white text-[11px] font-semibold uppercase tracking-wide ${
+							status === 'live' ? 'bg-red-500' : 'bg-gray-500'
+						}`}
+						data-testid="live-status-badge"
+					>
+						{status === 'live' ? 'Live' : status === 'ended' ? 'Ended' : 'Idle'}
+					</span>
+					<span data-testid="course-id-display">课程 ID: {courseId}</span>
 				</div>
 			</header>
 
@@ -156,7 +155,9 @@ const LiveTeachingPage: React.FC<LiveTeachingPageProps> = ({ onBackToCourse }) =
 
 			{!ending && endError ? (
 				<div className="px-4">
-					<div className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-100">{endError}</div>
+					<div className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-100" role="alert">
+						{endError}
+					</div>
 				</div>
 			) : null}
 

@@ -1,150 +1,105 @@
-# 改动清单
+# 改动清单 - Live 教学页 Deep-Link 路由修复
 
-## 版本：v1.1.0
+## 版本信息
 
-本次更新将前端工程从原型状态完善为可交付的生产级代码。
-
----
+- **日期**: 2026-01-15
+- **分支**: `cursor/-bc-b73e0cbe-eafb-4c70-b9b4-ef257904bba9-9d7d`
+- **类型**: 功能增强 + Bug 修复
 
 ## 改动摘要
 
-### A1: 项目结构与配置 ✅
+本次改动修复了直播教学页面的路由问题，使 `/live/:courseId` 参数化路由能正常工作，支持 Deep-Link 直接访问指定课程的直播页面。
 
-| 文件 | 改动类型 | 目的 |
-|------|----------|------|
-| `.env.example` | 新增 | 提供环境变量模板，列出所有必需的配置项 |
-| `package.json` | 修改 | 完善 scripts（lint/format/test/storybook），添加新依赖 |
-| `.eslintrc.cjs` | 新增 | ESLint 配置，确保代码质量 |
-| `.prettierrc` | 新增 | Prettier 配置，统一代码风格 |
-| `.prettierignore` | 新增 | Prettier 忽略规则 |
-| `vitest.config.ts` | 新增 | Vitest 测试框架配置 |
-| `.storybook/main.ts` | 新增 | Storybook 主配置 |
-| `.storybook/preview.ts` | 新增 | Storybook 预览配置 |
+## 改动文件清单
 
-### A2: API 服务层 ✅
+### 路由配置
 
-| 文件 | 改动类型 | 目的 |
-|------|----------|------|
-| `spec/api-samples.md` | 新增 | 完整的 API 请求/响应示例文档 |
-| `src/services/auth.service.ts` | 已有/完善 | 认证服务（登录/登出/注册） |
-| `src/services/questions.service.ts` | 已有/完善 | 题库服务 |
-| `src/services/notifications.service.ts` | 已有/完善 | 通知服务 |
+| 文件 | 操作 | 说明 |
+|------|------|------|
+| `src/app/routes.ts` | 修改 | 添加 `liveTeachingWithCourse` 路由常量、`getLiveTeachingUrl()` 和 `getCourseDetailUrl()` 辅助函数 |
+| `src/app/router.tsx` | 修改 | 注册 `/live/:courseId` 参数化路由，确保路由匹配顺序正确 |
 
-### A3-A4: 页面交互与 Mock 切换 ✅
+### 页面组件
 
-| 文件 | 改动类型 | 目的 |
-|------|----------|------|
-| `src/pages/auth/LoginPage.tsx` | 已有/完善 | 完整的登录交互（表单验证、错误处理） |
-| `src/components/ui/ConfirmDialog.tsx` | 已有/完善 | 确认对话框组件 |
-| `src/components/ui/Toast.tsx` | 已有/完善 | Toast 通知组件 |
-| `src/components/ui/EmptyState.tsx` | 已有/完善 | 空状态组件 |
-| `src/components/ui/ErrorState.tsx` | 已有/完善 | 错误状态组件 |
-| `src/components/ui/LoadingSpinner.tsx` | 已有/完善 | 加载状态组件 |
-| `src/modules/dashboard/components/TodayCoursesSection.tsx` | 修改 | 添加四态支持 |
-| `src/modules/dashboard/components/PendingAssignments.tsx` | 修改 | 添加四态支持 |
-| `src/modules/recordings/components/RecordingList.tsx` | 修改 | 添加四态支持 |
+| 文件 | 操作 | 说明 |
+|------|------|------|
+| `src/pages/shell/LiveTeachingRoutePage.tsx` | 修改 | 从 URL params/query 解析 courseId，实现优先级：路径参数 > 查询参数 > 默认值 |
+| `src/pages/live/LiveTeachingPage.tsx` | 修改 | 接收 courseId 作为必传 prop，添加 data-testid 属性便于测试 |
+| `src/pages/dashboard/DashboardPage.tsx` | 修改 | 使用 `getLiveTeachingUrl()` 辅助函数生成直播页 URL |
 
-### A5: 文档 ✅
+### Mock 数据
 
-| 文件 | 改动类型 | 目的 |
-|------|----------|------|
-| `README.md` | 重写 | 完整的项目文档（安装、使用、测试、部署） |
-| `CHANGES.md` | 新增 | 本次改动清单 |
-| `PR_DESCRIPTION.md` | 新增 | PR 描述模板 |
-| `CHECKLIST.md` | 新增 | 验收清单 |
+| 文件 | 操作 | 说明 |
+|------|------|------|
+| `data/mock/data.json` | 修改 | 添加 `course-live-1` 默认直播课程数据 |
 
-### B1: 代码质量工具 ✅
+### 测试
 
-| 文件 | 改动类型 | 目的 |
-|------|----------|------|
-| `.eslintrc.cjs` | 新增 | ESLint 规则配置 |
-| `.prettierrc` | 新增 | 代码格式化配置 |
-| `package.json` | 修改 | 添加 lint-staged 配置 |
+| 文件 | 操作 | 说明 |
+|------|------|------|
+| `src/tests/unit/hooks/useLiveSession.test.ts` | 新增 | useLiveSession hook 单元测试（9 个测试用例） |
+| `src/tests/e2e/liveDeepLink.spec.ts` | 新增 | Deep-Link E2E 测试（9 个测试用例） |
 
-### B3: 测试 ✅
+### 文档
 
-| 文件 | 改动类型 | 目的 |
-|------|----------|------|
-| `src/tests/setup.ts` | 新增 | 测试环境配置 |
-| `src/tests/unit/services/apiClient.test.ts` | 新增 | API 客户端单元测试 |
-| `src/tests/unit/services/auth.service.test.ts` | 新增 | 认证服务单元测试 |
-| `src/tests/unit/components/ui/ConfirmDialog.test.tsx` | 新增 | 确认对话框组件测试 |
-| `src/tests/unit/components/ui/Toast.test.tsx` | 新增 | Toast 组件测试 |
-| `src/tests/unit/hooks/useLiveSocket.test.ts` | 新增 | WebSocket Hook 测试 |
+| 文件 | 操作 | 说明 |
+|------|------|------|
+| `README.md` | 修改 | 添加"直播页面 Deep-Link"使用说明 |
+| `spec/api-samples.md` | 修改 | 添加获取直播会话 API 示例和 Deep-Link 路由说明 |
 
-### Storybook ✅
+## 技术要点
 
-| 文件 | 改动类型 | 目的 |
-|------|----------|------|
-| `src/components/ui/ConfirmDialog.stories.tsx` | 新增 | 确认对话框 Story |
-| `src/components/ui/Toast.stories.tsx` | 新增 | Toast Story |
-| `src/components/cards/CourseCard.stories.tsx` | 新增 | 课程卡片 Story |
+### 路由解析优先级
 
----
+```
+1. 路径参数: /live/:courseId → params.courseId
+2. 查询参数: /live?courseId=xxx → searchParams.get('courseId')
+3. 默认值: 'course-live-1'
+```
 
-## 新增依赖
+### 新增辅助函数
 
-### 生产依赖
-- `clsx` - 条件类名工具
-- `zustand` - 轻量状态管理
+```typescript
+// 生成直播页 URL
+getLiveTeachingUrl(courseId: string): string
+// => `/live/${encodeURIComponent(courseId)}`
 
-### 开发依赖
-- `vitest` + `@vitest/ui` + `@vitest/coverage-v8` - 单元测试框架
-- `@testing-library/react` + `@testing-library/jest-dom` + `@testing-library/user-event` - React 测试工具
-- `jsdom` - DOM 模拟环境
-- `eslint` + 相关插件 - 代码检查
-- `prettier` + `eslint-config-prettier` - 代码格式化
-- `husky` + `lint-staged` - Git 钩子
-- `storybook` + 相关包 - 组件文档
-- `msw` - API Mock（预留）
+// 生成课程详情页 URL
+getCourseDetailUrl(courseId: string): string
+// => `/courses/${encodeURIComponent(courseId)}`
+```
 
----
-
-## 验证步骤
+## 本地验证步骤
 
 ```bash
 # 1. 安装依赖
 pnpm install
 
-# 2. 类型检查（预期：无错误）
+# 2. 类型检查
 pnpm typecheck
 
-# 3. 代码检查（预期：无错误或仅警告）
-pnpm lint
-
-# 4. 运行单元测试（预期：全部通过）
+# 3. 运行单元测试
 pnpm test
 
-# 5. 启动开发服务器
+# 4. 启动 Mock 模式开发服务器
 pnpm dev:mock
 
-# 6. 浏览器验证
-#    - 访问 http://localhost:5173/login
-#    - 使用 demo@example.com / demo123 登录
-#    - 验证仪表盘、课程列表、直播功能
+# 5. 在浏览器测试 Deep-Link
+#    - http://localhost:5173/live/course-live-1
+#    - http://localhost:5173/live/course-002
+#    - http://localhost:5173/live?courseId=course-001
+#    - http://localhost:5173/live （默认课程）
 
-# 7. E2E 测试
+# 6. 运行 E2E 测试
+npx playwright install  # 首次需要安装浏览器
 pnpm test:e2e
-
-# 8. Storybook
-pnpm storybook
-#    - 访问 http://localhost:6006
-#    - 查看组件文档
 ```
 
----
+## 验收标准
 
-## 已知限制
-
-1. **Agora RTC**：需要真实 App ID 才能使用音视频功能，开发时使用占位 UI
-2. **S3 上传**：需要后端配置，开发时使用本地 mock
-3. **ESLint 警告**：部分历史代码存在 lint 警告，不影响功能
-
----
-
-## 后续建议
-
-1. 完善 CI/CD 配置（GitHub Actions）
-2. 添加更多单元测试覆盖
-3. 实现真实的 RTC 集成
-4. 添加性能监控（Web Vitals）
+- [x] `pnpm install` 成功
+- [x] `pnpm typecheck` 通过
+- [x] `pnpm test` 单元测试通过（45 tests）
+- [x] `pnpm build` 构建成功
+- [x] `/live/course-live-1` 能正常渲染直播页面
+- [x] 页面显示正确的课程 ID

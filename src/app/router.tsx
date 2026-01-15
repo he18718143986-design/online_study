@@ -65,7 +65,12 @@ const router = createBrowserRouter([
 	},
 	{
 		element: <ImmersiveShellPage />,
-		children: [{ path: ROUTES.liveTeaching, element: <LiveTeachingRoutePage />, handle: { title: '直播授课' } }]
+		children: [
+			// 参数化路由必须放在前面，以便正确匹配 /live/:courseId
+			{ path: ROUTES.liveTeachingWithCourse, element: <LiveTeachingRoutePage />, handle: { title: '直播授课' } },
+			// /live 作为默认入口（无 courseId 时使用默认课程）
+			{ path: ROUTES.liveTeaching, element: <LiveTeachingRoutePage />, handle: { title: '直播授课' } }
+		]
 	}
 ])
 

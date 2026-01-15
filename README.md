@@ -180,6 +180,37 @@ pnpm test:e2e
 3. 点击"结束课堂"结束直播
 4. 系统自动生成录播（状态：处理中 → 就绪）
 
+### 直播页面 Deep-Link（参数化路由）
+
+直播教学页面支持通过 URL 直接访问指定课程的直播，便于分享链接或从其他系统跳转：
+
+**路由格式**：
+
+| URL 格式 | 说明 | 示例 |
+|----------|------|------|
+| `/live/:courseId` | 推荐，通过路径参数指定课程 | `/live/course-live-1` |
+| `/live?courseId=xxx` | 兼容旧逻辑，通过查询参数指定 | `/live?courseId=course-002` |
+| `/live` | 无参数时使用默认课程 | 默认进入 `course-live-1` |
+
+**优先级**：路径参数 > 查询参数 > 默认值
+
+**Mock 模式测试**：
+
+```bash
+# 启动 Mock 模式开发服务器
+pnpm dev:mock
+
+# 在浏览器访问以下 URL 测试：
+# http://localhost:5173/live/course-live-1
+# http://localhost:5173/live/course-002
+# http://localhost:5173/live?courseId=course-001
+```
+
+**Staging/生产环境**：
+
+将 `localhost:5173` 替换为实际部署域名即可，例如：
+- `https://your-domain.com/live/course-abc-123`
+
 ### 作业批改流程
 
 1. 在仪表盘查看待批改作业
