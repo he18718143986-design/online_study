@@ -1,0 +1,13 @@
+{
+  "$id": "https://example.com/schemas/user.json",
+  "title": "User",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "role": { "type": "string", "enum": ["teacher", "admin", "student"] },
+    "avatar": { "type": ["string", "null"], "format": "uri" },
+    "last_login": { "type": ["string", "null"], "format": "date-time" }
+  },
+  "required": ["id", "name", "role"]
+}

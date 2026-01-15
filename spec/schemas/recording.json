@@ -1,0 +1,20 @@
+{
+  "$id": "https://example.com/schemas/recording.json",
+  "title": "Recording",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "course_id": { "type": "string" },
+    "courseId": { "type": "string" },
+    "title": { "type": "string" },
+    "duration_seconds": { "type": "integer", "minimum": 0 },
+    "duration": { "type": "string" },
+    "status": { "type": "string", "enum": ["processing", "ready", "failed"] },
+    "thumbnailUrl": { "type": ["string", "null"], "format": "uri" },
+    "preview": { "type": ["string", "null"], "format": "uri" },
+    "play_url": { "type": ["string", "null"], "format": "uri" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "date": { "type": ["string", "null"] }
+  },
+  "required": ["id", "status"]
+}

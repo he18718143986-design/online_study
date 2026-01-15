@@ -1,0 +1,25 @@
+{
+  "$id": "https://example.com/schemas/submission.json",
+  "title": "Submission",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "assignment_id": { "type": "string" },
+    "student_id": { "type": "string" },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": { "type": "string", "format": "uri" },
+          "name": { "type": "string" }
+        },
+        "required": ["url", "name"]
+      }
+    },
+    "status": { "type": "string", "enum": ["submitted", "graded", "draft"] },
+    "grade": { "type": ["number", "null"] },
+    "submitted_at": { "type": "string", "format": "date-time" }
+  },
+  "required": ["id", "assignment_id", "student_id", "status"]
+}

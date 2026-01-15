@@ -1,0 +1,13 @@
+{
+  "$id": "https://example.com/schemas/reportJob.json",
+  "title": "ReportJob",
+  "type": "object",
+  "properties": {
+    "job_id": { "type": "string" },
+    "status": { "type": "string", "enum": ["NEW", "PROCESSING", "SUCCEEDED", "FAILED"] },
+    "progress": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "downloadUrl": { "type": ["string", "null"], "format": "uri" },
+    "error": { "type": ["string", "null"] }
+  },
+  "required": ["job_id", "status"]
+}

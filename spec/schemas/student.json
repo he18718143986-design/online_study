@@ -1,0 +1,22 @@
+{
+  "$id": "https://example.com/schemas/student.json",
+  "title": "Student",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "studentNumber": { "type": "string" },
+    "name": { "type": "string" },
+    "avatar": { "type": ["string", "null"], "format": "uri" },
+    "classId": { "type": "string" },
+    "grade": { "type": "string" },
+    "className": { "type": "string" },
+    "courseId": { "type": "string" },
+    "group": { "type": "string" },
+    "onlineStatus": { "type": "string", "enum": ["online", "offline"] },
+    "attendance": { "type": "string", "enum": ["present", "absent"] },
+    "lastActive": { "type": "string" },
+    "overallScore": { "type": ["number", "null"] },
+    "attendanceStatus": { "type": "string", "enum": ["present", "absent", "late", "unknown"] }
+  },
+  "required": ["id", "name", "classId"]
+}

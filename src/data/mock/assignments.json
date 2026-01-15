@@ -1,0 +1,4 @@
+[
+  { "assignment_id": "a001", "title": "练习 — 代数题 1", "course_id": "course-2026-001", "due_date": "2026-01-15T23:59:00+08:00", "status": "published", "submissions_count": 28, "ungraded_count": 12 },
+  { "assignment_id": "a003", "title": "组合题训练", "course_id": "course-2026-003", "due_date": "2026-01-18T23:59:00+08:00", "status": "published", "submissions_count": 22, "ungraded_count": 6 }
+]

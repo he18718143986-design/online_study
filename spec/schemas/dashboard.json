@@ -1,0 +1,23 @@
+{
+  "$id": "https://example.com/schemas/dashboard.json",
+  "title": "Dashboard",
+  "type": "object",
+  "properties": {
+    "metrics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": { "type": "string" },
+          "label": { "type": "string" },
+          "value": {},
+          "unit": { "type": ["string", "null"] }
+        },
+        "required": ["key", "label", "value"]
+      }
+    },
+    "today_courses": { "type": "array", "items": { "type": "string" } },
+    "today_course_ids": { "type": "array", "items": { "type": "string" } }
+  },
+  "required": ["metrics"]
+}

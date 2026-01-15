@@ -1,0 +1,143 @@
+{
+  "courses": [
+    {
+      "id": "course-live-1",
+      "title": "高一数学竞赛冲刺班 (A班)",
+      "description": "专题：数论与组合应用强化",
+      "subtitle": "主讲教师: 张老师",
+      "teacher": "张老师",
+      "teacher_id": "teacher-zhang",
+      "schedule": "每周二 19:00-21:00",
+      "term": "2026春季",
+      "classLabel": "A班 | 高一",
+      "timeRange": "19:00 - 21:00",
+      "studentsCount": 36,
+      "status": "live",
+      "stats": { "studentsTotal": 36, "participationRate": 92, "homeworkSubmissionRate": 88 }
+    },
+    {
+      "id": "course-upcoming-1",
+      "title": "初三奥数集训营 (C班)",
+      "description": "专题：平面几何辅助线与角度追踪",
+      "subtitle": "主讲教师: 李老师",
+      "teacher": "李老师",
+      "teacher_id": "teacher-li",
+      "schedule": "每周三 19:00-20:30",
+      "term": "2026春季",
+      "classLabel": "C班 | 集训",
+      "timeRange": "19:00 - 20:30",
+      "studentsCount": 28,
+      "status": "upcoming",
+      "stats": { "studentsTotal": 28, "participationRate": 0, "homeworkSubmissionRate": 0 }
+    },
+    {
+      "id": "course-ongoing-1",
+      "title": "高二几何专题班",
+      "description": "专题：立体几何截面与投影",
+      "subtitle": "主讲教师: 王老师",
+      "teacher": "王老师",
+      "teacher_id": "teacher-wang",
+      "schedule": "每周五 18:30-20:30",
+      "term": "2026春季",
+      "classLabel": "B班 | 高二",
+      "timeRange": "18:30 - 20:30",
+      "studentsCount": 30,
+      "status": "ongoing",
+      "stats": { "studentsTotal": 30, "participationRate": 86, "homeworkSubmissionRate": 81 }
+    },
+    {
+      "id": "course-completed-1",
+      "title": "初二代数基础班",
+      "description": "专题：方程组与不等式",
+      "subtitle": "主讲教师: 赵老师",
+      "teacher": "赵老师",
+      "teacher_id": "teacher-zhao",
+      "schedule": "每周日 09:00-11:00",
+      "term": "2025冬季",
+      "classLabel": "D班 | 初二",
+      "timeRange": "09:00 - 11:00",
+      "studentsCount": 26,
+      "status": "completed",
+      "stats": { "studentsTotal": 26, "participationRate": 94, "homeworkSubmissionRate": 90 }
+    },
+    {
+      "id": "course-pending-1",
+      "title": "冬令营集训队选拔",
+      "description": "测试与分班",
+      "subtitle": "主讲教师: 刘老师",
+      "teacher": "刘老师",
+      "teacher_id": "teacher-liu",
+      "schedule": "排课待定",
+      "term": "2026冬季",
+      "classLabel": "选拔营",
+      "timeRange": "待定",
+      "studentsCount": 18,
+      "status": "pending",
+      "stats": { "studentsTotal": 18, "participationRate": 0, "homeworkSubmissionRate": 0 }
+    },
+    {
+      "id": "course-live-2",
+      "title": "高三模考解析特训",
+      "description": "专题：压轴题与时间管理",
+      "subtitle": "主讲教师: 孙老师",
+      "teacher": "孙老师",
+      "teacher_id": "teacher-sun",
+      "schedule": "每周四 20:00-22:00",
+      "term": "2026春季",
+      "classLabel": "E班 | 高三",
+      "timeRange": "20:00 - 22:00",
+      "studentsCount": 24,
+      "status": "live",
+      "stats": { "studentsTotal": 24, "participationRate": 88, "homeworkSubmissionRate": 84 }
+    }
+  ],
+  "students": [
+    { "id": "student-1", "courseId": "course-live-1", "classId": "course-live-1", "name": "李诗诗", "group": "直播听课", "onlineStatus": "online", "attendance": "present", "lastActive": "2m ago" },
+    { "id": "student-2", "courseId": "course-live-1", "classId": "course-live-1", "name": "王浩然", "group": "直播听课", "onlineStatus": "online", "attendance": "present", "lastActive": "5m ago" },
+    { "id": "student-3", "courseId": "course-live-1", "classId": "course-live-1", "name": "陈果", "group": "直播听课", "onlineStatus": "offline", "attendance": "absent", "lastActive": "1h ago" },
+    { "id": "student-4", "courseId": "course-live-1", "classId": "course-live-1", "name": "刘博文", "group": "直播听课", "onlineStatus": "online", "attendance": "present", "lastActive": "8m ago" },
+    { "id": "student-5", "courseId": "course-live-1", "classId": "course-live-1", "name": "周子安", "group": "直播听课", "onlineStatus": "offline", "attendance": "absent", "lastActive": "18m ago" },
+    { "id": "student-6", "courseId": "course-upcoming-1", "classId": "course-upcoming-1", "name": "张子轩", "group": "资料预习", "onlineStatus": "offline", "attendance": "absent", "lastActive": "3h ago" },
+    { "id": "student-7", "courseId": "course-upcoming-1", "classId": "course-upcoming-1", "name": "何嘉言", "group": "资料预习", "onlineStatus": "online", "attendance": "present", "lastActive": "10m ago" },
+    { "id": "student-8", "courseId": "course-upcoming-1", "classId": "course-upcoming-1", "name": "杜晨", "group": "资料预习", "onlineStatus": "online", "attendance": "present", "lastActive": "just now" },
+    { "id": "student-9", "courseId": "course-upcoming-1", "classId": "course-upcoming-1", "name": "赵奕辰", "group": "资料预习", "onlineStatus": "offline", "attendance": "absent", "lastActive": "6h ago" },
+    { "id": "student-10", "courseId": "course-ongoing-1", "classId": "course-ongoing-1", "name": "黄天佑", "group": "直播听课", "onlineStatus": "online", "attendance": "present", "lastActive": "12m ago" },
+    { "id": "student-11", "courseId": "course-ongoing-1", "classId": "course-ongoing-1", "name": "周语桐", "group": "直播听课", "onlineStatus": "online", "attendance": "present", "lastActive": "4m ago" },
+    { "id": "student-12", "courseId": "course-ongoing-1", "classId": "course-ongoing-1", "name": "唐一航", "group": "直播听课", "onlineStatus": "offline", "attendance": "absent", "lastActive": "50m ago" },
+    { "id": "student-13", "courseId": "course-ongoing-1", "classId": "course-ongoing-1", "name": "梁雨晨", "group": "直播听课", "onlineStatus": "online", "attendance": "present", "lastActive": "9m ago" },
+    { "id": "student-14", "courseId": "course-completed-1", "classId": "course-completed-1", "name": "韩子墨", "group": "录播复习", "onlineStatus": "offline", "attendance": "present", "lastActive": "1d ago" },
+    { "id": "student-15", "courseId": "course-completed-1", "classId": "course-completed-1", "name": "谢雨彤", "group": "录播复习", "onlineStatus": "offline", "attendance": "present", "lastActive": "3d ago" },
+    { "id": "student-16", "courseId": "course-completed-1", "classId": "course-completed-1", "name": "吴天乐", "group": "录播复习", "onlineStatus": "offline", "attendance": "absent", "lastActive": "4d ago" },
+    { "id": "student-17", "courseId": "course-pending-1", "classId": "course-pending-1", "name": "许桐", "group": "待分班", "onlineStatus": "offline", "attendance": "absent", "lastActive": "N/A" },
+    { "id": "student-18", "courseId": "course-pending-1", "classId": "course-pending-1", "name": "秦若溪", "group": "待分班", "onlineStatus": "offline", "attendance": "absent", "lastActive": "N/A" },
+    { "id": "student-19", "courseId": "course-live-2", "classId": "course-live-2", "name": "江晨曦", "group": "直播听课", "onlineStatus": "online", "attendance": "present", "lastActive": "7m ago" },
+    { "id": "student-20", "courseId": "course-live-2", "classId": "course-live-2", "name": "林泽宇", "group": "直播听课", "onlineStatus": "online", "attendance": "present", "lastActive": "3m ago" }
+  ],
+  "assignments": [
+    { "id": "assign-1", "courseId": "course-live-1", "course_id": "course-live-1", "title": "第三章：平面几何综合练习", "classLabel": "A班 | 高一", "dueAt": "2026-01-09T18:00:00+08:00", "status": "urgent", "ungradedCount": 12, "note": "需要加急批改" },
+    { "id": "assign-2", "courseId": "course-live-1", "course_id": "course-live-1", "title": "数论基础巩固题", "classLabel": "A班 | 高一", "dueAt": "2026-01-11T20:00:00+08:00", "status": "review", "ungradedCount": 6 },
+    { "id": "assign-3", "courseId": "course-upcoming-1", "course_id": "course-upcoming-1", "title": "几何辅助线预习包", "classLabel": "C班 | 集训", "dueAt": "2026-01-13T17:00:00+08:00", "status": "published", "note": "上课前提交" },
+    { "id": "assign-4", "courseId": "course-upcoming-1", "course_id": "course-upcoming-1", "title": "三角形角度追踪练习", "classLabel": "C班 | 集训", "dueAt": "2026-01-15T21:00:00+08:00", "status": "pending" },
+    { "id": "assign-5", "courseId": "course-ongoing-1", "course_id": "course-ongoing-1", "title": "立体几何截面作图", "classLabel": "B班 | 高二", "dueAt": "2026-01-10T19:00:00+08:00", "status": "normal", "ungradedCount": 4 },
+    { "id": "assign-6", "courseId": "course-ongoing-1", "course_id": "course-ongoing-1", "title": "投影与直观图练习", "classLabel": "B班 | 高二", "dueAt": "2026-01-12T19:00:00+08:00", "status": "draft" },
+    { "id": "assign-7", "courseId": "course-completed-1", "course_id": "course-completed-1", "title": "方程组复习题", "classLabel": "D班 | 初二", "submittedAt": "2025-12-30", "status": "completed" },
+    { "id": "assign-8", "courseId": "course-live-2", "course_id": "course-live-2", "title": "模考卷一：压轴题精讲", "classLabel": "E班 | 高三", "dueAt": "2026-01-09T23:00:00+08:00", "status": "urgent", "ungradedCount": 10 }
+  ],
+  "recordings": [
+    { "id": "rec-1", "courseId": "course-live-1", "course_id": "course-live-1", "title": "第12讲：平面几何进阶", "duration": "00:45:12", "date": "2026-01-04", "status": "ready", "preview": "https://example.com/previews/rec-1.jpg" },
+    { "id": "rec-2", "courseId": "course-ongoing-1", "course_id": "course-ongoing-1", "title": "第5讲：立体几何基础", "duration": "00:38:20", "date": "2026-01-02", "status": "ready", "preview": "https://example.com/previews/rec-2.jpg" },
+    { "id": "rec-3", "courseId": "course-completed-1", "course_id": "course-completed-1", "title": "第10讲：方程组综合", "duration": "00:50:00", "date": "2025-12-28", "status": "ready", "preview": "https://example.com/previews/rec-3.jpg" },
+    { "id": "rec-4", "courseId": "course-upcoming-1", "course_id": "course-upcoming-1", "title": "预习：平面几何辅助线", "duration": "00:22:10", "date": "2026-01-07", "status": "ready", "preview": "https://example.com/previews/rec-4.jpg" },
+    { "id": "rec-5", "courseId": "course-live-2", "course_id": "course-live-2", "title": "模考卷一讲评", "duration": "01:05:00", "date": "2026-01-06", "status": "processing", "preview": "https://example.com/previews/rec-5.jpg" },
+    { "id": "rec-6", "courseId": "course-pending-1", "course_id": "course-pending-1", "title": "冬令营选拔说明会", "duration": "00:18:30", "date": "2026-01-03", "status": "ready", "preview": "https://example.com/previews/rec-6.jpg" }
+  ],
+  "dashboard": {
+    "today_course_ids": ["course-live-1", "course-upcoming-1", "course-ongoing-1"],
+    "today_courses": ["course-live-1", "course-upcoming-1", "course-ongoing-1"],
+    "metrics": [
+      { "key": "participation", "label": "参与率", "value": 92, "unit": "%" },
+      { "key": "accuracy", "label": "正确率", "value": 78, "unit": "%" },
+      { "key": "hands", "label": "举手数", "value": 5, "unit": "人" }
+    ]
+  }
+}

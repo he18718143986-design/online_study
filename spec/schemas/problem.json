@@ -1,0 +1,90 @@
+{
+  "$id": "https://example.com/schemas/problem.json",
+  "title": "Problem",
+  "description": "题目 / 试题 的 schema，支持多种题型、附件、测试用例与审核状态",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "title": { "type": "string" },
+    "stem_html": { "type": ["string", "null"], "description": "题目正文的 HTML（可含 img / mathjax）" },
+    "stem_latex": { "type": ["string", "null"], "description": "题目 LaTeX 源（可选）" },
+    "type": {
+      "type": "string",
+      "enum": [
+        "single_choice",
+        "multiple_choice",
+        "fill_blank",
+        "subjective",
+        "programming",
+        "true_false",
+        "matching"
+      ]
+    },
+    "difficulty": { "type": "string", "enum": ["easy", "medium", "hard", "challenge"] },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "knowledge_points": { "type": "array", "items": { "type": "string" } },
+    "attachments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "url": { "type": "string", "format": "uri" },
+          "mimeType": { "type": "string" },
+          "title": { "type": "string" }
+        },
+        "required": ["id", "url"]
+      }
+    },
+    "choices": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "label": { "type": "string" },
+          "content_html": { "type": "string" }
+        },
+        "required": ["id", "label", "content_html"]
+      }
+    },
+    "testcases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "input": { "type": ["string", "null"] },
+          "expected_output": { "type": ["string", "null"] },
+          "score": { "type": "number", "minimum": 0 }
+        },
+        "required": ["id"]
+      }
+    },
+    "solution_html": { "type": ["string", "null"] },
+    "solution_latex": { "type": ["string", "null"] },
+    "hints": { "type": "array", "items": { "type": "string" } },
+    "author_id": { "type": "string" },
+    "version": { "type": "integer", "minimum": 1 },
+    "status": { "type": "string", "enum": ["draft", "pending_review", "published", "rejected", "archived"] },
+    "review": {
+      "type": ["object", "null"],
+      "properties": {
+        "reviewer_id": { "type": "string" },
+        "comment": { "type": "string" },
+        "updated_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "estimated_minutes": { "type": "number", "minimum": 0 },
+        "tags_count": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": ["id", "title", "type", "difficulty", "author_id", "version", "status"]
+}
