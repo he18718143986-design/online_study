@@ -26,20 +26,23 @@ const RecordingList: React.FC<RecordingListProps> = ({
 	filters,
 	onRetry
 }) => {
-	const [courseId, setCourseId] = React.useState<string | undefined>(undefined)
-	const [status, setStatus] = React.useState<Recording['status'] | undefined>(undefined)
-	const [date, setDate] = React.useState<string | undefined>(undefined)
+	// 直接使用 filters prop，避免内部状态与 props 的循环更新
+	const courseId = filters?.courseId
+	const status = filters?.status
+	const date = filters?.date
 
-	React.useEffect(() => {
-		if (!filters) return
-		setCourseId(filters.courseId)
-		setStatus(filters.status)
-		setDate(filters.date)
-	}, [filters?.courseId, filters?.status, filters?.date])
+	// 只在用户手动改变筛选条件时调用 onFilterChange
+	const handleCourseIdChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+		onFilterChange?.({ courseId: e.target.value || undefined })
+	}, [onFilterChange])
 
-	React.useEffect(() => {
-		onFilterChange?.({ courseId, status, date })
-	}, [courseId, status, date, onFilterChange])
+	const handleStatusChange = React.useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+		onFilterChange?.({ status: (e.target.value || undefined) as Recording['status'] | undefined })
+	}, [onFilterChange])
+
+	const handleDateChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+		onFilterChange?.({ date: e.target.value || undefined })
+	}, [onFilterChange])
 
 	const filterBar = (
 		<div className="flex flex-col sm:flex-row sm:items-center gap-3">
@@ -49,7 +52,7 @@ const RecordingList: React.FC<RecordingListProps> = ({
 					className="h-9 px-3 rounded-lg border border-border-light dark:border-border-dark bg-white dark:bg-gray-800 text-sm"
 					placeholder="课程 ID"
 					value={courseId ?? ''}
-					onChange={(e) => setCourseId(e.target.value || undefined)}
+					onChange={handleCourseIdChange}
 					disabled={isLoading}
 				/>
 			</div>
@@ -58,7 +61,7 @@ const RecordingList: React.FC<RecordingListProps> = ({
 				<select
 					className="h-9 px-3 rounded-lg border border-border-light dark:border-border-dark bg-white dark:bg-gray-800 text-sm"
 					value={status ?? ''}
-					onChange={(e) => setStatus((e.target.value || undefined) as Recording['status'] | undefined)}
+					onChange={handleStatusChange}
 					disabled={isLoading}
 				>
 					<option value="">全部</option>
@@ -73,7 +76,7 @@ const RecordingList: React.FC<RecordingListProps> = ({
 					className="h-9 px-3 rounded-lg border border-border-light dark:border-border-dark bg-white dark:bg-gray-800 text-sm"
 					type="date"
 					value={date ?? ''}
-					onChange={(e) => setDate(e.target.value || undefined)}
+					onChange={handleDateChange}
 					disabled={isLoading}
 				/>
 			</div>

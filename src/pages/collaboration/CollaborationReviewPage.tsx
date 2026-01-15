@@ -14,26 +14,42 @@ const CollaborationReviewPage: React.FC = () => {
 
 	const handleAssign = () => {
 		if (!selected) return
-		void actions.assignReviewer(selected.id, '我 (占位)')
-		console.log('assign stub', selected.id)
+		// TODO: 从用户上下文获取当前用户信息
+		const currentUser = '当前用户' // 实际应从 auth context 获取
+		void actions.assignReviewer(selected.id, currentUser)
+		setNotice('已指派给我')
+		setTimeout(() => setNotice(null), 3000)
 	}
+
+	const [notice, setNotice] = React.useState<string | null>(null)
 
 	const handleApprove = () => {
 		if (!selected) return
 		void actions.markApproved(selected.id)
-		console.log('approve stub', selected.id)
+		setNotice('已标记为通过')
+		setTimeout(() => setNotice(null), 3000)
 	}
 
 	const handleReject = () => {
 		if (!selected) return
+		const confirmed = window.confirm('确认驳回此审核项吗？')
+		if (!confirmed) return
 		void actions.markRejected(selected.id)
-		console.log('reject stub', selected.id)
+		setNotice('已驳回')
+		setTimeout(() => setNotice(null), 3000)
 	}
 
 	const handleSendBack = () => {
 		if (!selected) return
 		void actions.markPending(selected.id)
-		console.log('send back stub', selected.id)
+		setNotice('已返回到待审状态')
+		setTimeout(() => setNotice(null), 3000)
+	}
+
+	const handleNewTask = () => {
+		setNotice('新建任务功能待实现')
+		setTimeout(() => setNotice(null), 3000)
+		// TODO: 打开新建任务对话框
 	}
 
 	return (
@@ -47,6 +63,12 @@ const CollaborationReviewPage: React.FC = () => {
 					</nav>
 				</div>
 				<div className="flex items-center gap-2 text-sm">
+					{notice ? (
+						<div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 text-xs">
+							<span className="material-symbols-outlined text-[16px]">check_circle</span>
+							{notice}
+						</div>
+					) : null}
 					<button
 						type="button"
 						className="px-3 py-2 rounded-lg bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark text-text-main-light dark:text-text-main-dark hover:bg-gray-50 dark:hover:bg-gray-800 transition"
@@ -54,7 +76,11 @@ const CollaborationReviewPage: React.FC = () => {
 					>
 						刷新
 					</button>
-					<button className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-hover text-white rounded-lg text-sm font-bold shadow-sm" type="button">
+					<button 
+						className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-hover text-white rounded-lg text-sm font-bold shadow-sm" 
+						type="button"
+						onClick={handleNewTask}
+					>
 						<span className="material-symbols-outlined text-[18px]">add</span>
 						新建任务
 					</button>

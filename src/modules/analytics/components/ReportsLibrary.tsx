@@ -31,14 +31,35 @@ const ReportsLibrary: React.FC<ReportsLibraryProps> = ({ reports, scheduled, onG
 					<p className="text-sm text-text-secondary">选择报表类型并生成或计划导出</p>
 				</div>
 				<div className="flex gap-2 text-sm">
-					<button
-						type="button"
-						className="flex items-center gap-1 px-3 py-2 rounded-lg border border-border-light text-text-main hover:bg-background-light"
-						onClick={() => handleSchedule('weekly')}
-					>
-						<span className="material-symbols-outlined text-[16px]">schedule_send</span>
-						计划(周)
-					</button>
+					<div className="flex items-center gap-1">
+						<button
+							type="button"
+							className="flex items-center gap-1 px-3 py-2 rounded-lg border border-border-light text-text-main hover:bg-background-light"
+							onClick={() => handleSchedule('daily')}
+							title="每日导出"
+						>
+							<span className="material-symbols-outlined text-[16px]">schedule_send</span>
+							每日
+						</button>
+						<button
+							type="button"
+							className="flex items-center gap-1 px-3 py-2 rounded-lg border border-border-light text-text-main hover:bg-background-light"
+							onClick={() => handleSchedule('weekly')}
+							title="每周导出"
+						>
+							<span className="material-symbols-outlined text-[16px]">schedule_send</span>
+							每周
+						</button>
+						<button
+							type="button"
+							className="flex items-center gap-1 px-3 py-2 rounded-lg border border-border-light text-text-main hover:bg-background-light"
+							onClick={() => handleSchedule('monthly')}
+							title="每月导出"
+						>
+							<span className="material-symbols-outlined text-[16px]">schedule_send</span>
+							每月
+						</button>
+					</div>
 					<button
 						type="button"
 						className="flex items-center gap-1 px-3 py-2 rounded-lg border border-border-light text-text-main hover:bg-background-light"
@@ -70,11 +91,18 @@ const ReportsLibrary: React.FC<ReportsLibraryProps> = ({ reports, scheduled, onG
 			</div>
 
 			<div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-				<div className="lg:col-span-2 bg-background-light dark:bg-surface-dark rounded-lg border border-dashed border-border-light dark:border-border-dark p-4" role="img" aria-label="报表预览占位">
+				<div className="lg:col-span-2 bg-background-light dark:bg-surface-dark rounded-lg border border-border-light dark:border-border-dark p-4">
 					<p className="text-sm font-semibold text-text-main mb-2">{activeReport?.name ?? '报表预览'}</p>
-					<p className="text-xs text-text-secondary mb-3">预览区域占位，后续替换为真实图表/表格</p>
+					<p className="text-xs text-text-secondary mb-3">{activeReport?.description ?? '选择报表类型查看预览'}</p>
 					<div className="h-48 bg-white/50 dark:bg-background-dark rounded border border-border-light dark:border-border-dark flex items-center justify-center text-text-secondary text-sm">
-						报表预览占位
+						{activeReport ? (
+							<div className="text-center">
+								<span className="material-symbols-outlined text-4xl text-primary/30 mb-2">bar_chart</span>
+								<p className="text-xs">点击"生成报表"按钮下载 {activeReport.name}</p>
+							</div>
+						) : (
+							'请选择报表类型'
+						)}
 					</div>
 				</div>
 				<div className="bg-background-light dark:bg-surface-dark rounded-lg border border-border-light dark:border-border-dark p-4">

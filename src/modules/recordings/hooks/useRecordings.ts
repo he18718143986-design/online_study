@@ -62,12 +62,16 @@ export function useRecordings(initialFilters: Partial<UseRecordingsResult['filte
 		setRecordings((prev) => prev.map((rec) => (rec.id === recordingId ? { ...rec, status: 'ready' } : rec)))
 	}, [])
 
+	const handleSetFilters = React.useCallback((f: Partial<UseRecordingsResult['filters']>) => {
+		setFilters((prev) => ({ ...prev, ...f }))
+	}, [])
+
 	return {
 		recordings: filtered,
 		isLoading,
 		error,
 		filters,
-		setFilters: (f) => setFilters((prev) => ({ ...prev, ...f })),
+		setFilters: handleSetFilters,
 		refetch,
 		setReady
 	}

@@ -109,7 +109,8 @@ export const assignmentsService = {
 			return [...assignmentsStorage]
 		}
 		const res = await api.get<Assignment[]>('/assignments', { params })
-		return res.data
+		// 确保返回的是数组
+		return Array.isArray(res.data) ? res.data : []
 	},
 
 	async get(id: string): Promise<Assignment | undefined> {

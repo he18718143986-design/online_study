@@ -9,7 +9,54 @@ interface ReviewDetailProps {
 	onApprove: () => void
 }
 
+interface Comment {
+	id: string
+	author: string
+	authorRole?: string
+	content: string
+	timestamp: string
+	isSystem?: boolean
+}
+
 const ReviewDetail: React.FC<ReviewDetailProps> = ({ selected, onAssign, onSendBack, onReject, onApprove }) => {
+	const [activeTab, setActiveTab] = React.useState<'discussion' | 'audit' | 'properties'>('discussion')
+	const [comments, setComments] = React.useState<Comment[]>([
+		{
+			id: 'c1',
+			author: '王教授',
+			content: '第一问中 @张老师 参数范围缺少 a=0 的讨论，麻烦补充。',
+			timestamp: '昨天 15:00'
+		},
+		{
+			id: 'c2',
+			author: '张老师',
+			authorRole: '提交人',
+			content: `已补充 a=0 情况，并更新到 ${selected.version}。请再次审核。`,
+			timestamp: '今天 09:10'
+		},
+		{
+			id: 'c3',
+			author: '系统',
+			isSystem: true,
+			content: `版本对比已生成，可在上方"对比视图"查看详细差异。`,
+			timestamp: '刚刚'
+		}
+	])
+	const [newComment, setNewComment] = React.useState('')
+
+	const handleSendComment = () => {
+		if (!newComment.trim()) return
+		
+		const comment: Comment = {
+			id: `c-${Date.now()}`,
+			author: '当前用户', // TODO: 从用户上下文获取
+			content: newComment,
+			timestamp: '刚刚'
+		}
+		setComments([...comments, comment])
+		setNewComment('')
+	}
+
 	return (
 		<>
 			<div className="bg-white dark:bg-surface-dark border-b border-border-light dark:border-border-dark px-6 py-3 flex items-center justify-between shrink-0">
@@ -76,85 +123,257 @@ const ReviewDetail: React.FC<ReviewDetailProps> = ({ selected, onAssign, onSendB
 					<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 						<div className="bg-white dark:bg-surface-dark p-6 rounded-xl border border-border-light dark:border-border-dark shadow-sm">
 							<p className="text-sm font-bold text-text-secondary-light dark:text-text-secondary-dark mb-3 uppercase tracking-wide">旧版本 {selected.previousVersion}</p>
-							<p className="text-sm text-text-main-light dark:text-text-main-dark leading-relaxed">{selected.summary} (旧版占位对比内容，可替换为真实 diff)</p>
+							<div className="text-sm text-text-main-light dark:text-text-main-dark leading-relaxed space-y-2">
+								<p>{selected.summary}</p>
+								<div className="mt-4 p-3 bg-background-light dark:bg-background-dark rounded-lg border border-border-light dark:border-border-dark">
+									<p className="text-xs text-text-secondary-light dark:text-text-secondary-dark mb-2">版本内容预览</p>
+									<p className="text-xs text-text-main-light dark:text-text-main-dark">此区域将显示旧版本的具体内容，包括题目描述、解析步骤、公式等。支持富文本和 LaTeX 公式渲染。</p>
+								</div>
+							</div>
 						</div>
 						<div className="bg-white dark:bg-surface-dark p-6 rounded-xl border border-primary/30 shadow-sm relative overflow-hidden">
 							<div className="absolute top-0 right-0 size-16 bg-gradient-to-bl from-green-500/10 to-transparent pointer-events-none" aria-hidden />
 							<p className="text-sm font-bold text-primary mb-3 uppercase tracking-wide">当前版本 {selected.version}</p>
-							<p className="text-sm text-text-main-light dark:text-text-main-dark leading-relaxed">对比视图占位：在此展示新版内容或差异片段，包含公式、配图等。</p>
+							<div className="text-sm text-text-main-light dark:text-text-main-dark leading-relaxed space-y-2">
+								<p className="font-medium">更新内容：</p>
+								<div className="mt-4 p-3 bg-primary/5 rounded-lg border border-primary/20">
+									<p className="text-xs text-text-main-light dark:text-text-main-dark">此区域将显示当前版本的内容，并高亮显示与旧版本的差异。支持公式、配图、代码块等多种内容格式。</p>
+								</div>
+								<div className="mt-3 flex items-center gap-2 text-xs text-primary">
+									<span className="material-symbols-outlined text-[16px]">compare</span>
+									<span>差异对比功能待接入</span>
+								</div>
+							</div>
 						</div>
 					</div>
 
 					<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 						<div className="bg-white dark:bg-surface-dark p-6 rounded-xl border border-border-light dark:border-border-dark shadow-sm flex flex-col gap-3">
 							<p className="text-sm font-bold text-text-secondary-light dark:text-text-secondary-dark uppercase tracking-wide">配图对比</p>
-							<div className="flex-1 rounded-lg bg-background-light dark:bg-background-dark border border-dashed border-border-light dark:border-border-dark flex items-center justify-center text-sm text-text-secondary-light dark:text-text-secondary-dark">
-								占位：图片对比区域，可替换为截图或资源预览。
+							<div className="flex-1 min-h-[200px] rounded-lg bg-background-light dark:bg-background-dark border border-dashed border-border-light dark:border-border-dark flex flex-col items-center justify-center gap-2 p-4">
+								<span className="material-symbols-outlined text-4xl text-text-secondary-light dark:text-text-secondary-dark">image</span>
+								<p className="text-sm text-text-secondary-light dark:text-text-secondary-dark text-center">图片对比区域</p>
+								<p className="text-xs text-text-secondary-light dark:text-text-secondary-dark text-center">将显示新旧版本的配图对比，支持并排查看和差异标注</p>
 							</div>
 						</div>
 						<div className="bg-white dark:bg-surface-dark p-6 rounded-xl border border-border-light dark:border-border-dark shadow-sm flex flex-col gap-3">
-							<p className="text-sm font-bold text-text-secondary-light dark:text-text-secondary-dark uppercase tracking-wide">题目解析 (占位)</p>
-							<p className="text-sm text-text-main-light dark:text-text-main-dark leading-relaxed">此处展示解析或变更说明，支持富文本/公式。当前为占位文本，用于体现布局。</p>
+							<p className="text-sm font-bold text-text-secondary-light dark:text-text-secondary-dark uppercase tracking-wide">题目解析</p>
+							<div className="text-sm text-text-main-light dark:text-text-main-dark leading-relaxed space-y-3">
+								<p>此区域将展示题目的详细解析或本次更新的变更说明。</p>
+								<div className="p-3 bg-background-light dark:bg-background-dark rounded-lg border border-border-light dark:border-border-dark">
+									<p className="text-xs text-text-secondary-light dark:text-text-secondary-dark mb-1">功能说明：</p>
+									<ul className="text-xs text-text-main-light dark:text-text-main-dark space-y-1 list-disc list-inside">
+										<li>支持富文本编辑和 LaTeX 公式</li>
+										<li>可展示解题步骤和思路</li>
+										<li>支持代码块和图表嵌入</li>
+									</ul>
+								</div>
+							</div>
 						</div>
 					</div>
 
 					<div className="bg-white dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm">
 						<div className="flex border-b border-border-light dark:border-border-dark">
-							<button className="flex-1 py-3 text-sm font-bold text-primary border-b-2 border-primary bg-primary/5">协作讨论 (占位)</button>
-							<button className="flex-1 py-3 text-sm font-medium text-text-secondary-light hover:text-text-main-light">审计日志</button>
-							<button className="flex-1 py-3 text-sm font-medium text-text-secondary-light hover:text-text-main-light">属性</button>
+							<button 
+								className={`flex-1 py-3 text-sm font-semibold transition-colors ${
+									activeTab === 'discussion'
+										? 'text-primary border-b-2 border-primary bg-primary/5'
+										: 'text-text-secondary-light dark:text-text-secondary-dark hover:text-text-main-light dark:hover:text-text-main-dark'
+								}`}
+								onClick={() => setActiveTab('discussion')}
+							>
+								协作讨论
+							</button>
+							<button 
+								className={`flex-1 py-3 text-sm font-semibold transition-colors ${
+									activeTab === 'audit'
+										? 'text-primary border-b-2 border-primary bg-primary/5'
+										: 'text-text-secondary-light dark:text-text-secondary-dark hover:text-text-main-light dark:hover:text-text-main-dark'
+								}`}
+								onClick={() => setActiveTab('audit')}
+							>
+								审计日志
+							</button>
+							<button 
+								className={`flex-1 py-3 text-sm font-semibold transition-colors ${
+									activeTab === 'properties'
+										? 'text-primary border-b-2 border-primary bg-primary/5'
+										: 'text-text-secondary-light dark:text-text-secondary-dark hover:text-text-main-light dark:hover:text-text-main-dark'
+								}`}
+								onClick={() => setActiveTab('properties')}
+							>
+								属性
+							</button>
 						</div>
+						{activeTab === 'discussion' && (
 						<div className="p-4 flex flex-col gap-4 bg-background-light/60 dark:bg-background-dark">
-							<div className="flex gap-3">
-								<div className="size-9 rounded-full bg-slate-200" aria-hidden />
-								<div className="flex flex-col gap-1 w-full">
-									<div className="flex justify-between items-baseline">
-										<span className="text-xs font-bold text-text-main-light">王教授</span>
-										<span className="text-[10px] text-text-secondary-light">昨天 15:00</span>
-									</div>
-									<div className="bg-white dark:bg-surface-dark p-3 rounded-lg border border-border-light dark:border-border-dark text-sm text-text-main-light dark:text-text-main-dark">
-										<p>
-											第一问中 <span className="text-primary font-medium">@张老师</span> 参数范围缺少 a=0 的讨论，麻烦补充。
-										</p>
-									</div>
-								</div>
-							</div>
-							<div className="flex gap-3">
-								<div className="size-9 rounded-full bg-slate-200" aria-hidden />
-								<div className="flex flex-col gap-1 w-full">
-									<div className="flex justify-between items-baseline">
-										<span className="text-xs font-bold text-text-main-light">张老师 (提交人)</span>
-										<span className="text-[10px] text-text-secondary-light">今天 09:10</span>
-									</div>
-									<div className="bg-primary/5 p-3 rounded-lg border border-primary/20 text-sm text-text-main-light">
-										<p>已补充 a=0 情况，并更新到 {selected.version}。请再次审核。</p>
-									</div>
-								</div>
-							</div>
-							<div className="flex items-center gap-2 my-1 text-[10px] text-text-secondary-light">
-								<div className="h-px bg-border-light flex-1" />
-								<span>版本 {selected.version} 更新占位</span>
-								<div className="h-px bg-border-light flex-1" />
-							</div>
-							<div className="flex gap-3">
-								<div className="size-9 rounded-full bg-slate-200" aria-hidden />
-								<div className="flex flex-col gap-1 w-full">
-									<div className="flex justify-between items-baseline">
-										<span className="text-xs font-bold text-text-main-light">系统</span>
-										<span className="text-[10px] text-text-secondary-light">刚刚</span>
-									</div>
-									<div className="bg-white dark:bg-surface-dark p-3 rounded-lg border border-border-light dark:border-border-dark text-sm text-text-main-light dark:text-text-main-dark">
-										<p>版本对比已生成，可在“对比视图”查看差异 (占位)。</p>
-									</div>
-								</div>
-							</div>
+							{comments.map((comment, index) => {
+								const isVersionUpdate = index === 1 // 第二个评论是版本更新
+								return (
+									<React.Fragment key={comment.id}>
+										{isVersionUpdate && (
+											<div className="flex items-center gap-2 my-1 text-[10px] text-text-secondary-light">
+												<div className="h-px bg-border-light flex-1" />
+												<span>版本 {selected.version} 更新</span>
+												<div className="h-px bg-border-light flex-1" />
+											</div>
+										)}
+										<div className="flex gap-3">
+											<div className="size-9 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-xs font-bold text-text-main-light dark:text-text-main-dark" aria-hidden>
+												{comment.author.charAt(0)}
+											</div>
+											<div className="flex flex-col gap-1 w-full">
+												<div className="flex justify-between items-baseline">
+													<span className="text-xs font-bold text-text-main-light dark:text-text-main-dark">
+														{comment.author}
+														{comment.authorRole && ` (${comment.authorRole})`}
+													</span>
+													<span className="text-[10px] text-text-secondary-light dark:text-text-secondary-dark">{comment.timestamp}</span>
+												</div>
+												<div className={`p-3 rounded-lg border text-sm text-text-main-light dark:text-text-main-dark ${
+													comment.isSystem 
+														? 'bg-white dark:bg-surface-dark border-border-light dark:border-border-dark'
+														: comment.authorRole === '提交人'
+															? 'bg-primary/5 border-primary/20'
+															: 'bg-white dark:bg-surface-dark border-border-light dark:border-border-dark'
+												}`}>
+													<p className="whitespace-pre-wrap">{comment.content}</p>
+												</div>
+											</div>
+										</div>
+									</React.Fragment>
+								)
+							})}
 							<div className="pt-2 border-t border-border-light dark:border-border-dark flex gap-3 items-center">
-								<input className="flex-1 px-3 py-2 rounded-lg border border-border-light dark:border-border-dark bg-white dark:bg-surface-dark text-sm focus:ring-1 focus:ring-primary" placeholder="输入评论或 @提及他人... (占位)" />
-								<button className="px-3 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-hover" type="button">
+								<input 
+									className="flex-1 px-3 py-2 rounded-lg border border-border-light dark:border-border-dark bg-white dark:bg-surface-dark text-sm focus:ring-1 focus:ring-primary text-text-main-light dark:text-text-main-dark" 
+									placeholder="输入评论或 @提及他人..." 
+									value={newComment}
+									onChange={(e) => setNewComment(e.target.value)}
+									onKeyDown={(e) => {
+										if (e.key === 'Enter' && !e.shiftKey) {
+											e.preventDefault()
+											handleSendComment()
+										}
+									}}
+								/>
+								<button 
+									className="px-3 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed" 
+									type="button"
+									onClick={handleSendComment}
+									disabled={!newComment.trim()}
+								>
 									发送
 								</button>
 							</div>
 						</div>
+						)}
+						{activeTab === 'audit' && (
+							<div className="p-4 bg-background-light/60 dark:bg-background-dark">
+								<div className="space-y-3">
+									{[
+										{ action: '创建', user: selected.submitBy, time: selected.updatedAt, details: `创建了审核项 ${selected.code}` },
+										{ action: '更新', user: selected.submitBy, time: selected.updatedAt, details: `更新到版本 ${selected.version}` },
+										{ action: '指派', user: '系统', time: selected.updatedAt, details: selected.assignee ? `指派给 ${selected.assignee}` : '未指派' }
+									].map((log, index) => (
+										<div key={index} className="flex gap-3 p-3 bg-white dark:bg-surface-dark rounded-lg border border-border-light dark:border-border-dark">
+											<div className="size-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-xs font-bold text-text-main-light dark:text-text-main-dark flex-shrink-0">
+												{log.user.charAt(0)}
+											</div>
+											<div className="flex-1 min-w-0">
+												<div className="flex items-center gap-2 mb-1">
+													<span className="text-xs font-bold text-text-main-light dark:text-text-main-dark">{log.user}</span>
+													<span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-primary/10 text-primary">{log.action}</span>
+													<span className="text-[10px] text-text-secondary-light dark:text-text-secondary-dark ml-auto">{log.time}</span>
+												</div>
+												<p className="text-xs text-text-secondary-light dark:text-text-secondary-dark">{log.details}</p>
+											</div>
+										</div>
+									))}
+								</div>
+							</div>
+						)}
+						{activeTab === 'properties' && (
+							<div className="p-4 bg-background-light/60 dark:bg-background-dark">
+								<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+									<div className="space-y-3">
+										<div>
+											<p className="text-xs font-semibold text-text-secondary-light dark:text-text-secondary-dark mb-1">基本信息</p>
+											<div className="bg-white dark:bg-surface-dark p-3 rounded-lg border border-border-light dark:border-border-dark space-y-2">
+												<div className="flex justify-between text-xs">
+													<span className="text-text-secondary-light dark:text-text-secondary-dark">审核项ID</span>
+													<span className="text-text-main-light dark:text-text-main-dark font-medium">{selected.code}</span>
+												</div>
+												<div className="flex justify-between text-xs">
+													<span className="text-text-secondary-light dark:text-text-secondary-dark">状态</span>
+													<span className="text-text-main-light dark:text-text-main-dark font-medium">
+														{selected.status === 'pending' ? '待审' : selected.status === 'draft' ? '草稿' : selected.status === 'rejected' ? '被驳回' : '已通过'}
+													</span>
+												</div>
+												<div className="flex justify-between text-xs">
+													<span className="text-text-secondary-light dark:text-text-secondary-dark">当前版本</span>
+													<span className="text-text-main-light dark:text-text-main-dark font-medium">{selected.version}</span>
+												</div>
+												<div className="flex justify-between text-xs">
+													<span className="text-text-secondary-light dark:text-text-secondary-dark">上一版本</span>
+													<span className="text-text-main-light dark:text-text-main-dark font-medium">{selected.previousVersion}</span>
+												</div>
+											</div>
+										</div>
+										<div>
+											<p className="text-xs font-semibold text-text-secondary-light dark:text-text-secondary-dark mb-1">提交信息</p>
+											<div className="bg-white dark:bg-surface-dark p-3 rounded-lg border border-border-light dark:border-border-dark space-y-2">
+												<div className="flex justify-between text-xs">
+													<span className="text-text-secondary-light dark:text-text-secondary-dark">提交人</span>
+													<span className="text-text-main-light dark:text-text-main-dark font-medium">{selected.submitBy}</span>
+												</div>
+												{selected.submitterRole && (
+													<div className="flex justify-between text-xs">
+														<span className="text-text-secondary-light dark:text-text-secondary-dark">角色</span>
+														<span className="text-text-main-light dark:text-text-main-dark font-medium">{selected.submitterRole}</span>
+													</div>
+												)}
+												<div className="flex justify-between text-xs">
+													<span className="text-text-secondary-light dark:text-text-secondary-dark">更新时间</span>
+													<span className="text-text-main-light dark:text-text-main-dark font-medium">{selected.updatedAt}</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div className="space-y-3">
+										<div>
+											<p className="text-xs font-semibold text-text-secondary-light dark:text-text-secondary-dark mb-1">审核信息</p>
+											<div className="bg-white dark:bg-surface-dark p-3 rounded-lg border border-border-light dark:border-border-dark space-y-2">
+												<div className="flex justify-between text-xs">
+													<span className="text-text-secondary-light dark:text-text-secondary-dark">审核人</span>
+													<span className="text-text-main-light dark:text-text-main-dark font-medium">{selected.assignee || '未指派'}</span>
+												</div>
+											</div>
+										</div>
+										{selected.tags && selected.tags.length > 0 && (
+											<div>
+												<p className="text-xs font-semibold text-text-secondary-light dark:text-text-secondary-dark mb-1">标签</p>
+												<div className="bg-white dark:bg-surface-dark p-3 rounded-lg border border-border-light dark:border-border-dark">
+													<div className="flex flex-wrap gap-2">
+														{selected.tags.map((tag) => (
+															<span key={tag} className="px-2 py-1 rounded bg-background-light dark:bg-background-dark border border-border-light dark:border-border-dark text-xs font-medium text-text-main-light dark:text-text-main-dark">
+																{tag}
+															</span>
+														))}
+													</div>
+												</div>
+											</div>
+										)}
+										<div>
+											<p className="text-xs font-semibold text-text-secondary-light dark:text-text-secondary-dark mb-1">变更摘要</p>
+											<div className="bg-white dark:bg-surface-dark p-3 rounded-lg border border-border-light dark:border-border-dark">
+												<p className="text-xs text-text-main-light dark:text-text-main-dark leading-relaxed">{selected.summary}</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						)}
 					</div>
 				</div>
 			</div>

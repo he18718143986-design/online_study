@@ -12,11 +12,16 @@ import { ROUTES } from '../../app/routes'
 const DashboardPage: React.FC = () => {
   // TODO: replace useDashboardData mock with real API (modules/dashboard/services)
   const {
-    data: { courses, assignments, metrics },
+    data,
     actions: { refresh }
   } = useDashboardData()
 
   const navigate = useNavigate()
+
+  // 安全地解构数据，提供默认值
+  const courses = data?.courses ?? []
+  const assignments = data?.assignments ?? []
+  const metrics = data?.metrics ?? []
 
   const handleCourseDetail = (courseId: string) => {
     navigate(ROUTES.courseDetail.replace(':courseId', courseId))
