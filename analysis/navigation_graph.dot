@@ -1,0 +1,149 @@
+/**
+ * 页面导航图 - Graphviz DOT 格式
+ * 
+ * 生成可视图命令：
+ *   dot -Tsvg navigation_graph.dot -o navigation_graph.svg
+ *   dot -Tpng navigation_graph.dot -o navigation_graph.png
+ */
+
+digraph NavigationGraph {
+    // 图属性
+    rankdir=LR;
+    node [shape=box, style="rounded,filled", fontname="Arial", fontsize=10];
+    edge [fontname="Arial", fontsize=8];
+    
+    // 颜色图例
+    subgraph cluster_legend {
+        label="图例";
+        style=dashed;
+        node [width=1.5];
+        
+        legend_public [label="公开页面", fillcolor="#f0f0f0"];
+        legend_main [label="主布局页面", fillcolor="#e3f2fd"];
+        legend_detail [label="详情页面", fillcolor="#fff3e0"];
+        legend_immersive [label="沉浸式页面", fillcolor="#fce4ec"];
+    }
+    
+    // ========================================
+    // 公开页面 (Public Shell)
+    // ========================================
+    subgraph cluster_public {
+        label="公开页面";
+        style=filled;
+        color="#f5f5f5";
+        
+        login [label="/login\nLoginPage", fillcolor="#f0f0f0"];
+    }
+    
+    // ========================================
+    // 主布局页面 (Main Shell)
+    // ========================================
+    subgraph cluster_main {
+        label="主布局页面 (MainShell)";
+        style=filled;
+        color="#e3f2fd";
+        
+        dashboard [label="/\nDashboardPage", fillcolor="#bbdefb"];
+        courseSchedule [label="/courses/schedule\nCourseSchedulePage", fillcolor="#bbdefb"];
+        recordings [label="/recordings\nRecordingLibraryPage", fillcolor="#bbdefb"];
+        recordingDetail [label="/recordings/:recordingId\nRecordingDetailPage", fillcolor="#90caf9"];
+        resourceLibrary [label="/resources\nResourceLibraryPage", fillcolor="#bbdefb"];
+        resourceUpload [label="/resources/upload\nUploadResourcePage", fillcolor="#90caf9"];
+        assignments [label="/assignments\nAssignmentManagementPage", fillcolor="#bbdefb"];
+        assignmentDetail [label="/assignments/:assignmentId\nAssignmentDetailPage", fillcolor="#90caf9"];
+        assignmentNew [label="/assignments/new\nNewAssignmentPage", fillcolor="#90caf9"];
+        assignmentGrading [label="/assignments/:assignmentId/grading\n(待实现)", fillcolor="#ffcdd2", style="rounded,filled,dashed"];
+        gradebook [label="/assignments/gradebook\nGradebookPage", fillcolor="#bbdefb"];
+        gradingWorkspace [label="/assignments/grading\nGradingWorkspacePage", fillcolor="#bbdefb"];
+        exams [label="/exams\nExamManagementPage", fillcolor="#bbdefb"];
+        students [label="/students\nStudentListPage", fillcolor="#bbdefb"];
+        analytics [label="/analytics\nTeachingAnalyticsPage", fillcolor="#bbdefb"];
+        inbox [label="/inbox\nInboxPage", fillcolor="#bbdefb"];
+        settings [label="/settings\nSettingsPage", fillcolor="#bbdefb"];
+        collaborationReview [label="/collaboration/review\nCollaborationReviewPage", fillcolor="#bbdefb"];
+        questionBank [label="/question-bank\nQuestionBankPage", fillcolor="#bbdefb"];
+    }
+    
+    // ========================================
+    // 详情布局页面 (Detail Shell)
+    // ========================================
+    subgraph cluster_detail {
+        label="详情布局页面 (DetailShell)";
+        style=filled;
+        color="#fff3e0";
+        
+        courseDetail [label="/courses/:courseId\nCourseDetailPage", fillcolor="#ffe0b2"];
+        courseEdit [label="/courses/:courseId/edit\nCourseEditPage", fillcolor="#ffcc80"];
+        studentProfile [label="/students/:studentId\nStudentProfilePage", fillcolor="#ffe0b2"];
+    }
+    
+    // ========================================
+    // 沉浸式布局页面 (Immersive Shell)
+    // ========================================
+    subgraph cluster_immersive {
+        label="沉浸式布局页面 (ImmersiveShell)";
+        style=filled;
+        color="#fce4ec";
+        
+        live [label="/live\nLiveTeachingPage", fillcolor="#f8bbd9"];
+        liveWithCourse [label="/live/:courseId\nLiveTeachingPage", fillcolor="#f48fb1"];
+    }
+    
+    // ========================================
+    // 导航边 (Navigation Edges)
+    // ========================================
+    
+    // 登录流程
+    login -> dashboard [label="登录成功"];
+    
+    // Dashboard 导航
+    dashboard -> courseDetail [label="查看课程"];
+    dashboard -> liveWithCourse [label="进入课堂"];
+    dashboard -> courseSchedule [label="查看日程"];
+    dashboard -> assignments [label="作业管理"];
+    dashboard -> assignmentGrading [label="批改作业", style=dashed];
+    dashboard -> live [label="开始直播"];
+    dashboard -> assignmentNew [label="新建任务"];
+    dashboard -> resourceUpload [label="上传资源"];
+    
+    // 课程详情导航
+    courseDetail -> liveWithCourse [label="开始直播"];
+    courseDetail -> recordings [label="查看录播"];
+    courseDetail -> recordingDetail [label="录播详情"];
+    courseDetail -> assignments [label="作业管理"];
+    courseDetail -> courseEdit [label="编辑课程"];
+    courseDetail -> courseSchedule [label="返回日程"];
+    
+    // 课程编辑导航
+    courseEdit -> courseDetail [label="保存/取消"];
+    
+    // 录播导航
+    recordings -> recordingDetail [label="查看详情"];
+    recordingDetail -> recordings [label="返回列表"];
+    
+    // 作业导航
+    assignments -> assignmentDetail [label="查看详情"];
+    assignmentDetail -> assignments [label="返回列表"];
+    assignmentDetail -> courseDetail [label="查看课程"];
+    assignmentDetail -> gradingWorkspace [label="开始批改"];
+    assignmentNew -> assignments [label="保存后"];
+    
+    // 学生导航
+    students -> studentProfile [label="查看档案"];
+    studentProfile -> students [label="返回列表"];
+    studentProfile -> assignments [label="查看作业"];
+    
+    // 直播导航
+    live -> courseDetail [label="返回课程"];
+    liveWithCourse -> courseDetail [label="返回课程"];
+    liveWithCourse -> recordings [label="查看录播"];
+    
+    // 资源导航
+    resourceLibrary -> resourceUpload [label="上传"];
+    resourceUpload -> resourceLibrary [label="完成"];
+    
+    // Sidebar 全局导航（省略具体边，用注释说明）
+    // Sidebar -> dashboard, courseSchedule, assignments, gradingWorkspace,
+    //            gradebook, exams, questionBank, recordings, resourceLibrary,
+    //            analytics, students, inbox, collaborationReview, settings, live
+}

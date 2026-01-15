@@ -10,7 +10,7 @@ import { useRecordingId, useCourseId } from '@/hooks/useRouteId'
 import RecordingPlayer from '@/modules/recordings/components/RecordingPlayer'
 import recordingsService from '@/services/recordings.service'
 import type { Recording } from '@/types/models/recording'
-import { ROUTES } from '@/app/routes'
+import { getRecordingsUrl } from '@/app/routes'
 
 const RecordingDetailPage: React.FC = () => {
 	const navigate = useNavigate()
@@ -60,12 +60,8 @@ const RecordingDetailPage: React.FC = () => {
 	}, [recordingId])
 
 	const handleClose = React.useCallback(() => {
-		// 返回录播列表，保持 courseId 筛选
-		if (courseId) {
-			navigate(`${ROUTES.recordings}?courseId=${encodeURIComponent(courseId)}`)
-		} else {
-			navigate(ROUTES.recordings)
-		}
+		// 使用 URL helper 返回录播列表，保持 courseId 筛选
+		navigate(getRecordingsUrl(courseId))
 	}, [navigate, courseId])
 
 	const handleShare = React.useCallback(async () => {

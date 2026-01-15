@@ -7,7 +7,7 @@ import LiveStudentPanel from '../../modules/live/components/LiveStudentPanel'
 import useLiveSession from '../../modules/live/hooks/useLiveSession'
 import { mockStudents } from '../../modules/live/mocks/students'
 import liveTeachingService from '@/services/liveTeaching.service'
-import { ROUTES } from '@/app/routes'
+import { getRecordingsUrl } from '@/app/routes'
 
 export interface LiveTeachingPageProps {
 	/** 课程 ID（必须传入，由路由层解析） */
@@ -136,7 +136,7 @@ const LiveTeachingPage: React.FC<LiveTeachingPageProps> = ({ courseId, onBackToC
 							<button
 								type="button"
 								className="px-3 py-2 rounded-lg bg-primary text-white text-xs font-bold"
-								onClick={() => navigate(`${ROUTES.recordings}?courseId=${encodeURIComponent(courseId)}`)}
+								onClick={() => navigate(getRecordingsUrl(courseId))}
 							>
 								前往录播库
 							</button>

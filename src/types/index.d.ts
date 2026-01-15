@@ -34,6 +34,7 @@ declare module 'react-router-dom' {
 	export const RouterProvider: any
 	export function createBrowserRouter(...args: any[]): any
 	export function createMemoryRouter(...args: any[]): any
+	export const Navigate: any
 	export const Outlet: any
 	export const Link: any
 	export const useMatches: any

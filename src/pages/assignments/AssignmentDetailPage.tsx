@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAssignmentId } from '@/hooks/useRouteId'
 import assignmentsService from '@/services/assignments.service'
 import type { Assignment } from '@/types/models/assignment'
-import { ROUTES, getCourseDetailUrl } from '@/app/routes'
+import { ROUTES, getCourseDetailUrl, getGradingWorkspaceUrl, getAssignmentGradingUrl } from '@/app/routes'
 
 const AssignmentDetailPage: React.FC = () => {
 	const navigate = useNavigate()
@@ -68,7 +68,8 @@ const AssignmentDetailPage: React.FC = () => {
 
 	const handleGrade = React.useCallback(() => {
 		if (assignmentId) {
-			navigate(`${ROUTES.gradingWorkspace}?assignmentId=${encodeURIComponent(assignmentId)}`)
+			// 使用参数化路由 /assignments/:assignmentId/grading
+			navigate(getAssignmentGradingUrl(assignmentId))
 		}
 	}, [navigate, assignmentId])
 

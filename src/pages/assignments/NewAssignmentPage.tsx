@@ -2,7 +2,7 @@ import React from 'react'
 import AppLayout from '../../layouts/AppLayout'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ROUTES } from '../../app/routes'
+import { getAssignmentsUrl } from '../../app/routes'
 import assignmentsService from '../../services/assignments.service'
 
 const NewAssignmentPage: React.FC = () => {
@@ -44,7 +44,8 @@ const NewAssignmentPage: React.FC = () => {
         courseId: courseIdFromQuery || 'unknown-course'
       })
       const notice = publishing ? 'published' : 'draft'
-      navigate(`${ROUTES.assignmentManagement}?notice=${encodeURIComponent(notice)}`)
+      // 使用 URL helper 生成带通知参数的作业列表 URL
+      navigate(getAssignmentsUrl(notice))
     } catch (err) {
       setError((err as Error)?.message || '保存失败')
     } finally {

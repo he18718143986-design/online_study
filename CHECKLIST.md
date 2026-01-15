@@ -1,4 +1,4 @@
-# 验收检查清单 - 全面质量检查与 Deep-Link 修复
+# 验收检查清单 - 路由总架构设计与实现
 
 ## 自动化检查
 
@@ -11,54 +11,45 @@
 | 构建 | `pnpm build` | ✅ 通过 | |
 | E2E 测试 | `pnpm test:e2e` | - | 需要 Playwright |
 
-## 功能验收 - Deep-Link 路由
+## 功能验收 - 路由系统
 
-### 直播页面 `/live/:courseId`
+### URL Helper 函数
 
-| 测试场景 | 预期结果 | 状态 |
-|----------|----------|------|
-| 访问 `/live/course-live-1` | 渲染直播页面 | ⬜ |
-| 访问 `/live/course-002` | 渲染直播页面 | ⬜ |
-| 访问 `/live?courseId=course-001` | 渲染直播页面（查询参数） | ⬜ |
-| 访问 `/live` | 使用默认课程 ID | ⬜ |
+| Helper | 示例输出 | 状态 |
+|--------|---------|------|
+| `getLiveTeachingUrl('course-001')` | `/live/course-001` | ⬜ |
+| `getCourseDetailUrl('course-001')` | `/courses/course-001` | ⬜ |
+| `getCourseEditUrl('course-001')` | `/courses/course-001/edit` | ⬜ |
+| `getRecordingDetailUrl('rec-001')` | `/recordings/rec-001` | ⬜ |
+| `getRecordingsUrl('course-001')` | `/recordings?courseId=course-001` | ⬜ |
+| `getAssignmentDetailUrl('assign-101')` | `/assignments/assign-101` | ⬜ |
+| `getAssignmentGradingUrl('assign-101')` | `/assignments/assign-101/grading` | ⬜ |
+| `getGradingWorkspaceUrl('assign-101')` | `/assignments/grading?assignmentId=assign-101` | ⬜ |
+| `getAssignmentsUrl('published')` | `/assignments?notice=published` | ⬜ |
+| `getStudentProfileUrl('s001')` | `/students/s001` | ⬜ |
 
-### 课程详情 `/courses/:courseId`
+### Deep-Link 路由
 
-| 测试场景 | 预期结果 | 状态 |
-|----------|----------|------|
-| 访问 `/courses/course-001` | 渲染课程详情页面 | ⬜ |
-| 显示课程标题 | "数学竞赛训练 — 高一提升" | ⬜ |
-| 显示课程统计 | 学生数、参与率等 | ⬜ |
+| 路由 | 测试 URL | 预期结果 | 状态 |
+|------|----------|---------|------|
+| 直播 | `/live/course-live-1` | 渲染直播页面 | ⬜ |
+| 课程详情 | `/courses/course-001` | 渲染课程详情 | ⬜ |
+| 课程编辑 | `/courses/course-001/edit` | 渲染编辑页面 | ⬜ |
+| 录播详情 | `/recordings/rec-001` | 渲染录播详情 | ⬜ |
+| 作业详情 | `/assignments/assign-101` | 渲染作业详情 | ⬜ |
+| 作业批改 | `/assignments/assign-101/grading` | 渲染批改页面 | ⬜ |
+| 学生档案 | `/students/s001` | 渲染学生档案 | ⬜ |
 
-### 录播详情 `/recordings/:recordingId`
+### 页面导航
 
-| 测试场景 | 预期结果 | 状态 |
-|----------|----------|------|
-| 访问 `/recordings/rec-001` | 渲染录播详情页面 | ⬜ |
-| 显示录播标题 | "数学竞赛训练 2026-01-05" | ⬜ |
-| 带 courseId 查询参数 | 正确筛选 | ⬜ |
-
-### 作业详情 `/assignments/:assignmentId`
-
-| 测试场景 | 预期结果 | 状态 |
-|----------|----------|------|
-| 访问 `/assignments/assign-101` | 渲染作业详情页面 | ⬜ |
-| 显示作业标题 | "第三章：平面几何综合练习" | ⬜ |
-| 显示提交统计 | 提交数、待批改数 | ⬜ |
-
-### 学生档案 `/students/:studentId`
-
-| 测试场景 | 预期结果 | 状态 |
-|----------|----------|------|
-| 访问 `/students/s001` | 渲染学生档案页面 | ⬜ |
-| 非 404 页面 | 正常显示内容 | ⬜ |
-
-### 404 兜底
-
-| 测试场景 | 预期结果 | 状态 |
-|----------|----------|------|
-| 访问 `/random/unknown` | 显示 404 页面 | ⬜ |
-| 显示"未找到"文字 | 友好错误提示 | ⬜ |
+| 起点 | 操作 | 终点 | 状态 |
+|------|------|------|------|
+| Dashboard | 点击"进入课堂" | `/live/:courseId` | ⬜ |
+| Dashboard | 点击"批改作业" | `/assignments/:id/grading` | ⬜ |
+| CourseDetail | 点击"编辑课程" | `/courses/:id/edit` | ⬜ |
+| CourseDetail | 点击"查看录播" | `/recordings/:id` | ⬜ |
+| AssignmentDetail | 点击"开始批改" | `/assignments/:id/grading` | ⬜ |
+| StudentList | 点击"查看档案" | `/students/:id` | ⬜ |
 
 ## 手动测试步骤
 
@@ -73,6 +64,9 @@ pnpm typecheck
 
 # 单元测试
 pnpm test
+
+# 构建
+pnpm build
 ```
 
 ### 步骤 2：启动服务
@@ -83,64 +77,75 @@ pnpm dev:mock
 
 ### 步骤 3：测试 Deep-Link
 
-在浏览器中依次访问以下 URL：
+在浏览器中访问以下 URL，验证页面正确渲染：
 
 1. `http://localhost:5173/live/course-live-1`
-   - ✅ 页面渲染正常
-   - ✅ 显示课程 ID: course-live-1
-   - ✅ 直播状态徽章可见
-
 2. `http://localhost:5173/courses/course-001`
-   - ✅ 页面渲染正常
-   - ✅ 显示课程标题
-   - ✅ 显示课程统计
+3. `http://localhost:5173/courses/course-001/edit`
+4. `http://localhost:5173/recordings/rec-001`
+5. `http://localhost:5173/assignments/assign-101`
+6. `http://localhost:5173/assignments/assign-101/grading`
+7. `http://localhost:5173/students/s001`
 
-3. `http://localhost:5173/recordings/rec-001`
-   - ✅ 页面渲染正常
-   - ✅ 显示录播标题
+### 步骤 4：测试导航流程
 
-4. `http://localhost:5173/assignments/assign-101`
-   - ✅ 页面渲染正常
-   - ✅ 显示作业标题
-   - ✅ 显示提交统计
+1. 从 Dashboard 点击"进入课堂"按钮，验证跳转到直播页面
+2. 从 Dashboard 点击课程卡片，验证跳转到课程详情
+3. 从课程详情点击"编辑"，验证跳转到编辑页面
+4. 从作业详情点击"开始批改"，验证跳转到批改页面
 
-5. `http://localhost:5173/students/s001`
-   - ✅ 页面渲染正常
-
-6. `http://localhost:5173/random/unknown`
-   - ✅ 显示 404 页面
-
-### 步骤 4：E2E 测试
+### 步骤 5：E2E 测试
 
 ```bash
 # 安装 Playwright 浏览器
-npx playwright install
+npx playwright install chromium
 
-# 运行所有 E2E 测试
+# 运行 E2E 测试
 pnpm test:e2e
 
-# 仅运行 Deep-Link 测试
+# 或运行特定测试
 npx playwright test deepLink.spec.ts
 ```
 
 ## 代码审查检查点
 
-- [x] 路由配置正确，参数化路由顺序合理
-- [x] `useRouteId` Hook 优先级逻辑正确
-- [x] 页面组件正确使用 `useRouteId`
-- [x] 新增页面有 data-testid 便于测试
-- [x] 类型定义完整
-- [x] 单元测试覆盖主要场景
-- [x] E2E 测试覆盖所有 Deep-Link
-- [x] CI 配置完整
+### 路由配置
 
-## CI 检查点
+- [x] 所有路由使用 `ROUTES` 常量
+- [x] 参数化路由顺序正确（具体在前，通配在后）
+- [x] 新增路由有对应的 URL helper
+- [x] 路由元数据完整
 
-- [x] lint-and-typecheck job
-- [x] unit-tests job
-- [x] build job
-- [x] e2e-tests job
-- [x] smoke-test job (PR only)
+### 页面组件
+
+- [x] 所有导航使用 URL helper
+- [x] 无硬编码路径字符串
+- [x] 使用 `useRouteId` hook 获取参数
+- [x] 参数获取优先级正确（params > query > fallback）
+
+### 文档
+
+- [x] `spec/routes.md` 路由表完整
+- [x] 导航图与实际代码一致
+- [x] E2E 测试指南清晰
+
+## 分析文件验证
+
+### navigation_map.json
+
+- [x] 包含所有导航点（58 个）
+- [x] 标记了需要 helper 的位置
+- [x] 识别了缺失的路由
+
+### navigation_graph.dot
+
+- [x] 可用 Graphviz 生成图片
+- [x] 节点和边与代码一致
+
+```bash
+# 生成图片验证
+dot -Tsvg analysis/navigation_graph.dot -o analysis/navigation_graph.svg
+```
 
 ## 签字确认
 
@@ -164,11 +169,16 @@ echo "✅ 所有检查通过"
 ```bash
 # 启动并手动测试
 pnpm dev:mock
-# 然后在浏览器中访问上述 URL
 ```
 
 ```bash
 # E2E 测试
 npx playwright install chromium && \
 pnpm test:e2e
+```
+
+```bash
+# 生成导航图
+dot -Tsvg analysis/navigation_graph.dot -o analysis/navigation_graph.svg && \
+echo "导航图已生成: analysis/navigation_graph.svg"
 ```

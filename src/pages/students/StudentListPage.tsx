@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import StudentListHeader from '../../modules/students/components/StudentListHeader'
 import StudentTable from '../../modules/students/components/StudentTable'
 import useStudents from '../../modules/students/hooks/useStudents'
-import { ROUTES } from '../../app/routes'
+import { getStudentProfileUrl } from '../../app/routes'
 import StudentEditor from '../../modules/students/components/StudentEditor'
 import type { Student } from '@/types/models/student'
 
@@ -64,7 +64,7 @@ const StudentListPage: React.FC = () => {
 						onBulkMarkPresent={actions.bulkMarkPresent}
 						onEditStudent={handleEditStudent}
 						onDeleteStudent={handleDeleteStudent}
-						onViewStudent={(id) => navigate(ROUTES.studentProfile.replace(':studentId', id))}
+						onViewStudent={(id) => navigate(getStudentProfileUrl(id))}
 					/>
 				</div>
 			</div>

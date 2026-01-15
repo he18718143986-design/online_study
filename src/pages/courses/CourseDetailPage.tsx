@@ -17,7 +17,13 @@ import { type MetricPreview } from '../../modules/courses/types'
 import useCourseDetail from '../../modules/courses/hooks/useCourseDetail'
 import MetricCard from '../../components/widgets/MetricCard'
 import { useCourseId } from '@/hooks/useRouteId'
-import { ROUTES, getLiveTeachingUrl, getRecordingDetailUrl, getCourseDetailUrl } from '@/app/routes'
+import { 
+	ROUTES, 
+	getLiveTeachingUrl, 
+	getRecordingDetailUrl, 
+	getCourseEditUrl,
+	getRecordingsUrl
+} from '@/app/routes'
 import recordingsService from '@/services/recordings.service'
 
 const CourseDetailPage: React.FC = () => {
@@ -103,11 +109,12 @@ const CourseDetailPage: React.FC = () => {
 
 	const handleViewRecording = async (recordingId?: string) => {
 		if (!recordingId) {
-			navigate(`${ROUTES.recordings}?courseId=${encodeURIComponent(courseId!)}`)
+			// 使用 URL helper 生成带课程筛选的录播列表 URL
+			navigate(getRecordingsUrl(courseId))
 			return
 		}
 		await pollRecordingBeforeNavigate(recordingId)
-		// 使用参数化路由
+		// 使用 URL helper 生成录播详情 URL
 		navigate(getRecordingDetailUrl(recordingId, courseId))
 	}
 
@@ -116,7 +123,8 @@ const CourseDetailPage: React.FC = () => {
 	}
 
 	const handleEditCourse = () => {
-		navigate(ROUTES.courseEdit.replace(':courseId', courseId!))
+		// 使用 URL helper 生成课程编辑 URL
+		navigate(getCourseEditUrl(courseId!))
 	}
 
 	// 加载状态
